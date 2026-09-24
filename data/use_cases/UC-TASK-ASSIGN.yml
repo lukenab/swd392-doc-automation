@@ -1,4 +1,5 @@
-id: UC-05
+key: UC-TASK-ASSIGN
+order: 500
 name: Assign Task
 summary: Assign or reassign a task to an active member of the same project.
 created_by: Nguyen An Binh
@@ -34,9 +35,8 @@ exceptions: []
 priority: Must Have
 frequency_of_use: Frequent
 business_rules:
-  - BR-04
-  - BR-08
+  - BR-TASK-ASSIGNEE-PROJECT-MEMBER
+  - BR-ARCHIVED-PROJECT-READ-ONLY
 other_information: The MVP supports one primary assignee per task.
 assumptions:
   - The selected member can access the project board.
-

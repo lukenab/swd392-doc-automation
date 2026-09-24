@@ -1,25 +1,32 @@
 business_rules:
-  - id: BR-01
+  - key: BR-ACTIVE-USER-PROJECT-ACCESS
+    order: 100
     description: Only an active authenticated user can create or access a project.
 
-  - id: BR-02
+  - key: BR-PROJECT-CREATOR-MANAGER
+    order: 200
     description: The project creator becomes the first Project Manager.
 
-  - id: BR-03
+  - key: BR-PROJECT-MANAGER-REQUIRED
+    order: 300
     description: Every active project must have at least one Project Manager.
 
-  - id: BR-04
+  - key: BR-TASK-ASSIGNEE-PROJECT-MEMBER
+    order: 400
     description: A task can only be assigned to an active member of the same project.
 
-  - id: BR-05
+  - key: BR-TASK-DATE-RANGE
+    order: 500
     description: A task due date must not be earlier than its start date.
 
-  - id: BR-06
+  - key: BR-TASK-STATUS-WORKFLOW-COLUMN
+    order: 600
     description: A task status must correspond to an active workflow column of its project board.
 
-  - id: BR-07
+  - key: BR-WORKFLOW-MANAGER-ONLY
+    order: 700
     description: Only a Project Manager can configure board workflow columns.
 
-  - id: BR-08
+  - key: BR-ARCHIVED-PROJECT-READ-ONLY
+    order: 800
     description: Archived projects are read-only until they are restored.
-

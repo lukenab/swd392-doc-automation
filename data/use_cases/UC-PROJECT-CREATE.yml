@@ -1,4 +1,5 @@
-id: UC-01
+key: UC-PROJECT-CREATE
+order: 100
 name: Create Project
 summary: Create a project and assign the creator as its first Project Manager.
 created_by: Tran Cong Luan
@@ -39,10 +40,9 @@ exceptions:
 priority: Must Have
 frequency_of_use: Occasional
 business_rules:
-  - BR-01
-  - BR-02
-  - BR-03
+  - BR-ACTIVE-USER-PROJECT-ACCESS
+  - BR-PROJECT-CREATOR-MANAGER
+  - BR-PROJECT-MANAGER-REQUIRED
 other_information: A default board contains To Do, In Progress, and Done columns.
 assumptions:
   - The system has enough storage to create a new project.
-

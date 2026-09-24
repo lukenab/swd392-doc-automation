@@ -9,7 +9,8 @@ from .loader import ProjectData
 
 
 REQUIRED_FIELDS = [
-    "id",
+    "key",
+    "order",
     "name",
     "summary",
     "created_by",
@@ -42,38 +43,67 @@ def validate_project(project: ProjectData) -> list[str]:
         errors.append("No use case YAML files were found.")
         return errors
 
-    ids = [str(uc.get("id", "")) for uc in project.use_cases]
-    for duplicated_id, count in Counter(ids).items():
-        if duplicated_id and count > 1:
-            errors.append(f"Duplicate Use Case ID: {duplicated_id}.")
+    keys = [str(uc.get("key", "")) for uc in project.use_cases]
+    for duplicated_key, count in Counter(keys).items():
+        if duplicated_key and count > 1:
+            errors.append(f"Duplicate Use Case key: {duplicated_key}.")
+
+    orders = [uc.get("order") for uc in project.use_cases if isinstance(uc.get("order"), int)]
+    for duplicated_order, count in Counter(orders).items():
+        if count > 1:
+            errors.append(f"Duplicate Use Case order: {duplicated_order}.")
+
+    rule_orders = [
+        rule.get("order")
+        for rule in project.business_rules.values()
+        if isinstance(rule.get("order"), int)
+    ]
+    for duplicated_order, count in Counter(rule_orders).items():
+        if count > 1:
+            errors.append(f"Duplicate Business Rule order: {duplicated_order}.")
+
+    for rule_key, rule in project.business_rules.items():
+        if not re.fullmatch(r"BR-[A-Z0-9]+(?:-[A-Z0-9]+)*", rule_key):
+            errors.append(f"Business Rule key '{rule_key}' is invalid.")
+        if not isinstance(rule.get("order"), int):
+            errors.append(f"{rule_key}: order must be an integer.")
+        if not _non_empty(rule.get("description")):
+            errors.append(f"{rule_key}: missing description.")
 
     for use_case in project.use_cases:
         source = use_case.get("_source_file", "unknown file")
-        use_case_id = str(use_case.get("id") or source)
+        use_case_key = str(use_case.get("key") or source)
 
         for field in REQUIRED_FIELDS:
             if not _non_empty(use_case.get(field)):
-                errors.append(f"{use_case_id}: missing required field '{field}' ({source}).")
+                errors.append(f"{use_case_key}: missing required field '{field}' ({source}).")
 
-        if use_case.get("id") and not re.fullmatch(r"UC-\d{2,}", str(use_case["id"])):
-            errors.append(f"{use_case_id}: ID must match UC-01, UC-02, ...")
+        if use_case.get("key") and not re.fullmatch(
+            r"UC-[A-Z0-9]+(?:-[A-Z0-9]+)*", str(use_case["key"])
+        ):
+            errors.append(
+                f"{use_case_key}: key must use semantic format such as UC-TASK-CREATE."
+            )
+
+        if use_case.get("order") is not None and not isinstance(use_case.get("order"), int):
+            errors.append(f"{use_case_key}: order must be an integer.")
 
         primary_actor = use_case.get("primary_actor")
         if primary_actor and primary_actor not in project.actors:
-            errors.append(f"{use_case_id}: unknown primary actor '{primary_actor}'.")
+            errors.append(f"{use_case_key}: unknown primary actor '{primary_actor}'.")
 
         secondary_actors = use_case.get("secondary_actors", []) or []
         if not isinstance(secondary_actors, list):
-            errors.append(f"{use_case_id}: secondary_actors must be a list.")
+            errors.append(f"{use_case_key}: secondary_actors must be a list.")
         else:
             for actor in secondary_actors:
                 if actor not in project.actors:
-                    errors.append(f"{use_case_id}: unknown secondary actor '{actor}'.")
+                    errors.append(f"{use_case_key}: unknown secondary actor '{actor}'.")
 
         priority = use_case.get("priority")
         if priority and priority not in ALLOWED_PRIORITIES:
             errors.append(
-                f"{use_case_id}: priority '{priority}' is invalid. "
+                f"{use_case_key}: priority '{priority}' is invalid. "
                 f"Allowed: {', '.join(sorted(ALLOWED_PRIORITIES))}."
             )
 
@@ -88,18 +118,18 @@ def validate_project(project: ProjectData) -> list[str]:
         ]:
             value = use_case.get(list_field, [])
             if value is not None and not isinstance(value, list):
-                errors.append(f"{use_case_id}: '{list_field}' must be a list.")
+                errors.append(f"{use_case_key}: '{list_field}' must be a list.")
 
         normal_flow = use_case.get("normal_flow", [])
         if isinstance(normal_flow, list):
             for step_number, step in enumerate(normal_flow, start=1):
                 if not isinstance(step, dict) or not step.get("actor") or not step.get("action"):
                     errors.append(
-                        f"{use_case_id}: normal_flow step {step_number} requires actor and action."
+                        f"{use_case_key}: normal_flow step {step_number} requires actor and action."
                     )
                 elif step["actor"] not in project.actors and step["actor"] != "System":
                     errors.append(
-                        f"{use_case_id}: normal_flow step {step_number} uses unknown actor "
+                        f"{use_case_key}: normal_flow step {step_number} uses unknown actor "
                         f"'{step['actor']}'."
                     )
 
@@ -110,19 +140,19 @@ def validate_project(project: ProjectData) -> list[str]:
                     continue
                 if not isinstance(flow, dict):
                     errors.append(
-                        f"{use_case_id}: alternative_flows item {flow_number} "
+                        f"{use_case_key}: alternative_flows item {flow_number} "
                         "must be a string or an object."
                     )
                     continue
                 steps = flow.get("steps", []) or []
                 if not flow.get("condition"):
                     errors.append(
-                        f"{use_case_id}: alternative_flows item {flow_number} "
+                        f"{use_case_key}: alternative_flows item {flow_number} "
                         "requires condition."
                     )
                 if not isinstance(steps, list):
                     errors.append(
-                        f"{use_case_id}: alternative_flows item {flow_number} steps must be a list."
+                        f"{use_case_key}: alternative_flows item {flow_number} steps must be a list."
                     )
 
         exceptions = use_case.get("exceptions", []) or []
@@ -132,16 +162,16 @@ def validate_project(project: ProjectData) -> list[str]:
                     continue
                 if not isinstance(exception, dict) or not exception.get("description"):
                     errors.append(
-                        f"{use_case_id}: exceptions item {exception_number} "
+                        f"{use_case_key}: exceptions item {exception_number} "
                         "must be a string or an object with description."
                     )
 
         for rule_id in use_case.get("business_rules", []) or []:
             if rule_id not in project.business_rules:
-                errors.append(f"{use_case_id}: unknown Business Rule '{rule_id}'.")
+                errors.append(f"{use_case_key}: unknown Business Rule key '{rule_id}'.")
 
         created_date = use_case.get("date_created")
         if created_date and not isinstance(created_date, (str, date)):
-            errors.append(f"{use_case_id}: date_created must be a date or ISO date string.")
+            errors.append(f"{use_case_key}: date_created must be a date or ISO date string.")
 
     return errors

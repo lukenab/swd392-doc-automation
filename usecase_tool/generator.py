@@ -33,6 +33,15 @@ def _actor_text(use_case: dict[str, Any]) -> str:
     return ", ".join(dict.fromkeys(actors))
 
 
+def _use_case_id(use_case: dict[str, Any]) -> str:
+    return str(use_case["_display_id"])
+
+
+def _business_rule_ids(project: ProjectData, use_case: dict[str, Any]) -> str:
+    keys = use_case.get("business_rules", []) or []
+    return ", ".join(project.business_rules[key]["_display_id"] for key in keys) or "N/A"
+
+
 def _numbered(items: Iterable[Any]) -> str:
     values = list(items or [])
     if not values:
@@ -75,7 +84,7 @@ def _exception_text(use_case: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def _detail_fields(use_case: dict[str, Any]) -> list[tuple[str, str]]:
+def _detail_fields(project: ProjectData, use_case: dict[str, Any]) -> list[tuple[str, str]]:
     return [
         ("Trigger", str(use_case.get("trigger") or "N/A")),
         ("Description", str(use_case.get("description") or "N/A")),
@@ -86,7 +95,7 @@ def _detail_fields(use_case: dict[str, Any]) -> list[tuple[str, str]]:
         ("Exceptions", _exception_text(use_case)),
         ("Priority", str(use_case.get("priority") or "N/A")),
         ("Frequency of Use", str(use_case.get("frequency_of_use") or "N/A")),
-        ("Business Rules", ", ".join(use_case.get("business_rules", [])) or "N/A"),
+        ("Business Rules", _business_rule_ids(project, use_case)),
         ("Other Information", str(use_case.get("other_information") or "N/A")),
         ("Assumptions", _numbered(use_case.get("assumptions", []))),
     ]
@@ -102,7 +111,7 @@ def _generate_markdown(project: ProjectData, use_cases: list[dict[str, Any]], ou
     for use_case in use_cases:
         summary_lines.append(
             "| {id} | {name} | {actors} | {summary} |".format(
-                id=_escape_markdown(use_case["id"]),
+                id=_escape_markdown(_use_case_id(use_case)),
                 name=_escape_markdown(use_case["name"]),
                 actors=_escape_markdown(_actor_text(use_case)),
                 summary=_escape_markdown(use_case["summary"]),
@@ -113,26 +122,56 @@ def _generate_markdown(project: ProjectData, use_cases: list[dict[str, Any]], ou
     for use_case in use_cases:
         details_lines.extend(
             [
-                f"## {use_case['id']} - {use_case['name']}",
+                f"## {_use_case_id(use_case)} - {use_case['name']}",
                 "",
                 "| Field | Value |",
                 "|---|---|",
-                f"| UC ID and Name | {_escape_markdown(use_case['id'])} - {_escape_markdown(use_case['name'])} |",
+                f"| UC ID and Name | {_escape_markdown(_use_case_id(use_case))} - {_escape_markdown(use_case['name'])} |",
                 f"| Created By | {_escape_markdown(use_case['created_by'])} |",
                 f"| Date Created | {_escape_markdown(_format_date(use_case['date_created']))} |",
                 f"| Primary Actor | {_escape_markdown(use_case['primary_actor'])} |",
                 f"| Secondary Actors | {_escape_markdown(', '.join(use_case.get('secondary_actors', [])) or 'None')} |",
             ]
         )
-        for label, value in _detail_fields(use_case):
+        for label, value in _detail_fields(project, use_case):
             details_lines.append(f"| {_escape_markdown(label)} | {_escape_markdown(value)} |")
         details_lines.append("")
 
     summary_path = output_dir / "use-case-list.md"
     details_path = output_dir / "use-case-descriptions.md"
+    mapping_path = output_dir / "id-mapping.md"
     summary_path.write_text("\n".join(summary_lines) + "\n", encoding="utf-8")
     details_path.write_text("\n".join(details_lines) + "\n", encoding="utf-8")
-    return [summary_path, details_path]
+
+    mapping_lines = [
+        "# Generated ID Mapping",
+        "",
+        "## Use Cases",
+        "",
+        "| Generated ID | Semantic Key | Name | Order |",
+        "|---|---|---|---|",
+    ]
+    for use_case in use_cases:
+        mapping_lines.append(
+            f"| {_use_case_id(use_case)} | `{use_case['key']}` | "
+            f"{_escape_markdown(use_case['name'])} | {use_case['order']} |"
+        )
+    mapping_lines.extend(
+        [
+            "",
+            "## Business Rules",
+            "",
+            "| Generated ID | Semantic Key | Description | Order |",
+            "|---|---|---|---|",
+        ]
+    )
+    for rule in project.business_rules.values():
+        mapping_lines.append(
+            f"| {rule['_display_id']} | `{rule['key']}` | "
+            f"{_escape_markdown(rule['description'])} | {rule['order']} |"
+        )
+    mapping_path.write_text("\n".join(mapping_lines) + "\n", encoding="utf-8")
+    return [summary_path, details_path, mapping_path]
 
 
 def _set_cell_shading(cell, fill: str) -> None:
@@ -192,7 +231,7 @@ def _generate_docx(project: ProjectData, use_cases: list[dict[str, Any]], output
     widths = [Cm(1.5), Cm(4), Cm(4), Cm(7)]
     for use_case in use_cases:
         cells = summary_table.add_row().cells
-        values = [use_case["id"], use_case["name"], _actor_text(use_case), use_case["summary"]]
+        values = [_use_case_id(use_case), use_case["name"], _actor_text(use_case), use_case["summary"]]
         for index, value in enumerate(values):
             _set_cell_text(cells[index], value, center=index == 0)
             cells[index].width = widths[index]
@@ -200,7 +239,7 @@ def _generate_docx(project: ProjectData, use_cases: list[dict[str, Any]], output
     document.add_paragraph()
 
     for position, use_case in enumerate(use_cases):
-        heading = document.add_heading(f"{use_case['id']} - {use_case['name']}", level=2)
+        heading = document.add_heading(f"{_use_case_id(use_case)} - {use_case['name']}", level=2)
         heading.style.font.name = "Times New Roman"
 
         table = document.add_table(rows=3, cols=4)
@@ -210,7 +249,7 @@ def _generate_docx(project: ProjectData, use_cases: list[dict[str, Any]], output
         first_row = table.rows[0].cells
         _set_cell_text(first_row[0], "UC ID and Name", bold=True)
         merged = first_row[1].merge(first_row[3])
-        _set_cell_text(merged, f"{use_case['id']} - {use_case['name']}")
+        _set_cell_text(merged, f"{_use_case_id(use_case)} - {use_case['name']}")
 
         second_row = table.rows[1].cells
         _set_cell_text(second_row[0], "Created By", bold=True)
@@ -224,7 +263,7 @@ def _generate_docx(project: ProjectData, use_cases: list[dict[str, Any]], output
         _set_cell_text(third_row[2], "Secondary Actors", bold=True)
         _set_cell_text(third_row[3], ", ".join(use_case.get("secondary_actors", [])) or "None")
 
-        for label, value in _detail_fields(use_case):
+        for label, value in _detail_fields(project, use_case):
             cells = table.add_row().cells
             _set_cell_text(cells[0], label, bold=True)
             merged_value = cells[1].merge(cells[3])
@@ -264,11 +303,14 @@ def _generate_plantuml(project: ProjectData, use_cases: list[dict[str, Any]], ou
         lines.append(f'actor "{actor_name}" as ACT_{_plantuml_alias(actor_name)}')
     lines.extend(["", 'rectangle "Project Management System" {'])
     for use_case in use_cases:
-        lines.append(f'  usecase "{use_case["id"]}\\n{use_case["name"]}" as {use_case["id"].replace("-", "_")}')
+        lines.append(
+            f'  usecase "{_use_case_id(use_case)}\\n{use_case["name"]}" '
+            f'as {_plantuml_alias(use_case["key"])}'
+        )
     lines.append("}")
     lines.append("")
     for use_case in use_cases:
-        use_case_alias = use_case["id"].replace("-", "_")
+        use_case_alias = _plantuml_alias(use_case["key"])
         actors = [use_case["primary_actor"], *(use_case.get("secondary_actors") or [])]
         for actor_name in dict.fromkeys(actors):
             lines.append(f"ACT_{_plantuml_alias(actor_name)} --> {use_case_alias}")

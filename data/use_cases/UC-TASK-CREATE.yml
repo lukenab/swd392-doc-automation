@@ -1,4 +1,5 @@
-id: UC-04
+key: UC-TASK-CREATE
+order: 400
 name: Create Task
 summary: Create a new task within an active project.
 created_by: Nguyen Quoc Khanh
@@ -38,11 +39,10 @@ exceptions:
 priority: Must Have
 frequency_of_use: Frequent
 business_rules:
-  - BR-04
-  - BR-05
-  - BR-06
-  - BR-08
+  - BR-TASK-ASSIGNEE-PROJECT-MEMBER
+  - BR-TASK-DATE-RANGE
+  - BR-TASK-STATUS-WORKFLOW-COLUMN
+  - BR-ARCHIVED-PROJECT-READ-ONLY
 other_information: File attachments are outside the scope of Release 1.0.
 assumptions:
   - The project has at least one active workflow column.
-

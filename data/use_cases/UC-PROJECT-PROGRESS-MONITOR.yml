@@ -1,4 +1,5 @@
-id: UC-07
+key: UC-PROJECT-PROGRESS-MONITOR
+order: 700
 name: Monitor Project Progress
 summary: View task statistics, overdue work, and completion progress for a project.
 created_by: Nguyen Thien Tanh
@@ -31,8 +32,7 @@ exceptions: []
 priority: Should Have
 frequency_of_use: Frequent
 business_rules:
-  - BR-08
+  - BR-ARCHIVED-PROJECT-READ-ONLY
 other_information: Completion percentage is based on tasks in the Done column.
 assumptions:
   - Board columns are correctly mapped to task status.
-

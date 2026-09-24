@@ -22,6 +22,19 @@ def _read_yaml(path: Path) -> Any:
         return yaml.safe_load(file)
 
 
+def assign_display_ids(items: list[dict[str, Any]], prefix: str) -> None:
+    """Sort items by order and assign presentation-only sequential IDs."""
+    def sort_key(item: dict[str, Any]) -> tuple[int, Any, str]:
+        order = item.get("order")
+        if isinstance(order, int):
+            return (0, order, str(item.get("key", "")))
+        return (1, str(order), str(item.get("key", "")))
+
+    items.sort(key=sort_key)
+    for index, item in enumerate(items, start=1):
+        item["_display_id"] = f"{prefix}-{index:02d}"
+
+
 def load_project(data_dir: Path) -> ProjectData:
     data_dir = data_dir.resolve()
     actors_data = _read_yaml(data_dir / "actors.yml") or {}
@@ -32,11 +45,13 @@ def load_project(data_dir: Path) -> ProjectData:
         for item in actors_data.get("actors", [])
         if isinstance(item, dict) and item.get("name")
     }
-    business_rules = {
-        item["id"]: item
+    rule_items = [
+        item
         for item in rules_data.get("business_rules", [])
-        if isinstance(item, dict) and item.get("id")
-    }
+        if isinstance(item, dict) and item.get("key")
+    ]
+    assign_display_ids(rule_items, "BR")
+    business_rules = {item["key"]: item for item in rule_items}
 
     use_case_dir = data_dir / "use_cases"
     if not use_case_dir.exists():
@@ -50,11 +65,10 @@ def load_project(data_dir: Path) -> ProjectData:
         use_case["_source_file"] = path.name
         use_cases.append(use_case)
 
-    use_cases.sort(key=lambda item: str(item.get("id", "")))
+    assign_display_ids(use_cases, "UC")
     return ProjectData(
         data_dir=data_dir,
         actors=actors,
         business_rules=business_rules,
         use_cases=use_cases,
     )
-

@@ -1,4 +1,5 @@
-id: UC-08
+key: UC-TASK-COMMENT
+order: 800
 name: Comment on Task
 summary: Add a text comment to discuss work within a task.
 created_by: Nguyen Quoc Khanh
@@ -34,8 +35,7 @@ exceptions: []
 priority: Should Have
 frequency_of_use: Frequent
 business_rules:
-  - BR-08
+  - BR-ARCHIVED-PROJECT-READ-ONLY
 other_information: Comments support plain text only in Release 1.0.
 assumptions:
   - Comment authors are displayed using their current profile names.
-

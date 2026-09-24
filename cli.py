@@ -43,7 +43,10 @@ def create_parser() -> argparse.ArgumentParser:
     )
     build_parser.add_argument(
         "--use-case",
-        help="Chỉ sinh một Use Case, ví dụ UC-04. Bảng tổng hợp vẫn chứa Use Case được chọn.",
+        help=(
+            "Chỉ sinh một Use Case theo semantic key hoặc generated ID, "
+            "ví dụ UC-TASK-CREATE hoặc UC-04."
+        ),
     )
     return parser
 
@@ -70,7 +73,10 @@ def main() -> int:
             return 1
         print(f"Validation completed: {len(project.use_cases)} use case(s), 0 errors.")
         for use_case in project.use_cases:
-            print(f"  [OK] {use_case['id']} - {use_case['name']}")
+            print(
+                f"  [OK] {use_case['_display_id']} - {use_case['name']} "
+                f"({use_case['key']})"
+            )
         return 0
 
     if errors:
@@ -79,13 +85,13 @@ def main() -> int:
         return 1
 
     if args.command == "list":
-        print(f"{'ID':<8} {'Priority':<13} {'Primary Actor':<22} Name")
-        print("-" * 82)
+        print(f"{'ID':<8} {'Semantic Key':<32} {'Priority':<13} Name")
+        print("-" * 92)
         for use_case in project.use_cases:
             print(
-                f"{use_case['id']:<8} "
+                f"{use_case['_display_id']:<8} "
+                f"{use_case['key']:<32} "
                 f"{use_case['priority']:<13} "
-                f"{use_case['primary_actor']:<22} "
                 f"{use_case['name']}"
             )
         return 0
@@ -93,7 +99,11 @@ def main() -> int:
     selected_use_cases = project.use_cases
     if args.use_case:
         wanted = args.use_case.upper()
-        selected_use_cases = [uc for uc in project.use_cases if uc["id"].upper() == wanted]
+        selected_use_cases = [
+            uc
+            for uc in project.use_cases
+            if uc["key"].upper() == wanted or uc["_display_id"].upper() == wanted
+        ]
         if not selected_use_cases:
             print(f"Use Case not found: {args.use_case}", file=sys.stderr)
             return 2

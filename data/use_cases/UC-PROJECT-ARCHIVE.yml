@@ -1,4 +1,5 @@
-id: UC-09
+key: UC-PROJECT-ARCHIVE
+order: 900
 name: Archive Project
 summary: Archive an inactive project while preserving its historical data.
 
