@@ -71,8 +71,25 @@ Nếu Word đang mở, hãy đóng `use-case-descriptions.docx` trước khi ch�
 ## Thêm hoặc sửa Use Case
 
 Sao chép một file mẫu trong `data/use_cases/`, đổi `key`, `order` và nội dung.
-`key` là định danh ổn định; `order` quyết định vị trí. CLI tự sinh `UC-01`,
-`UC-02`, ... khi tạo tài liệu.
+Tên file phải trùng với semantic key theo format:
+
+```text
+UC-<DOMAIN>-<ACTION>.yml
+```
+
+Ví dụ:
+
+```text
+Key:      UC-TASK-MODIFY
+File:     data/use_cases/UC-TASK-MODIFY.yml
+
+Key:      UC-PROJECT-ARCHIVE
+File:     data/use_cases/UC-PROJECT-ARCHIVE.yml
+```
+
+Sử dụng chữ in hoa, dấu gạch ngang và phần mở rộng `.yml`; không dùng khoảng
+trắng hoặc generated ID như `UC-05.yml`. `key` là định danh ổn định, còn `order`
+quyết định vị trí. CLI tự sinh `UC-01`, `UC-02`, ... khi tạo tài liệu.
 
 Ví dụ:
 
