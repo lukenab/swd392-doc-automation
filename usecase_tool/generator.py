@@ -5,13 +5,22 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from docx import Document
-from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
+from docx.enum.table import (
+    WD_CELL_VERTICAL_ALIGNMENT,
+    WD_ROW_HEIGHT_RULE,
+    WD_TABLE_ALIGNMENT,
+)
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
 from .loader import ProjectData
+
+
+FONT_NAME = "Times New Roman"
+FONT_SIZE = Pt(12)
+USE_CASE_HEADING_FONT_SIZE = Pt(13)
 
 
 def _format_date(value: Any) -> str:
@@ -193,27 +202,91 @@ def _set_cell_shading(cell, fill: str) -> None:
     shading.set(qn("w:fill"), fill)
 
 
+def _set_run_font(run, size=FONT_SIZE) -> None:
+    run.font.name = FONT_NAME
+    run.font.size = size
+    run.font.color.rgb = RGBColor(0, 0, 0)
+    run_properties = run._element.get_or_add_rPr()
+    fonts = run_properties.find(qn("w:rFonts"))
+    if fonts is None:
+        fonts = OxmlElement("w:rFonts")
+        run_properties.insert(0, fonts)
+    for attribute in ["ascii", "hAnsi", "eastAsia", "cs"]:
+        fonts.set(qn(f"w:{attribute}"), FONT_NAME)
+
+
+def _set_cell_margins(cell) -> None:
+    cell_properties = cell._tc.get_or_add_tcPr()
+    margins = cell_properties.find(qn("w:tcMar"))
+    if margins is None:
+        margins = OxmlElement("w:tcMar")
+        cell_properties.append(margins)
+    for side, value in {"top": 90, "left": 100, "bottom": 90, "right": 100}.items():
+        margin = margins.find(qn(f"w:{side}"))
+        if margin is None:
+            margin = OxmlElement(f"w:{side}")
+            margins.append(margin)
+        margin.set(qn("w:w"), str(value))
+        margin.set(qn("w:type"), "dxa")
+
+
 def _set_cell_text(cell, text: str, bold: bool = False, center: bool = False) -> None:
     cell.text = ""
     paragraph = cell.paragraphs[0]
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER if center else WD_ALIGN_PARAGRAPH.LEFT
-    paragraph.paragraph_format.space_after = Pt(0)
+    paragraph.paragraph_format.space_before = Pt(2)
+    paragraph.paragraph_format.space_after = Pt(2)
     for line_number, line in enumerate(str(text).split("\n")):
         if line_number:
             paragraph.add_run().add_break()
         run = paragraph.add_run(line)
         run.bold = bold
-        run.font.name = "Times New Roman"
-        run.font.size = Pt(11)
+        _set_run_font(run)
     cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+    _set_cell_margins(cell)
 
 
 def _style_table(table) -> None:
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     table.autofit = False
     for row in table.rows:
+        row.height = Cm(0.75)
+        row.height_rule = WD_ROW_HEIGHT_RULE.AT_LEAST
         for cell in row.cells:
             cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+            _set_cell_margins(cell)
+
+
+def _enforce_document_font(document: Document) -> None:
+    for style_name in ["Normal", "Title", "Heading 1", "Heading 2", "Heading 3"]:
+        style = document.styles[style_name]
+        style.font.name = FONT_NAME
+        style.font.size = (
+            USE_CASE_HEADING_FONT_SIZE if style_name == "Heading 2" else FONT_SIZE
+        )
+        style.font.color.rgb = RGBColor(0, 0, 0)
+        style_properties = style._element.get_or_add_rPr()
+        fonts = style_properties.find(qn("w:rFonts"))
+        if fonts is None:
+            fonts = OxmlElement("w:rFonts")
+            style_properties.insert(0, fonts)
+        for attribute in ["ascii", "hAnsi", "eastAsia", "cs"]:
+            fonts.set(qn(f"w:{attribute}"), FONT_NAME)
+
+    for paragraph in document.paragraphs:
+        font_size = (
+            USE_CASE_HEADING_FONT_SIZE
+            if paragraph.style.name == "Heading 2"
+            else FONT_SIZE
+        )
+        for run in paragraph.runs:
+            _set_run_font(run, font_size)
+    for table in document.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    for run in paragraph.runs:
+                        _set_run_font(run)
 
 
 def _generate_docx(project: ProjectData, use_cases: list[dict[str, Any]], output_dir: Path) -> Path:
@@ -224,12 +297,7 @@ def _generate_docx(project: ProjectData, use_cases: list[dict[str, Any]], output
     section.left_margin = Cm(2)
     section.right_margin = Cm(2)
 
-    normal_style = document.styles["Normal"]
-    normal_style.font.name = "Times New Roman"
-    normal_style.font.size = Pt(11)
-
     title = document.add_heading("II.5.2.2 Use Case Descriptions", level=1)
-    title.style.font.name = "Times New Roman"
 
     summary_table = document.add_table(rows=1, cols=4)
     summary_table.style = "Table Grid"
@@ -245,18 +313,15 @@ def _generate_docx(project: ProjectData, use_cases: list[dict[str, Any]], output
         for index, value in enumerate(values):
             _set_cell_text(cells[index], value, center=index == 0)
             cells[index].width = widths[index]
+    _style_table(summary_table)
 
     document.add_paragraph()
 
-    current_group = None
-    for position, use_case in enumerate(use_cases):
-        if use_case["group"] != current_group:
-            current_group = use_case["group"]
-            group_heading = document.add_heading(_group_name(project, use_case), level=2)
-            group_heading.style.font.name = "Times New Roman"
-
-        heading = document.add_heading(f"{_use_case_id(use_case)} - {use_case['name']}", level=3)
-        heading.style.font.name = "Times New Roman"
+    for use_case in use_cases:
+        heading = document.add_heading(f"{_use_case_id(use_case)} - {use_case['name']}", level=2)
+        heading.paragraph_format.space_before = Pt(6)
+        heading.paragraph_format.space_after = Pt(6)
+        heading.paragraph_format.keep_with_next = True
 
         table = document.add_table(rows=3, cols=4)
         table.style = "Table Grid"
@@ -289,11 +354,10 @@ def _generate_docx(project: ProjectData, use_cases: list[dict[str, Any]], output
             row.cells[0].width = Cm(3.7)
             for label_cell in [row.cells[0]]:
                 _set_cell_shading(label_cell, "F2F2F2")
-
-        if position < len(use_cases) - 1:
-            document.add_page_break()
+        _style_table(table)
 
     output_path = output_dir / "use-case-descriptions.docx"
+    _enforce_document_font(document)
     document.save(output_path)
     return output_path
 
