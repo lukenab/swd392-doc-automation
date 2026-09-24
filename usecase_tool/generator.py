@@ -315,11 +315,9 @@ def _generate_docx(project: ProjectData, use_cases: list[dict[str, Any]], output
             cells[index].width = widths[index]
     _style_table(summary_table)
 
-    document.add_paragraph()
-
     for use_case in use_cases:
         heading = document.add_heading(f"{_use_case_id(use_case)} - {use_case['name']}", level=2)
-        heading.paragraph_format.space_before = Pt(6)
+        heading.paragraph_format.space_before = Pt(12)
         heading.paragraph_format.space_after = Pt(6)
         heading.paragraph_format.keep_with_next = True
 
