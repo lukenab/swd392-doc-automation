@@ -1,0 +1,13 @@
+actors:
+  - name: System Administrator
+    description: Manages system-level user accounts and account status.
+
+  - name: User
+    description: An authenticated account that can participate in projects.
+
+  - name: Project Manager
+    description: Manages a project, its members, board workflow, and tasks.
+
+  - name: Project Member
+    description: Participates in a project and works on assigned tasks.
+

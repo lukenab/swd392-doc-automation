@@ -1,0 +1,48 @@
+id: UC-01
+name: Create Project
+summary: Create a project and assign the creator as its first Project Manager.
+created_by: Tran Cong Luan
+date_created: 2026-09-24
+primary_actor: User
+secondary_actors: []
+trigger: The user selects the Create Project function.
+description: >
+  This use case allows an active user to create a project, provide its basic
+  information, and become the first Project Manager.
+preconditions:
+  - The user is authenticated.
+  - The user's account is active.
+postconditions:
+  - A new project is created.
+  - The creator becomes the first Project Manager.
+  - A default board is created for the project.
+normal_flow:
+  - actor: User
+    action: Selects the Create Project function.
+  - actor: System
+    action: Displays the project creation form.
+  - actor: User
+    action: Enters the project name, description, start date, and end date.
+  - actor: System
+    action: Validates the submitted information.
+  - actor: System
+    action: Creates the project, membership, and default board.
+alternative_flows:
+  - id: AF-01
+    condition: Required project information is missing or invalid.
+    steps:
+      - The system displays validation messages.
+      - The user corrects the information and submits the form again.
+exceptions:
+  - id: EX-01
+    description: The system cannot persist the project because the database is unavailable.
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-01
+  - BR-02
+  - BR-03
+other_information: A default board contains To Do, In Progress, and Done columns.
+assumptions:
+  - The system has enough storage to create a new project.
+

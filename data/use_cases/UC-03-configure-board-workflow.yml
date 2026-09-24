@@ -1,0 +1,42 @@
+id: UC-03
+name: Configure Board Workflow
+summary: Add, rename, reorder, or deactivate workflow columns on a project board.
+created_by: Nguyen Tan Trung
+date_created: 2026-09-24
+primary_actor: Project Manager
+secondary_actors: []
+trigger: The Project Manager selects Board Settings.
+description: >
+  This use case allows a Project Manager to configure the workflow columns used
+  to represent task status on the project board.
+preconditions:
+  - The project and its board exist.
+  - The actor is a Project Manager of the project.
+postconditions:
+  - The board workflow configuration is updated.
+  - Existing tasks remain associated with valid active columns.
+normal_flow:
+  - actor: Project Manager
+    action: Opens Board Settings.
+  - actor: System
+    action: Displays the active workflow columns.
+  - actor: Project Manager
+    action: Adds, renames, or reorders workflow columns.
+  - actor: System
+    action: Validates and saves the new configuration.
+alternative_flows:
+  - id: AF-01
+    condition: The Project Manager deactivates a column that contains tasks.
+    steps:
+      - The system asks the Project Manager to select a replacement column.
+      - The system moves the affected tasks before deactivating the column.
+exceptions: []
+priority: Should Have
+frequency_of_use: Rare
+business_rules:
+  - BR-06
+  - BR-07
+other_information: The default workflow is To Do, In Progress, and Done.
+assumptions:
+  - At least one workflow column must remain active.
+

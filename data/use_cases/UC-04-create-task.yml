@@ -1,0 +1,48 @@
+id: UC-04
+name: Create Task
+summary: Create a new task within an active project.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-24
+primary_actor: Project Manager
+secondary_actors:
+  - Project Member
+trigger: The actor selects the Create Task function on a project board.
+description: >
+  This use case allows an authorized project participant to create a task with
+  a title, description, priority, schedule, assignee, and initial status.
+preconditions:
+  - The actor is an active member of the project.
+  - The project is active.
+postconditions:
+  - A new task is created.
+  - The task appears in its initial workflow column.
+normal_flow:
+  - actor: Project Member
+    action: Selects the Create Task function.
+  - actor: System
+    action: Displays the task creation form.
+  - actor: Project Member
+    action: Enters task information and submits the form.
+  - actor: System
+    action: Validates the task information and selected assignee.
+  - actor: System
+    action: Creates the task and displays it on the board.
+alternative_flows:
+  - id: AF-01
+    condition: No assignee is selected.
+    steps:
+      - The system creates the task as unassigned if project policy allows it.
+exceptions:
+  - id: EX-01
+    description: The selected project was archived before the task was submitted.
+priority: Must Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-04
+  - BR-05
+  - BR-06
+  - BR-08
+other_information: File attachments are outside the scope of Release 1.0.
+assumptions:
+  - The project has at least one active workflow column.
+

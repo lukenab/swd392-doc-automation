@@ -1,0 +1,42 @@
+id: UC-05
+name: Assign Task
+summary: Assign or reassign a task to an active member of the same project.
+created_by: Nguyen An Binh
+date_created: 2026-09-24
+primary_actor: Project Manager
+secondary_actors:
+  - Project Member
+trigger: The Project Manager selects an assignee for a task.
+description: >
+  This use case allows a Project Manager to assign or reassign task ownership
+  and notify the selected project member.
+preconditions:
+  - The project and task are active.
+  - The actor is a Project Manager of the project.
+postconditions:
+  - The task has the selected assignee.
+  - The assignment change is recorded in activity history.
+normal_flow:
+  - actor: Project Manager
+    action: Opens task details and selects Assign Task.
+  - actor: System
+    action: Displays active members of the project.
+  - actor: Project Manager
+    action: Selects a member and confirms the assignment.
+  - actor: System
+    action: Updates the task assignee and creates a notification.
+alternative_flows:
+  - id: AF-01
+    condition: The task already has an assignee.
+    steps:
+      - The system asks the Project Manager to confirm reassignment.
+exceptions: []
+priority: Must Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-04
+  - BR-08
+other_information: The MVP supports one primary assignee per task.
+assumptions:
+  - The selected member can access the project board.
+

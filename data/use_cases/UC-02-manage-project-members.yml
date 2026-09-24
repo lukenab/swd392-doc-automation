@@ -1,0 +1,45 @@
+id: UC-02
+name: Manage Project Members
+summary: Add members, remove members, and change project-specific roles.
+created_by: Nguyen An Binh
+date_created: 2026-09-24
+primary_actor: Project Manager
+secondary_actors:
+  - Project Member
+trigger: The Project Manager opens the member management page.
+description: >
+  This use case allows a Project Manager to add active users to a project,
+  remove project members, and change their roles within that project.
+preconditions:
+  - The project exists and is active.
+  - The actor is a Project Manager of the selected project.
+postconditions:
+  - Project membership and roles are updated.
+  - The change is recorded in the project activity history.
+normal_flow:
+  - actor: Project Manager
+    action: Opens the member management page.
+  - actor: System
+    action: Displays current members and their project roles.
+  - actor: Project Manager
+    action: Adds, removes, or changes the role of a member.
+  - actor: System
+    action: Validates the requested membership change.
+  - actor: System
+    action: Saves the change and updates the member list.
+alternative_flows:
+  - id: AF-01
+    condition: The removed member still has unfinished tasks.
+    steps:
+      - The system requires the tasks to be reassigned.
+      - The Project Manager selects another project member.
+exceptions: []
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-03
+  - BR-04
+other_information: A user can have different roles in different projects.
+assumptions:
+  - The user account already exists in the system.
+

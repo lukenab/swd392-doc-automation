@@ -1,0 +1,41 @@
+id: UC-08
+name: Comment on Task
+summary: Add a text comment to discuss work within a task.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-24
+primary_actor: Project Member
+secondary_actors:
+  - Project Manager
+trigger: The actor submits a comment from the task details view.
+description: >
+  This use case allows project participants to add text comments to a task and
+  preserve the discussion as part of the task history.
+preconditions:
+  - The actor is an active member of the project.
+  - The task exists and belongs to the project.
+postconditions:
+  - The comment is stored with author and timestamp.
+  - The comment appears in the task discussion.
+normal_flow:
+  - actor: Project Member
+    action: Opens task details and enters a comment.
+  - actor: Project Member
+    action: Submits the comment.
+  - actor: System
+    action: Validates and stores the comment.
+  - actor: System
+    action: Displays the new comment in chronological order.
+alternative_flows:
+  - id: AF-01
+    condition: The submitted comment is empty.
+    steps:
+      - The system rejects the comment and displays a validation message.
+exceptions: []
+priority: Should Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-08
+other_information: Comments support plain text only in Release 1.0.
+assumptions:
+  - Comment authors are displayed using their current profile names.
+
