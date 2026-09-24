@@ -1,6 +1,6 @@
 # PMS Use Case CLI
 
-Đây là dự án mẫu dùng Python để quản lý Use Case của **Project Management System** bằng YAML. Công cụ kiểm tra tính đồng bộ của dữ liệu và tự động sinh:
+Đây là repository dùng Python để quản lý Use Case của **Project Management System** bằng YAML. Công cụ kiểm tra tính đồng bộ của dữ liệu và tự động sinh:
 
 - Bảng danh sách Use Case bằng Markdown.
 - Toàn bộ Use Case Description bằng Markdown.
@@ -270,7 +270,6 @@ Quy trình đơn giản:
 4. Khi dữ liệu thay đổi, sửa YAML và generate lại.
 5. Thay toàn bộ phần Use Case cũ bằng bản mới; không sửa riêng từng bảng trong Google Docs.
 
-Nếu nhóm muốn đồng bộ hoàn toàn tự động với Google Docs thì cần thêm Google Docs API. Phần này chưa cần thiết cho phiên bản đầu tiên của CLI.
 
 ## 10. Sinh ảnh Use Case Diagram
 
