@@ -21,7 +21,7 @@ def create_parser() -> argparse.ArgumentParser:
         "--data-dir",
         type=Path,
         default=ROOT / "data",
-        help="Thư mục chứa actors.yml, business_rules.yml và use_cases/.",
+        help="Thư mục chứa groups.yml, actors.yml, business_rules.yml và use_cases/.",
     )
 
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -85,11 +85,12 @@ def main() -> int:
         return 1
 
     if args.command == "list":
-        print(f"{'ID':<8} {'Semantic Key':<32} {'Priority':<13} Name")
-        print("-" * 92)
+        print(f"{'ID':<8} {'Domain':<22} {'Semantic Key':<32} {'Priority':<13} Name")
+        print("-" * 116)
         for use_case in project.use_cases:
             print(
                 f"{use_case['_display_id']:<8} "
+                f"{project.groups[use_case['group']]['name']:<22} "
                 f"{use_case['key']:<32} "
                 f"{use_case['priority']:<13} "
                 f"{use_case['name']}"

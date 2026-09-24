@@ -1,5 +1,6 @@
 key: UC-TASK-COMMENT
-order: 800
+group: COLLABORATION
+order: 100
 name: Comment on Task
 summary: Add a text comment to discuss work within a task.
 created_by: Nguyen Quoc Khanh

@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from collections import Counter
 from datetime import date
+from pathlib import Path
 from typing import Any
 
 from .loader import ProjectData
@@ -10,6 +11,7 @@ from .loader import ProjectData
 
 REQUIRED_FIELDS = [
     "key",
+    "group",
     "order",
     "name",
     "summary",
@@ -35,6 +37,8 @@ def _non_empty(value: Any) -> bool:
 def validate_project(project: ProjectData) -> list[str]:
     errors: list[str] = []
 
+    if not project.groups:
+        errors.append("groups.yml does not define any domains.")
     if not project.actors:
         errors.append("actors.yml does not define any actors.")
     if not project.business_rules:
@@ -48,25 +52,70 @@ def validate_project(project: ProjectData) -> list[str]:
         if duplicated_key and count > 1:
             errors.append(f"Duplicate Use Case key: {duplicated_key}.")
 
-    orders = [uc.get("order") for uc in project.use_cases if isinstance(uc.get("order"), int)]
-    for duplicated_order, count in Counter(orders).items():
+    group_orders = [
+        group.get("order")
+        for group in project.groups.values()
+        if isinstance(group.get("order"), int)
+    ]
+    for duplicated_order, count in Counter(group_orders).items():
         if count > 1:
-            errors.append(f"Duplicate Use Case order: {duplicated_order}.")
+            errors.append(f"Duplicate domain order: {duplicated_order}.")
+
+    group_folders = [
+        group.get("folder")
+        for group in project.groups.values()
+        if isinstance(group.get("folder"), str) and group.get("folder")
+    ]
+    for duplicated_folder, count in Counter(group_folders).items():
+        if count > 1:
+            errors.append(f"Duplicate domain folder: {duplicated_folder}.")
+
+    for group_key, group in project.groups.items():
+        if not re.fullmatch(r"[A-Z][A-Z0-9_]*", group_key):
+            errors.append(f"Domain key '{group_key}' is invalid.")
+        if not isinstance(group.get("order"), int):
+            errors.append(f"{group_key}: domain order must be an integer.")
+        if not _non_empty(group.get("name")):
+            errors.append(f"{group_key}: missing domain name.")
+        folder = group.get("folder")
+        if not isinstance(folder, str) or not re.fullmatch(
+            r"[a-z0-9]+(?:-[a-z0-9]+)*", folder
+        ):
+            errors.append(
+                f"{group_key}: folder must use lowercase kebab-case, such as task-management."
+            )
+
+    orders = [
+        (uc.get("group"), uc.get("order"))
+        for uc in project.use_cases
+        if isinstance(uc.get("order"), int)
+    ]
+    for (group_key, duplicated_order), count in Counter(orders).items():
+        if count > 1:
+            errors.append(
+                f"Duplicate Use Case order {duplicated_order} in domain '{group_key}'."
+            )
 
     rule_orders = [
-        rule.get("order")
+        (rule.get("group"), rule.get("order"))
         for rule in project.business_rules.values()
         if isinstance(rule.get("order"), int)
     ]
-    for duplicated_order, count in Counter(rule_orders).items():
+    for (group_key, duplicated_order), count in Counter(rule_orders).items():
         if count > 1:
-            errors.append(f"Duplicate Business Rule order: {duplicated_order}.")
+            errors.append(
+                f"Duplicate Business Rule order {duplicated_order} in domain '{group_key}'."
+            )
 
     for rule_key, rule in project.business_rules.items():
         if not re.fullmatch(r"BR-[A-Z0-9]+(?:-[A-Z0-9]+)*", rule_key):
             errors.append(f"Business Rule key '{rule_key}' is invalid.")
         if not isinstance(rule.get("order"), int):
             errors.append(f"{rule_key}: order must be an integer.")
+        if not rule.get("group"):
+            errors.append(f"{rule_key}: missing group.")
+        elif rule["group"] not in project.groups:
+            errors.append(f"{rule_key}: unknown domain '{rule['group']}'.")
         if not _non_empty(rule.get("description")):
             errors.append(f"{rule_key}: missing description.")
 
@@ -84,6 +133,23 @@ def validate_project(project: ProjectData) -> list[str]:
             errors.append(
                 f"{use_case_key}: key must use semantic format such as UC-TASK-CREATE."
             )
+
+        if use_case.get("key") and Path(str(source)).name != f"{use_case['key']}.yml":
+            errors.append(
+                f"{use_case_key}: file name must be {use_case['key']}.yml, got {source}."
+            )
+
+        group_key = use_case.get("group")
+        if group_key and group_key not in project.groups:
+            errors.append(f"{use_case_key}: unknown domain '{group_key}'.")
+        elif group_key:
+            actual_folder = Path(str(source)).parent.as_posix()
+            expected_folder = str(project.groups[group_key]["folder"])
+            if actual_folder != expected_folder:
+                errors.append(
+                    f"{use_case_key}: file must be inside use_cases/{expected_folder}/, "
+                    f"got use_cases/{source}."
+                )
 
         if use_case.get("order") is not None and not isinstance(use_case.get("order"), int):
             errors.append(f"{use_case_key}: order must be an integer.")

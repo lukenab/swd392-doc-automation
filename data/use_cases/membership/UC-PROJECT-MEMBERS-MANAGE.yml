@@ -1,5 +1,6 @@
 key: UC-PROJECT-MEMBERS-MANAGE
-order: 200
+group: MEMBERSHIP
+order: 100
 name: Manage Project Members
 summary: Add members, remove members, and change project-specific roles.
 created_by: Nguyen An Binh

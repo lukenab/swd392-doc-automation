@@ -1,5 +1,6 @@
 key: UC-BOARD-WORKFLOW-CONFIGURE
-order: 300
+group: BOARD_WORKFLOW
+order: 100
 name: Configure Board Workflow
 summary: Add, rename, reorder, or deactivate workflow columns on a project board.
 created_by: Nguyen Tan Trung

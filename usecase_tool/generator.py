@@ -37,6 +37,10 @@ def _use_case_id(use_case: dict[str, Any]) -> str:
     return str(use_case["_display_id"])
 
 
+def _group_name(project: ProjectData, item: dict[str, Any]) -> str:
+    return str(project.groups[item["group"]]["name"])
+
+
 def _business_rule_ids(project: ProjectData, use_case: dict[str, Any]) -> str:
     keys = use_case.get("business_rules", []) or []
     return ", ".join(project.business_rules[key]["_display_id"] for key in keys) or "N/A"
@@ -119,10 +123,14 @@ def _generate_markdown(project: ProjectData, use_cases: list[dict[str, Any]], ou
         )
 
     details_lines = ["# Use Case Descriptions", ""]
+    current_group = None
     for use_case in use_cases:
+        if use_case["group"] != current_group:
+            current_group = use_case["group"]
+            details_lines.extend([f"## {_group_name(project, use_case)}", ""])
         details_lines.extend(
             [
-                f"## {_use_case_id(use_case)} - {use_case['name']}",
+                f"### {_use_case_id(use_case)} - {use_case['name']}",
                 "",
                 "| Field | Value |",
                 "|---|---|",
@@ -148,12 +156,13 @@ def _generate_markdown(project: ProjectData, use_cases: list[dict[str, Any]], ou
         "",
         "## Use Cases",
         "",
-        "| Generated ID | Semantic Key | Name | Order |",
-        "|---|---|---|---|",
+        "| Generated ID | Semantic Key | Domain | Name | Order |",
+        "|---|---|---|---|---|",
     ]
     for use_case in use_cases:
         mapping_lines.append(
             f"| {_use_case_id(use_case)} | `{use_case['key']}` | "
+            f"{_escape_markdown(_group_name(project, use_case))} | "
             f"{_escape_markdown(use_case['name'])} | {use_case['order']} |"
         )
     mapping_lines.extend(
@@ -161,13 +170,14 @@ def _generate_markdown(project: ProjectData, use_cases: list[dict[str, Any]], ou
             "",
             "## Business Rules",
             "",
-            "| Generated ID | Semantic Key | Description | Order |",
-            "|---|---|---|---|",
+            "| Generated ID | Semantic Key | Domain | Description | Order |",
+            "|---|---|---|---|---|",
         ]
     )
     for rule in project.business_rules.values():
         mapping_lines.append(
             f"| {rule['_display_id']} | `{rule['key']}` | "
+            f"{_escape_markdown(_group_name(project, rule))} | "
             f"{_escape_markdown(rule['description'])} | {rule['order']} |"
         )
     mapping_path.write_text("\n".join(mapping_lines) + "\n", encoding="utf-8")
@@ -238,8 +248,14 @@ def _generate_docx(project: ProjectData, use_cases: list[dict[str, Any]], output
 
     document.add_paragraph()
 
+    current_group = None
     for position, use_case in enumerate(use_cases):
-        heading = document.add_heading(f"{_use_case_id(use_case)} - {use_case['name']}", level=2)
+        if use_case["group"] != current_group:
+            current_group = use_case["group"]
+            group_heading = document.add_heading(_group_name(project, use_case), level=2)
+            group_heading.style.font.name = "Times New Roman"
+
+        heading = document.add_heading(f"{_use_case_id(use_case)} - {use_case['name']}", level=3)
         heading.style.font.name = "Times New Roman"
 
         table = document.add_table(rows=3, cols=4)
@@ -302,11 +318,22 @@ def _generate_plantuml(project: ProjectData, use_cases: list[dict[str, Any]], ou
     for actor_name in sorted(used_actor_names):
         lines.append(f'actor "{actor_name}" as ACT_{_plantuml_alias(actor_name)}')
     lines.extend(["", 'rectangle "Project Management System" {'])
+    current_group = None
     for use_case in use_cases:
+        if use_case["group"] != current_group:
+            if current_group is not None:
+                lines.append("  }")
+            current_group = use_case["group"]
+            lines.append(
+                f'  package "{_group_name(project, use_case)}" '
+                f'as DOMAIN_{_plantuml_alias(current_group)} {{'
+            )
         lines.append(
-            f'  usecase "{_use_case_id(use_case)}\\n{use_case["name"]}" '
+            f'    usecase "{_use_case_id(use_case)}\\n{use_case["name"]}" '
             f'as {_plantuml_alias(use_case["key"])}'
         )
+    if current_group is not None:
+        lines.append("  }")
     lines.append("}")
     lines.append("")
     for use_case in use_cases:

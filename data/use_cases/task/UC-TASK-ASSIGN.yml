@@ -1,5 +1,6 @@
 key: UC-TASK-ASSIGN
-order: 500
+group: TASK
+order: 200
 name: Assign Task
 summary: Assign or reassign a task to an active member of the same project.
 created_by: Nguyen An Binh

@@ -1,5 +1,6 @@
 key: UC-TASK-MOVE-BETWEEN-COLUMNS
-order: 600
+group: TASK
+order: 300
 name: Move Task Between Columns
 summary: Change task status by moving a task to another workflow column.
 created_by: Nguyen Tan Trung

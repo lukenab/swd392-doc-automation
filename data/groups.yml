@@ -1,0 +1,40 @@
+groups:
+  - key: PROJECT
+    name: Project Management
+    folder: project
+    order: 100
+
+  - key: MEMBERSHIP
+    name: Membership and Access
+    folder: membership
+    order: 200
+
+  - key: BOARD_WORKFLOW
+    name: Board and Workflow
+    folder: board-workflow
+    order: 300
+
+  - key: TASK
+    name: Task Management
+    folder: task
+    order: 400
+
+  - key: COLLABORATION
+    name: Collaboration
+    folder: collaboration
+    order: 500
+
+  - key: NOTIFICATION
+    name: Notification
+    folder: notification
+    order: 600
+
+  - key: REPORTING
+    name: Reporting
+    folder: reporting
+    order: 700
+
+  - key: SYSTEM_ADMINISTRATION
+    name: System Administration
+    folder: system-administration
+    order: 800

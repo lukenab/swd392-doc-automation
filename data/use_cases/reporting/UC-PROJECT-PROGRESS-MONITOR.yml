@@ -1,5 +1,6 @@
 key: UC-PROJECT-PROGRESS-MONITOR
-order: 700
+group: REPORTING
+order: 100
 name: Monitor Project Progress
 summary: View task statistics, overdue work, and completion progress for a project.
 created_by: Nguyen Thien Tanh

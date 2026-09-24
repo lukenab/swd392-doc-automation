@@ -1,5 +1,6 @@
 key: UC-TASK-CREATE
-order: 400
+group: TASK
+order: 100
 name: Create Task
 summary: Create a new task within an active project.
 created_by: Nguyen Quoc Khanh

@@ -1,4 +1,5 @@
 key: UC-PROJECT-CREATE
+group: PROJECT
 order: 100
 name: Create Project
 summary: Create a project and assign the creator as its first Project Manager.
