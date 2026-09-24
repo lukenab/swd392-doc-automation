@@ -52,7 +52,10 @@ def _alternative_flow_text(use_case: dict[str, Any]) -> str:
     if not flows:
         return "N/A"
     parts: list[str] = []
-    for flow in flows:
+    for index, flow in enumerate(flows, start=1):
+        if isinstance(flow, str):
+            parts.append(f"AF-{index:02d}: {flow}")
+            continue
         heading = f"{flow.get('id', 'AF')}: {flow.get('condition', '')}".strip()
         steps = flow.get("steps", []) or []
         parts.append(heading + ("\n" + _numbered(steps) if steps else ""))
@@ -63,9 +66,13 @@ def _exception_text(use_case: dict[str, Any]) -> str:
     exceptions = use_case.get("exceptions", []) or []
     if not exceptions:
         return "N/A"
-    return "\n".join(
-        f"{item.get('id', 'EX')}: {item.get('description', '')}" for item in exceptions
-    )
+    lines: list[str] = []
+    for index, item in enumerate(exceptions, start=1):
+        if isinstance(item, str):
+            lines.append(f"EX-{index:02d}: {item}")
+        else:
+            lines.append(f"{item.get('id', 'EX')}: {item.get('description', '')}")
+    return "\n".join(lines)
 
 
 def _detail_fields(use_case: dict[str, Any]) -> list[tuple[str, str]]:
@@ -289,4 +296,3 @@ def build_outputs(
     if output_format in {"all", "plantuml"}:
         generated.append(_generate_plantuml(project, use_cases, output_dir))
     return generated
-

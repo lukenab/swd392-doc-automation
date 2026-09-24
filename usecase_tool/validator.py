@@ -103,6 +103,39 @@ def validate_project(project: ProjectData) -> list[str]:
                         f"'{step['actor']}'."
                     )
 
+        alternative_flows = use_case.get("alternative_flows", []) or []
+        if isinstance(alternative_flows, list):
+            for flow_number, flow in enumerate(alternative_flows, start=1):
+                if isinstance(flow, str):
+                    continue
+                if not isinstance(flow, dict):
+                    errors.append(
+                        f"{use_case_id}: alternative_flows item {flow_number} "
+                        "must be a string or an object."
+                    )
+                    continue
+                steps = flow.get("steps", []) or []
+                if not flow.get("condition"):
+                    errors.append(
+                        f"{use_case_id}: alternative_flows item {flow_number} "
+                        "requires condition."
+                    )
+                if not isinstance(steps, list):
+                    errors.append(
+                        f"{use_case_id}: alternative_flows item {flow_number} steps must be a list."
+                    )
+
+        exceptions = use_case.get("exceptions", []) or []
+        if isinstance(exceptions, list):
+            for exception_number, exception in enumerate(exceptions, start=1):
+                if isinstance(exception, str):
+                    continue
+                if not isinstance(exception, dict) or not exception.get("description"):
+                    errors.append(
+                        f"{use_case_id}: exceptions item {exception_number} "
+                        "must be a string or an object with description."
+                    )
+
         for rule_id in use_case.get("business_rules", []) or []:
             if rule_id not in project.business_rules:
                 errors.append(f"{use_case_id}: unknown Business Rule '{rule_id}'.")
@@ -112,4 +145,3 @@ def validate_project(project: ProjectData) -> list[str]:
             errors.append(f"{use_case_id}: date_created must be a date or ISO date string.")
 
     return errors
-

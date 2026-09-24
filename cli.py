@@ -98,12 +98,21 @@ def main() -> int:
             print(f"Use Case not found: {args.use_case}", file=sys.stderr)
             return 2
 
-    generated = build_outputs(
-        project=project,
-        use_cases=selected_use_cases,
-        output_dir=args.output_dir,
-        output_format=args.format,
-    )
+    try:
+        generated = build_outputs(
+            project=project,
+            use_cases=selected_use_cases,
+            output_dir=args.output_dir,
+            output_format=args.format,
+        )
+    except PermissionError as error:
+        print(
+            f"Cannot write output file: {error.filename}\n"
+            "Close the file if it is open in Word/Google Drive, then run the build again.\n"
+            "You can also generate into another folder with --output-dir.",
+            file=sys.stderr,
+        )
+        return 1
     print(f"Build completed: {len(selected_use_cases)} use case(s).")
     for path in generated:
         print(f"  {path}")
@@ -112,4 +121,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

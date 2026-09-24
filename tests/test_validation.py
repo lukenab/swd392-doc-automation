@@ -2,6 +2,7 @@ from copy import deepcopy
 from pathlib import Path
 import unittest
 
+from usecase_tool.generator import _alternative_flow_text, _exception_text
 from usecase_tool.loader import load_project
 from usecase_tool.validator import validate_project
 
@@ -40,7 +41,20 @@ class ValidationTests(unittest.TestCase):
         errors = validate_project(invalid_project)
         self.assertTrue(any("BR-99" in error for error in errors))
 
+    def test_string_alternative_flow_and_exception_can_be_generated(self):
+        use_case = {
+            "alternative_flows": ["The actor cancels the operation."],
+            "exceptions": ["The database is unavailable."],
+        }
+        self.assertEqual(
+            "AF-01: The actor cancels the operation.",
+            _alternative_flow_text(use_case),
+        )
+        self.assertEqual(
+            "EX-01: The database is unavailable.",
+            _exception_text(use_case),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
-
