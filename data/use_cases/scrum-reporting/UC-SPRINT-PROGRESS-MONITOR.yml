@@ -1,0 +1,44 @@
+key: UC-SPRINT-PROGRESS-MONITOR
+group: SCRUM_REPORTING
+order: 100
+name: Monitor Sprint Progress
+summary: Review current Sprint completion, remaining work, and workload indicators.
+created_by: Nguyen An Binh
+date_created: 2026-09-25
+primary_actor: Project Member
+secondary_actors: []
+trigger: The Project Member opens Sprint progress reporting.
+description: >
+  This use case summarizes active Sprint progress using current work item status,
+  completion, remaining estimates, overdue work, and member workload.
+preconditions:
+  - The actor is an active member of the project.
+  - The project has an active Sprint.
+postconditions:
+  - The actor sees a current progress snapshot without changing Sprint data.
+normal_flow:
+  - actor: Project Member
+    action: Opens the active Sprint progress view.
+  - actor: System
+    action: Aggregates current work item status and estimate data.
+  - actor: System
+    action: Calculates completion, remaining work, overdue items, and member workload.
+  - actor: System
+    action: Displays the resulting Sprint indicators and charts.
+alternative_flows:
+  - id: AF-01
+    condition: Some work items have no estimate.
+    steps:
+      - The system labels estimate-based measures as incomplete.
+      - The system still displays count-based progress.
+exceptions:
+  - id: EX-01
+    description: No active Sprint exists for the selected project.
+priority: Must Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-REPORT-PROJECT-MEMBER
+  - BR-PROGRESS-ACTIVE-SPRINT
+other_information: Iteration 1 reporting is operational and does not forecast delivery dates.
+assumptions:
+  - Work item statuses and estimates are maintained by the team.

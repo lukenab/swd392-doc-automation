@@ -1,40 +1,35 @@
 groups:
-  - key: PROJECT
-    name: Project Management
-    folder: project
+  - key: PROJECT_MEMBERSHIP
+    name: Project and Membership
+    folder: project-membership
     order: 100
 
-  - key: MEMBERSHIP
-    name: Membership and Access
-    folder: membership
+  - key: PRODUCT_BACKLOG
+    name: Product Backlog Management
+    folder: product-backlog
     order: 200
 
-  - key: BOARD_WORKFLOW
-    name: Board and Workflow
-    folder: board-workflow
+  - key: SPRINT_MANAGEMENT
+    name: Sprint Management
+    folder: sprint-management
     order: 300
 
-  - key: TASK
-    name: Task Management
-    folder: task
+  - key: SPRINT_WORK
+    name: Sprint Work Management
+    folder: sprint-work
     order: 400
 
-  - key: COLLABORATION
-    name: Collaboration
-    folder: collaboration
+  - key: COLLABORATION_NOTIFICATION
+    name: Collaboration and Notification
+    folder: collaboration-notification
     order: 500
 
-  - key: NOTIFICATION
-    name: Notification
-    folder: notification
+  - key: SCRUM_REPORTING
+    name: Scrum Reporting
+    folder: scrum-reporting
     order: 600
-
-  - key: REPORTING
-    name: Reporting
-    folder: reporting
-    order: 700
 
   - key: SYSTEM_ADMINISTRATION
     name: System Administration
     folder: system-administration
-    order: 800
+    order: 700

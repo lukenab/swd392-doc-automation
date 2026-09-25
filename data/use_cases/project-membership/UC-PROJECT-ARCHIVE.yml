@@ -1,0 +1,47 @@
+key: UC-PROJECT-ARCHIVE
+group: PROJECT_MEMBERSHIP
+order: 600
+name: Archive Project
+summary: Preserve a completed project and make its contents read-only.
+created_by: Tran Cong Luan
+date_created: 2026-09-25
+primary_actor: Project Owner
+secondary_actors: []
+trigger: The Project Owner chooses to archive the project.
+description: >
+  This use case allows the Project Owner to close an inactive project while
+  retaining its backlog, Sprint, work, collaboration, and reporting history.
+preconditions:
+  - The actor is the current Project Owner.
+  - The project is active.
+  - The project has no active Sprint.
+postconditions:
+  - The project is archived.
+  - Project information remains available in read-only mode.
+normal_flow:
+  - actor: Project Owner
+    action: Requests project archival.
+  - actor: System
+    action: Checks that the project has no active Sprint.
+  - actor: System
+    action: Summarizes the effects of archival and requests confirmation.
+  - actor: Project Owner
+    action: Confirms archival.
+  - actor: System
+    action: Marks the project and its contained work as read-only.
+alternative_flows:
+  - id: AF-01
+    condition: The Project Owner cancels the confirmation.
+    steps:
+      - The system leaves the project active and unchanged.
+exceptions:
+  - id: EX-01
+    description: The project has an active Sprint and cannot be archived.
+priority: Should Have
+frequency_of_use: Rare
+business_rules:
+  - BR-PROJECT-OWNER-ADMINISTRATION
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: Project restoration is outside Iteration 1.
+assumptions:
+  - Historical project data must be retained after archival.

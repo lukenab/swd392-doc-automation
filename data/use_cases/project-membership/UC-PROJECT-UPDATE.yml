@@ -1,0 +1,48 @@
+key: UC-PROJECT-UPDATE
+group: PROJECT_MEMBERSHIP
+order: 300
+name: Update Project Information
+summary: Maintain the name, description, and planned dates of an active project.
+created_by: Tran Cong Luan
+date_created: 2026-09-25
+primary_actor: Project Owner
+secondary_actors: []
+trigger: The Project Owner chooses to edit project information.
+description: >
+  This use case allows the Project Owner to update the general information of
+  an active project without changing its ownership or Scrum work.
+preconditions:
+  - The actor is authenticated.
+  - The actor is the current Project Owner.
+  - The project is active.
+postconditions:
+  - Valid project information is updated.
+  - The change is recorded in project activity history.
+normal_flow:
+  - actor: Project Owner
+    action: Requests to update project information.
+  - actor: System
+    action: Presents the current project information.
+  - actor: Project Owner
+    action: Changes the permitted values and submits the update.
+  - actor: System
+    action: Validates and saves the updated information.
+  - actor: System
+    action: Confirms the successful update.
+alternative_flows:
+  - id: AF-01
+    condition: One or more submitted values are invalid.
+    steps:
+      - The system rejects the update and identifies the invalid values.
+      - The Project Owner corrects and resubmits the information.
+exceptions:
+  - id: EX-01
+    description: Ownership changes before the update is saved, so the operation is rejected.
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-PROJECT-OWNER-ADMINISTRATION
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: Ownership is changed only through Transfer Project Ownership.
+assumptions:
+  - Project dates do not automatically change Sprint dates.

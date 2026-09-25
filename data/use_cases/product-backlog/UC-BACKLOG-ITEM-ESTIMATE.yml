@@ -1,0 +1,50 @@
+key: UC-BACKLOG-ITEM-ESTIMATE
+group: PRODUCT_BACKLOG
+order: 500
+name: Estimate Backlog Item
+summary: Record the Developers' estimate for a Product Backlog Item.
+created_by: Nguyen An Binh
+date_created: 2026-09-25
+primary_actor: Developer
+secondary_actors:
+  - Product Owner
+trigger: A Developer chooses a refined Product Backlog Item that requires an estimate.
+description: >
+  This use case allows Developers to record or revise the size estimate used
+  to support Sprint forecasting while the Product Owner provides clarification.
+preconditions:
+  - The actor is a Developer in the project.
+  - The item exists and has sufficient detail for estimation.
+  - The project is active.
+postconditions:
+  - The agreed estimate is associated with the Product Backlog Item.
+  - The estimate change is recorded in item activity history.
+normal_flow:
+  - actor: Developer
+    action: Selects a refined Product Backlog Item.
+  - actor: System
+    action: Displays the item's details and current estimate.
+  - actor: Product Owner
+    action: Clarifies the expected outcome when requested.
+  - actor: Developer
+    action: Provides the agreed estimate.
+  - actor: System
+    action: Validates and records the estimate.
+alternative_flows:
+  - id: AF-01
+    condition: Developers determine that the item is not sufficiently refined.
+    steps:
+      - The system leaves the estimate unset.
+      - The item is returned for further refinement.
+exceptions:
+  - id: EX-01
+    description: The item was removed or selected into a completed Sprint before the estimate was saved.
+priority: Must Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-DEVELOPER-ESTIMATION
+  - BR-BACKLOG-ITEM-READY
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: Iteration 1 may use story points as the single estimation unit.
+assumptions:
+  - Developers reach an estimate through a team-agreed estimation technique.

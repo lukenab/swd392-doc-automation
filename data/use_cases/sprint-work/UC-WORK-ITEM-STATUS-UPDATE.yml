@@ -1,0 +1,45 @@
+key: UC-WORK-ITEM-STATUS-UPDATE
+group: SPRINT_WORK
+order: 400
+name: Update Work Item Status
+summary: Move a Sprint work item to an allowed workflow status.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-25
+primary_actor: Developer
+secondary_actors: []
+trigger: The Developer changes the state of a task or Sprint Backlog Item.
+description: >
+  This use case allows a Developer to update a work item's status directly or
+  by moving its card between columns on the Sprint Board.
+preconditions:
+  - The Developer is active in the project.
+  - The work item belongs to the active Sprint.
+postconditions:
+  - The work item has the selected valid status.
+  - The Sprint Board and progress information reflect the change.
+normal_flow:
+  - actor: Developer
+    action: Selects a new status or moves a card to another workflow column.
+  - actor: System
+    action: Validates the requested transition and actor permission.
+  - actor: System
+    action: Updates the work item status.
+  - actor: System
+    action: Refreshes the Sprint Board and records the change.
+alternative_flows:
+  - id: AF-01
+    condition: The work item is marked Done with incomplete required information.
+    steps:
+      - The system identifies the missing information.
+      - The Developer completes the information or chooses another status.
+exceptions:
+  - id: EX-01
+    description: The selected status is no longer available.
+priority: Must Have
+frequency_of_use: Very Frequent
+business_rules:
+  - BR-SPRINT-TASK-DEVELOPER
+  - BR-WORK-ITEM-STATUS
+other_information: Drag and drop and a status selector invoke the same use case.
+assumptions:
+  - The client has loaded the latest Sprint Board state.

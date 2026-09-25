@@ -1,0 +1,51 @@
+key: UC-SPRINT-COMPLETE
+group: SPRINT_MANAGEMENT
+order: 300
+name: Complete Sprint
+summary: Close an active Sprint and return unfinished items to the Product Backlog.
+created_by: Nguyen Tan Trung
+date_created: 2026-09-25
+primary_actor: Product Owner
+secondary_actors:
+  - Developer
+trigger: The Scrum Team reaches the Sprint end and chooses to complete it.
+description: >
+  This use case closes an active Sprint, records its final result, and moves
+  unfinished work back to the Product Backlog for future ordering.
+preconditions:
+  - The Sprint is active.
+  - The actors are active project members with the stated accountabilities.
+postconditions:
+  - The Sprint is completed and becomes read-only for work execution.
+  - Incomplete Product Backlog Items return to the Product Backlog.
+  - Completed work remains associated with the completed Sprint.
+normal_flow:
+  - actor: Product Owner
+    action: Requests to complete the active Sprint.
+  - actor: System
+    action: Displays completed and incomplete Sprint work.
+  - actor: Developer
+    action: Reviews the final work status and confirms that task data is current.
+  - actor: Product Owner
+    action: Confirms Sprint completion.
+  - actor: System
+    action: Completes the Sprint and returns incomplete items to the Product Backlog.
+  - actor: System
+    action: Records the Sprint result for reporting.
+alternative_flows:
+  - id: AF-01
+    condition: Work item statuses require correction.
+    steps:
+      - The Developer updates the affected items.
+      - The Product Owner repeats the completion request.
+exceptions:
+  - id: EX-01
+    description: The Sprint state changes before completion is confirmed.
+priority: Must Have
+frequency_of_use: Regular
+business_rules:
+  - BR-SPRINT-INCOMPLETE-RETURN-BACKLOG
+  - BR-WORK-ITEM-STATUS
+other_information: Completion does not delete Sprint history.
+assumptions:
+  - All team members have finished recording work before completion.

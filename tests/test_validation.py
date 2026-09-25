@@ -1,8 +1,13 @@
 from copy import deepcopy
+import base64
+import json
 from pathlib import Path
+import shutil
 import unittest
 
-from usecase_tool.generator import _alternative_flow_text, _exception_text
+from docx import Document
+
+from usecase_tool.generator import _alternative_flow_text, _exception_text, _generate_docx
 from usecase_tool.loader import assign_display_ids, load_project
 from usecase_tool.validator import validate_project
 
@@ -91,7 +96,7 @@ class ValidationTests(unittest.TestCase):
 
     def test_use_case_in_wrong_domain_folder_is_reported(self):
         changed = deepcopy(self.project.use_cases)
-        changed[0]["_source_file"] = "task/UC-PROJECT-CREATE.yml"
+        changed[0]["_source_file"] = "sprint-work/UC-PROJECT-CREATE.yml"
         invalid_project = self.project.__class__(
             data_dir=self.project.data_dir,
             groups=self.project.groups,
@@ -100,7 +105,12 @@ class ValidationTests(unittest.TestCase):
             use_cases=changed,
         )
         errors = validate_project(invalid_project)
-        self.assertTrue(any("file must be inside use_cases/project/" in error for error in errors))
+        self.assertTrue(
+            any(
+                "file must be inside use_cases/project-membership/" in error
+                for error in errors
+            )
+        )
 
     def test_string_alternative_flow_and_exception_can_be_generated(self):
         use_case = {
@@ -115,6 +125,57 @@ class ValidationTests(unittest.TestCase):
             "EX-01: The database is unavailable.",
             _exception_text(use_case),
         )
+
+    def test_docx_can_embed_diagram_from_manifest(self):
+        one_pixel_png = base64.b64decode(
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+        )
+        root = ROOT / "tests" / "_tmp_docx_diagram"
+        if root.exists():
+            shutil.rmtree(root)
+        root.mkdir()
+        self.addCleanup(lambda: shutil.rmtree(root, ignore_errors=True))
+        try:
+            diagram_dir = root / "diagrams"
+            output_dir = root / "output"
+            diagram_dir.mkdir()
+            output_dir.mkdir()
+            image_path = diagram_dir / "use-case-overview.png"
+            image_path.write_bytes(one_pixel_png)
+            (diagram_dir / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "diagrams": [
+                            {
+                                "key": "overview",
+                                "title": "Project Management System Use Case Model",
+                                "files": {"png": image_path.name},
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            generated = _generate_docx(
+                self.project,
+                self.project.use_cases[:1],
+                output_dir,
+                diagram_dir,
+            )
+            document = Document(generated)
+
+            self.assertEqual(1, len(document.inline_shapes))
+            self.assertIn(
+                "II.5.2.1 Use Case Diagram",
+                [paragraph.text for paragraph in document.paragraphs],
+            )
+            self.assertIn(
+                "II.5.2.2 Use Case Descriptions",
+                [paragraph.text for paragraph in document.paragraphs],
+            )
+        finally:
+            shutil.rmtree(root, ignore_errors=True)
 
 
 if __name__ == "__main__":

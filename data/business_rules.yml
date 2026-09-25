@@ -1,40 +1,140 @@
 business_rules:
-  - key: BR-ACTIVE-USER-PROJECT-ACCESS
-    group: MEMBERSHIP
+  - key: BR-ACTIVE-USER-REQUIRED
+    group: PROJECT_MEMBERSHIP
     order: 100
-    description: Only an active authenticated user can create or access a project.
+    description: Only an active authenticated User can create or access a project.
 
-  - key: BR-PROJECT-CREATOR-MANAGER
-    group: PROJECT
-    order: 100
-    description: The project creator becomes the first Project Manager.
-
-  - key: BR-PROJECT-MANAGER-REQUIRED
-    group: PROJECT
+  - key: BR-PROJECT-ONE-OWNER
+    group: PROJECT_MEMBERSHIP
     order: 200
-    description: Every active project must have at least one Project Manager.
+    description: Every active project must have exactly one Project Owner.
 
-  - key: BR-TASK-ASSIGNEE-PROJECT-MEMBER
-    group: TASK
+  - key: BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE
+    group: PROJECT_MEMBERSHIP
+    order: 300
+    description: A Project Owner must transfer ownership before leaving the project.
+
+  - key: BR-PROJECT-MEMBER-ACCESS
+    group: PROJECT_MEMBERSHIP
+    order: 400
+    description: Project information is available only to active members of that project.
+
+  - key: BR-PROJECT-ARCHIVED-READ-ONLY
+    group: PROJECT_MEMBERSHIP
+    order: 500
+    description: An archived project and its contained work are read-only.
+
+  - key: BR-PROJECT-OWNER-ADMINISTRATION
+    group: PROJECT_MEMBERSHIP
+    order: 600
+    description: Only the Project Owner can change project information, membership, Scrum accountabilities, or archive the project.
+
+  - key: BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED
+    group: PROJECT_MEMBERSHIP
+    order: 700
+    description: A Scrum accountability is assigned to an active member within one project and does not apply to other projects.
+
+  - key: BR-PRODUCT-ONE-GOAL
+    group: PRODUCT_BACKLOG
     order: 100
-    description: A task can only be assigned to an active member of the same project.
+    description: A Scrum project has one current Product Goal at a time.
 
-  - key: BR-TASK-DATE-RANGE
-    group: TASK
+  - key: BR-PRODUCT-OWNER-BACKLOG
+    group: PRODUCT_BACKLOG
     order: 200
-    description: A task due date must not be earlier than its start date.
+    description: The Product Owner is accountable for Product Backlog content, transparency, and ordering.
 
-  - key: BR-TASK-STATUS-WORKFLOW-COLUMN
-    group: TASK
+  - key: BR-DEVELOPER-ESTIMATION
+    group: PRODUCT_BACKLOG
     order: 300
-    description: A task status must correspond to an active workflow column of its project board.
+    description: Developers who will perform the work are responsible for estimating Product Backlog Items.
 
-  - key: BR-WORKFLOW-MANAGER-ONLY
-    group: BOARD_WORKFLOW
+  - key: BR-BACKLOG-ITEM-READY
+    group: PRODUCT_BACKLOG
+    order: 400
+    description: A Product Backlog Item must be sufficiently refined and estimated before selection for a Sprint.
+
+  - key: BR-SPRINT-ONE-ACTIVE
+    group: SPRINT_MANAGEMENT
     order: 100
-    description: Only a Project Manager can configure board workflow columns.
+    description: A project can have at most one active Sprint.
 
-  - key: BR-ARCHIVED-PROJECT-READ-ONLY
-    group: PROJECT
+  - key: BR-SPRINT-GOAL-REQUIRED
+    group: SPRINT_MANAGEMENT
+    order: 200
+    description: A Sprint must have a Sprint Goal before it can start.
+
+  - key: BR-SPRINT-DATE-RANGE
+    group: SPRINT_MANAGEMENT
     order: 300
-    description: Archived projects are read-only until they are restored.
+    description: A Sprint end date must be later than its start date and the Sprint duration must not exceed one month.
+
+  - key: BR-SPRINT-CANCEL-PO-ONLY
+    group: SPRINT_MANAGEMENT
+    order: 400
+    description: Only the Product Owner can cancel an active Sprint when its Sprint Goal becomes obsolete.
+
+  - key: BR-SPRINT-INCOMPLETE-RETURN-BACKLOG
+    group: SPRINT_MANAGEMENT
+    order: 500
+    description: Incomplete Product Backlog Items return to the Product Backlog when a Sprint is completed or cancelled.
+
+  - key: BR-SPRINT-TASK-ACTIVE-SPRINT
+    group: SPRINT_WORK
+    order: 100
+    description: A Sprint Task must belong to a Product Backlog Item selected for the active Sprint.
+
+  - key: BR-SPRINT-TASK-DEVELOPER
+    group: SPRINT_WORK
+    order: 200
+    description: Only an active Developer in the project can claim or modify a Sprint Task.
+
+  - key: BR-WORK-ITEM-STATUS
+    group: SPRINT_WORK
+    order: 300
+    description: A work item status must correspond to an active Sprint Board status.
+
+  - key: BR-TASK-DEPENDENCY-ACYCLIC
+    group: SPRINT_WORK
+    order: 400
+    description: Task dependency relationships must not create direct or indirect cycles.
+
+  - key: BR-COMMENT-PROJECT-MEMBER
+    group: COLLABORATION_NOTIFICATION
+    order: 100
+    description: Only an active Project Member can comment on a work item in that project.
+
+  - key: BR-ACTIVITY-IMMUTABLE
+    group: COLLABORATION_NOTIFICATION
+    order: 200
+    description: Automatically recorded work item activity cannot be manually edited or deleted.
+
+  - key: BR-NOTIFICATION-OWNER-ONLY
+    group: COLLABORATION_NOTIFICATION
+    order: 300
+    description: A User can review only notifications addressed to that User.
+
+  - key: BR-REPORT-PROJECT-MEMBER
+    group: SCRUM_REPORTING
+    order: 100
+    description: Scrum progress information is available only to active members of the project.
+
+  - key: BR-PROGRESS-ACTIVE-SPRINT
+    group: SCRUM_REPORTING
+    order: 200
+    description: Iteration 1 Sprint progress is calculated only for the project's active Sprint.
+
+  - key: BR-SYSADMIN-USER-ACCOUNT
+    group: SYSTEM_ADMINISTRATION
+    order: 100
+    description: Only a System Administrator can create, suspend, reactivate, or delete system user accounts.
+
+  - key: BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
+    group: SYSTEM_ADMINISTRATION
+    order: 200
+    description: System Administrator status does not automatically grant membership in or access to project content.
+
+  - key: BR-AUDIT-IMMUTABLE
+    group: SYSTEM_ADMINISTRATION
+    order: 300
+    description: System audit records cannot be manually edited or deleted.

@@ -1,0 +1,44 @@
+key: UC-SPRINT-TASK-CLAIM
+group: SPRINT_WORK
+order: 300
+name: Claim Sprint Task
+summary: Assign an available Sprint task to oneself.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-25
+primary_actor: Developer
+secondary_actors: []
+trigger: The Developer chooses an unassigned task on the active Sprint Board.
+description: >
+  This use case allows a Developer to take responsibility for an available
+  Sprint task without requiring assignment by another project role.
+preconditions:
+  - The Developer is active in the project.
+  - The task belongs to the active Sprint and is unassigned.
+postconditions:
+  - The task is assigned to the Developer.
+  - The assignment is recorded in activity history.
+normal_flow:
+  - actor: Developer
+    action: Opens an unassigned task and chooses to claim it.
+  - actor: System
+    action: Verifies that the task is active and still unassigned.
+  - actor: System
+    action: Assigns the task to the Developer.
+  - actor: System
+    action: Updates the Sprint Board and records the assignment.
+alternative_flows:
+  - id: AF-01
+    condition: The Developer withdraws before confirmation.
+    steps:
+      - The system leaves the task unassigned.
+exceptions:
+  - id: EX-01
+    description: Another Developer claims the task first.
+priority: Should Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-SPRINT-TASK-ACTIVE-SPRINT
+  - BR-SPRINT-TASK-DEVELOPER
+other_information: A claimed task can later be reassigned through Manage Sprint Tasks.
+assumptions:
+  - Developers coordinate task ownership within the Scrum Team.

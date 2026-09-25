@@ -1,0 +1,47 @@
+key: UC-SUBTASKS-MANAGE
+group: SPRINT_WORK
+order: 500
+name: Manage Subtasks
+summary: Break a Sprint task into smaller trackable units and maintain them.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-25
+primary_actor: Developer
+secondary_actors: []
+trigger: The Developer decides that a Sprint task needs smaller units of work.
+description: >
+  This use case allows Developers to create, update, assign, complete, and
+  remove subtasks while preserving their relationship to the parent task.
+preconditions:
+  - The Developer is active in the project.
+  - The parent task belongs to the active Sprint.
+postconditions:
+  - The parent task contains the confirmed subtask structure.
+  - Subtask completion contributes to the parent task's progress display.
+normal_flow:
+  - actor: Developer
+    action: Opens a Sprint task and chooses to manage its subtasks.
+  - actor: System
+    action: Displays the existing subtasks.
+  - actor: Developer
+    action: Creates or updates a subtask with its assignee and work details.
+  - actor: System
+    action: Validates and saves the subtask.
+  - actor: System
+    action: Recalculates and displays parent-task progress.
+alternative_flows:
+  - id: AF-01
+    condition: The Developer removes an incomplete subtask.
+    steps:
+      - The system requests confirmation.
+      - The system removes the subtask and recalculates progress.
+exceptions:
+  - id: EX-01
+    description: The parent task is no longer part of the active Sprint.
+priority: Should Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-SPRINT-TASK-ACTIVE-SPRINT
+  - BR-SPRINT-TASK-DEVELOPER
+other_information: Subtasks cannot contain another level of subtasks in Iteration 1.
+assumptions:
+  - Parent task completion policy is configured consistently for the project.

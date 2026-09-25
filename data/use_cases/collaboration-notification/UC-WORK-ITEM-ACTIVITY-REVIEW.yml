@@ -1,0 +1,43 @@
+key: UC-WORK-ITEM-ACTIVITY-REVIEW
+group: COLLABORATION_NOTIFICATION
+order: 200
+name: Review Work Item Activity
+summary: Review the chronological history of significant changes to a work item.
+created_by: Nguyen Tan Trung
+date_created: 2026-09-25
+primary_actor: Project Member
+secondary_actors: []
+trigger: The Project Member opens a work item's activity history.
+description: >
+  This use case presents an immutable history of relevant work item changes,
+  including status, assignment, estimate, dependency, and comment activity.
+preconditions:
+  - The actor is an active member of the project.
+  - The work item exists and is accessible to the actor.
+postconditions:
+  - The actor has reviewed the current activity history without changing it.
+normal_flow:
+  - actor: Project Member
+    action: Requests the activity history for a work item.
+  - actor: System
+    action: Retrieves activity entries in reverse chronological order.
+  - actor: System
+    action: Displays each event with its actor, time, and change summary.
+  - actor: Project Member
+    action: Reviews the displayed history.
+alternative_flows:
+  - id: AF-01
+    condition: No activity beyond item creation exists.
+    steps:
+      - The system displays only the creation event.
+exceptions:
+  - id: EX-01
+    description: Activity data cannot be retrieved.
+priority: Should Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-PROJECT-MEMBER-ACCESS
+  - BR-ACTIVITY-IMMUTABLE
+other_information: Activity entries cannot be edited through this use case.
+assumptions:
+  - Significant work item changes are recorded automatically.

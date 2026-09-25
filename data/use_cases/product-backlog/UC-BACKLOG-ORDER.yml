@@ -1,0 +1,47 @@
+key: UC-BACKLOG-ORDER
+group: PRODUCT_BACKLOG
+order: 300
+name: Order Product Backlog
+summary: Arrange Product Backlog Items in the order desired by the Product Owner.
+created_by: Nguyen An Binh
+date_created: 2026-09-25
+primary_actor: Product Owner
+secondary_actors: []
+trigger: The Product Owner chooses to change the order of Product Backlog Items.
+description: >
+  This use case allows the Product Owner to establish a clear ordering that
+  guides future refinement and Sprint selection decisions.
+preconditions:
+  - The actor is the Product Owner of the project.
+  - The Product Backlog contains at least two items.
+  - The project is active.
+postconditions:
+  - Product Backlog Items are stored and displayed in the confirmed order.
+normal_flow:
+  - actor: Product Owner
+    action: Opens the ordered Product Backlog.
+  - actor: System
+    action: Displays all available items in their current order.
+  - actor: Product Owner
+    action: Changes the relative order of one or more items.
+  - actor: System
+    action: Validates and saves the new order.
+  - actor: System
+    action: Displays the updated Product Backlog.
+alternative_flows:
+  - id: AF-01
+    condition: Another update changed the Product Backlog order concurrently.
+    steps:
+      - The system refreshes the current order.
+      - The Product Owner reapplies the intended changes.
+exceptions:
+  - id: EX-01
+    description: The system cannot save a complete and unique order for all backlog items.
+priority: Must Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-PRODUCT-OWNER-BACKLOG
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: Item order is independent from the item's estimate.
+assumptions:
+  - Lower display position values represent earlier Product Backlog order.

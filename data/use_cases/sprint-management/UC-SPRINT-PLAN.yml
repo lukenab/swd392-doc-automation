@@ -1,0 +1,52 @@
+key: UC-SPRINT-PLAN
+group: SPRINT_MANAGEMENT
+order: 100
+name: Plan Sprint
+summary: Define a Sprint Goal and select Product Backlog Items for the upcoming Sprint.
+created_by: Nguyen Tan Trung
+date_created: 2026-09-25
+primary_actor: Product Owner
+secondary_actors:
+  - Developer
+trigger: The Scrum Team is ready to prepare the next Sprint.
+description: >
+  This use case allows the Product Owner and Developers to agree on a Sprint
+  Goal, select ready Product Backlog Items, and establish an initial Sprint Backlog.
+preconditions:
+  - Both actors are active project members with the stated Scrum accountabilities.
+  - The project has no other Sprint in planning.
+  - The Product Backlog contains at least one ready item.
+postconditions:
+  - A planned Sprint exists with a Sprint Goal, dates, and selected backlog items.
+  - Selected items are associated with the planned Sprint.
+normal_flow:
+  - actor: Product Owner
+    action: Starts Sprint planning and proposes the Sprint Goal and date range.
+  - actor: System
+    action: Displays ordered Product Backlog Items that are ready for selection.
+  - actor: Product Owner
+    action: Proposes backlog items that support the Sprint Goal.
+  - actor: Developer
+    action: Reviews capacity, estimates, and item readiness.
+  - actor: Product Owner
+    action: Confirms the Sprint Goal and selected items with the Developer.
+  - actor: System
+    action: Creates the planned Sprint and its initial Sprint Backlog.
+alternative_flows:
+  - id: AF-01
+    condition: A selected item is not ready.
+    steps:
+      - The system identifies the missing readiness information.
+      - The actors refine the item or remove it from the Sprint selection.
+exceptions:
+  - id: EX-01
+    description: The Sprint cannot be saved because its date range conflicts with another Sprint.
+priority: Must Have
+frequency_of_use: Regular
+business_rules:
+  - BR-SPRINT-GOAL-REQUIRED
+  - BR-SPRINT-DATE-RANGE
+  - BR-BACKLOG-ITEM-READY
+other_information: Planning prepares a Sprint but does not make it active.
+assumptions:
+  - The team discusses capacity before confirming the Sprint Backlog.

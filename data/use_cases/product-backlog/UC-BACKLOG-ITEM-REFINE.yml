@@ -1,0 +1,52 @@
+key: UC-BACKLOG-ITEM-REFINE
+group: PRODUCT_BACKLOG
+order: 400
+name: Refine Backlog Item
+summary: Clarify and decompose a Product Backlog Item so it can be understood and selected for a Sprint.
+created_by: Nguyen An Binh
+date_created: 2026-09-25
+primary_actor: Product Owner
+secondary_actors:
+  - Developer
+trigger: The Product Owner and Developer select a Product Backlog Item for refinement.
+description: >
+  This collaborative use case improves the detail, scope, acceptance criteria,
+  and size understanding of a Product Backlog Item.
+preconditions:
+  - Both actors are active members of the project with the stated accountabilities.
+  - The item exists in the Product Backlog.
+  - The item is not part of a completed Sprint.
+postconditions:
+  - The item contains the clarified information agreed during refinement.
+  - The item can be evaluated for Sprint selection readiness.
+normal_flow:
+  - actor: Product Owner
+    action: Selects an item that requires refinement.
+  - actor: System
+    action: Displays the item's current details and estimate.
+  - actor: Product Owner
+    action: Clarifies the expected outcome and acceptance criteria.
+  - actor: Developer
+    action: Adds implementation-relevant clarification and proposes decomposition when needed.
+  - actor: Product Owner
+    action: Confirms the refined scope and description.
+  - actor: System
+    action: Saves the refined item and records the participants.
+alternative_flows:
+  - id: AF-01
+    condition: The item is too large for one Sprint.
+    steps:
+      - The actors define smaller independent backlog items.
+      - The system preserves traceability to the original item.
+exceptions:
+  - id: EX-01
+    description: The item is selected into an active Sprint and can no longer be substantially decomposed.
+priority: Must Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-PRODUCT-OWNER-BACKLOG
+  - BR-BACKLOG-ITEM-READY
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: Refinement is an ongoing activity rather than a formal Scrum event.
+assumptions:
+  - Product Owner and Developer collaborate outside or through the system as needed.

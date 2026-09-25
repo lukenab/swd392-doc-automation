@@ -1,0 +1,44 @@
+key: UC-SYSTEM-AUDIT-LOG-REVIEW
+group: SYSTEM_ADMINISTRATION
+order: 200
+name: Review System Audit Log
+summary: Search and review security-relevant and administrative system events.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-25
+primary_actor: System Administrator
+secondary_actors: []
+trigger: The System Administrator needs to investigate or verify system activity.
+description: >
+  This use case enables authorized administrators to filter and review immutable
+  system-level audit events without editing their recorded content.
+preconditions:
+  - The System Administrator is authenticated and authorized.
+postconditions:
+  - Matching audit events have been displayed without modification.
+normal_flow:
+  - actor: System Administrator
+    action: Opens the system audit log.
+  - actor: System
+    action: Displays recent audit events.
+  - actor: System Administrator
+    action: Filters events by time, actor, event type, or target.
+  - actor: System
+    action: Displays matching events and their recorded details.
+  - actor: System Administrator
+    action: Reviews the results.
+alternative_flows:
+  - id: AF-01
+    condition: No event matches the selected filters.
+    steps:
+      - The system reports that no matching events were found.
+exceptions:
+  - id: EX-01
+    description: The audit store is temporarily unavailable.
+priority: Should Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-AUDIT-IMMUTABLE
+  - BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
+other_information: Exporting audit logs is outside Iteration 1 scope.
+assumptions:
+  - Audited events include actor identity, timestamp, action, and target.

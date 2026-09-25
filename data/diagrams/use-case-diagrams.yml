@@ -1,0 +1,105 @@
+system_name: Project Management System
+
+defaults:
+  direction: LR
+  max_use_cases: 10
+  show_ids: true
+  font_family: Times New Roman
+  font_size: 12
+  padding: 20
+  png_scale: 2
+  domain_diagrams: never
+
+actors:
+  system-administrator:
+    side: left
+  user:
+    side: left
+  project-member:
+    side: left
+    parent: user
+  project-owner:
+    side: left
+    parent: project-member
+  product-owner:
+    side: left
+    parent: project-member
+  developer:
+    side: left
+    parent: project-member
+
+diagrams:
+  - key: overview
+    title: Project Management System Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-PROJECT-CREATE
+      - UC-PRODUCT-GOAL-MANAGE
+      - UC-SPRINT-PLAN
+      - UC-SPRINT-BOARD-REVIEW
+      - UC-WORK-ITEM-COMMENT
+      - UC-SPRINT-PROGRESS-MONITOR
+      - UC-USER-ACCOUNTS-MANAGE
+
+  - key: project-membership
+    title: Project and Membership Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-PROJECT-CREATE
+      - UC-PROJECT-DASHBOARD-VIEW
+      - UC-PROJECT-UPDATE
+      - UC-PROJECT-MEMBERS-MANAGE
+      - UC-SCRUM-ACCOUNTABILITY-ASSIGN
+      - UC-PROJECT-ARCHIVE
+      - UC-PROJECT-OWNERSHIP-TRANSFER
+      - UC-PROJECT-LEAVE
+
+  - key: product-backlog
+    title: Product Backlog Management Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-PRODUCT-GOAL-MANAGE
+      - UC-BACKLOG-ITEMS-MANAGE
+      - UC-BACKLOG-ORDER
+      - UC-BACKLOG-ITEM-REFINE
+      - UC-BACKLOG-ITEM-ESTIMATE
+
+  - key: sprint-management
+    title: Sprint Management Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-SPRINT-PLAN
+      - UC-SPRINT-START
+      - UC-SPRINT-COMPLETE
+      - UC-SPRINT-CANCEL
+
+  - key: sprint-work
+    title: Sprint Work Management Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-SPRINT-BOARD-REVIEW
+      - UC-SPRINT-TASKS-MANAGE
+      - UC-SPRINT-TASK-CLAIM
+      - UC-WORK-ITEM-STATUS-UPDATE
+      - UC-SUBTASKS-MANAGE
+
+  - key: collaboration-notification
+    title: Collaboration and Notification Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-WORK-ITEM-COMMENT
+      - UC-WORK-ITEM-ACTIVITY-REVIEW
+      - UC-NOTIFICATIONS-REVIEW
+
+  - key: scrum-reporting
+    title: Scrum Reporting Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-SPRINT-PROGRESS-MONITOR
+
+  - key: system-administration
+    title: System Administration Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-USER-ACCOUNTS-MANAGE
+      - UC-SYSTEM-AUDIT-LOG-REVIEW

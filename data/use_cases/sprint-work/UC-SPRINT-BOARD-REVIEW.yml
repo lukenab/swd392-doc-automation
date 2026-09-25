@@ -1,0 +1,44 @@
+key: UC-SPRINT-BOARD-REVIEW
+group: SPRINT_WORK
+order: 100
+name: Review Sprint Board
+summary: View active Sprint work grouped by workflow status.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-25
+primary_actor: Project Member
+secondary_actors: []
+trigger: The Project Member opens the active Sprint Board.
+description: >
+  This use case presents the active Sprint's work items in workflow columns so
+  project members can understand current progress and ownership.
+preconditions:
+  - The actor is an active member of the project.
+  - The project has an active Sprint.
+postconditions:
+  - The actor sees the current Sprint Board without changing project data.
+normal_flow:
+  - actor: Project Member
+    action: Opens the Sprint Board.
+  - actor: System
+    action: Loads the active Sprint and its work items.
+  - actor: System
+    action: Groups items by current workflow status.
+  - actor: System
+    action: Displays item priority, assignee, estimate, and status.
+alternative_flows:
+  - id: AF-01
+    condition: The project has no active Sprint.
+    steps:
+      - The system displays that no Sprint is active.
+      - The system offers access to previous Sprint information when available.
+exceptions:
+  - id: EX-01
+    description: The board cannot be loaded because Sprint data is temporarily unavailable.
+priority: Must Have
+frequency_of_use: Very Frequent
+business_rules:
+  - BR-PROJECT-MEMBER-ACCESS
+  - BR-SPRINT-ONE-ACTIVE
+other_information: Board access is read-only unless another use case authorizes an update.
+assumptions:
+  - The default workflow contains To Do, In Progress, and Done statuses.

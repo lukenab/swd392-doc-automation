@@ -1,0 +1,48 @@
+key: UC-USER-ACCOUNTS-MANAGE
+group: SYSTEM_ADMINISTRATION
+order: 100
+name: Manage User Accounts
+summary: Review, activate, suspend, and restore system-wide user accounts.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-25
+primary_actor: System Administrator
+secondary_actors: []
+trigger: The System Administrator needs to administer a system user account.
+description: >
+  This use case allows a System Administrator to manage account availability at
+  system scope without automatically gaining membership in users' projects.
+preconditions:
+  - The System Administrator is authenticated and authorized.
+  - The target user account exists.
+postconditions:
+  - The target account has the confirmed system status.
+  - The administrative change is written to the system audit log.
+normal_flow:
+  - actor: System Administrator
+    action: Searches for and selects a user account.
+  - actor: System
+    action: Displays account details and available administrative actions.
+  - actor: System Administrator
+    action: Selects an action and provides a reason when required.
+  - actor: System
+    action: Validates the action and requests confirmation.
+  - actor: System Administrator
+    action: Confirms the account change.
+  - actor: System
+    action: Applies the change and records an audit event.
+alternative_flows:
+  - id: AF-01
+    condition: The administrator cancels before confirmation.
+    steps:
+      - The system leaves the user account unchanged.
+exceptions:
+  - id: EX-01
+    description: The requested action would disable the last active System Administrator.
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-SYSADMIN-USER-ACCOUNT
+  - BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
+other_information: Project roles are managed within each project, not through this use case.
+assumptions:
+  - At least one active System Administrator must always remain.

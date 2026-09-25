@@ -1,0 +1,47 @@
+key: UC-PRODUCT-GOAL-MANAGE
+group: PRODUCT_BACKLOG
+order: 100
+name: Manage Product Goal
+summary: Establish and maintain the project's current long-term Product Goal.
+created_by: Nguyen An Binh
+date_created: 2026-09-25
+primary_actor: Product Owner
+secondary_actors: []
+trigger: The Product Owner chooses to define or revise the Product Goal.
+description: >
+  This use case allows the Product Owner to make the project's current Product
+  Goal explicit and visible to all Project Members.
+preconditions:
+  - The actor is the Product Owner of the project.
+  - The project is active.
+postconditions:
+  - The project has one current Product Goal.
+  - The change is recorded in project activity history.
+normal_flow:
+  - actor: Product Owner
+    action: Requests to manage the Product Goal.
+  - actor: System
+    action: Displays the current Product Goal, if one exists.
+  - actor: Product Owner
+    action: Defines or revises the desired future product outcome.
+  - actor: System
+    action: Validates and saves the Product Goal.
+  - actor: System
+    action: Makes the updated goal visible to Project Members.
+alternative_flows:
+  - id: AF-01
+    condition: The proposed Product Goal is empty.
+    steps:
+      - The system rejects the change and requests a meaningful goal.
+exceptions:
+  - id: EX-01
+    description: The actor loses Product Owner accountability before the change is saved.
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-PRODUCT-ONE-GOAL
+  - BR-PRODUCT-OWNER-BACKLOG
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: Product Goal history may be retained for audit purposes.
+assumptions:
+  - The Product Goal is expressed as plain text in Iteration 1.

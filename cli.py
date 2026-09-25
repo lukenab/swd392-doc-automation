@@ -48,6 +48,14 @@ def create_parser() -> argparse.ArgumentParser:
             "ví dụ UC-TASK-CREATE hoặc UC-04."
         ),
     )
+    build_parser.add_argument(
+        "--diagram-dir",
+        type=Path,
+        help=(
+            "Thư mục output của swd392-usecase-diagram-tool. "
+            "Khi sinh DOCX, các PNG trong manifest.json sẽ được chèn vào tài liệu."
+        ),
+    )
     return parser
 
 
@@ -115,6 +123,7 @@ def main() -> int:
             use_cases=selected_use_cases,
             output_dir=args.output_dir,
             output_format=args.format,
+            diagram_dir=args.diagram_dir,
         )
     except PermissionError as error:
         print(
@@ -123,6 +132,9 @@ def main() -> int:
             "You can also generate into another folder with --output-dir.",
             file=sys.stderr,
         )
+        return 1
+    except (OSError, ValueError) as error:
+        print(f"Cannot build output: {error}", file=sys.stderr)
         return 1
     print(f"Build completed: {len(selected_use_cases)} use case(s).")
     for path in generated:

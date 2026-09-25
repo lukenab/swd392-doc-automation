@@ -1,13 +1,34 @@
 actors:
-  - name: System Administrator
-    description: Manages system-level user accounts and account status.
+  - key: system-administrator
+    name: System Administrator
+    description: Manages system-wide user accounts, audit information, and operational statistics.
+    side: left
 
-  - name: User
-    description: An authenticated account that can participate in projects.
+  - key: user
+    name: User
+    description: An active system account that can create projects and join projects with project-specific responsibilities.
+    side: left
 
-  - name: Project Manager
-    description: Manages a project, its members, board workflow, and tasks.
+  - key: project-member
+    name: Project Member
+    description: A User who participates in a project and can access its shared Scrum information.
+    side: left
+    parent: user
 
-  - name: Project Member
-    description: Participates in a project and works on assigned tasks.
+  - key: project-owner
+    name: Project Owner
+    description: A Project Member who owns and administers one project.
+    side: left
+    parent: project-member
 
+  - key: product-owner
+    name: Product Owner
+    description: A Project Member accountable for the Product Goal and effective Product Backlog management.
+    side: left
+    parent: project-member
+
+  - key: developer
+    name: Developer
+    description: A Project Member who estimates backlog items and manages work needed to create a usable Increment.
+    side: left
+    parent: project-member

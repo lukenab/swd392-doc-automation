@@ -1,0 +1,44 @@
+key: UC-PROJECT-DASHBOARD-VIEW
+group: PROJECT_MEMBERSHIP
+order: 200
+name: View Project Dashboard
+summary: Review essential project information, membership, and current Sprint status in one place.
+created_by: Tran Cong Luan
+date_created: 2026-09-25
+primary_actor: Project Member
+secondary_actors: []
+trigger: The Project Member selects a project from the list of participating projects.
+description: >
+  This use case provides an authorized Project Member with a concise overview
+  of the selected project before the member accesses detailed Scrum work.
+preconditions:
+  - The actor is authenticated.
+  - The actor is an active member of the selected project.
+postconditions:
+  - The current project overview is displayed.
+  - No project data is modified.
+normal_flow:
+  - actor: Project Member
+    action: Selects a project.
+  - actor: System
+    action: Verifies the actor's active project membership.
+  - actor: System
+    action: Retrieves project information, member count, and current Sprint summary.
+  - actor: System
+    action: Displays the project dashboard.
+alternative_flows:
+  - id: AF-01
+    condition: The project is archived.
+    steps:
+      - The system displays the dashboard in read-only mode.
+exceptions:
+  - id: EX-01
+    description: The project no longer exists or the actor's membership has been removed.
+priority: Must Have
+frequency_of_use: Very Frequent
+business_rules:
+  - BR-PROJECT-MEMBER-ACCESS
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: Detailed backlog and Sprint information is provided by their respective use cases.
+assumptions:
+  - Project summary data is updated when the dashboard is requested.

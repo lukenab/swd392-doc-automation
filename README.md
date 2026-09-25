@@ -37,6 +37,7 @@ swd392-doc-automation/
 │   ├── groups.yml          # Danh sách business domain
 │   ├── actors.yml          # Danh sách actor
 │   ├── business_rules.yml  # Danh sách business rule
+│   ├── diagrams/           # Cấu hình Use Case Diagram
 │   └── use_cases/          # Use Case được chia theo domain
 │       ├── <domain-folder>/
 │       │   └── UC-<DOMAIN>-<ACTION>.yml
@@ -45,6 +46,7 @@ swd392-doc-automation/
 ├── tests/                  # Unit test
 ├── usecase_tool/           # Mã nguồn xử lý
 ├── cli.py                  # Điểm chạy CLI
+├── build-all.ps1           # Build bảng + diagram + DOCX tích hợp
 └── requirements.txt        # Thư viện Python
 ```
 
@@ -59,6 +61,7 @@ swd392-doc-automation/
 | `py cli.py build --format docx` | Chỉ sinh Word |
 | `py cli.py build --format plantuml` | Chỉ sinh PlantUML |
 | `py cli.py build --use-case UC-<DOMAIN>-<ACTION>` | Chỉ sinh một Use Case theo semantic key |
+| `.\build-all.ps1` | Validate và sinh Markdown, diagram, DOCX có nhúng diagram |
 
 Kết quả được đặt trong `output/`:
 
@@ -199,3 +202,67 @@ py -m unittest discover -s tests -v
 
 YAML là **nguồn dữ liệu chính thức**. Word, Markdown và PlantUML chỉ là các định
 dạng đầu ra được sinh tự động.
+
+## Sinh bảng và Use Case Diagram bằng một lệnh
+
+Đặt hai repository cùng cấp:
+
+```text
+SWD392/
+├── swd392-doc-automation/
+└── swd392-usecase-diagram-tool/
+```
+
+Cài dependency một lần cho từng tool, sau đó chạy từ repo này:
+
+```powershell
+py -m pip install -r requirements.txt
+Push-Location ..\swd392-usecase-diagram-tool
+npm install
+Pop-Location
+
+.\build-all.ps1
+```
+
+Script dùng chung `data/` làm source of truth, sinh diagram vào
+`output/diagrams/`, sau đó chèn PNG theo `manifest.json` vào
+`output/use-case-descriptions.docx`.
+
+## Tạo một Use Case và đưa lên diagram
+
+1. Chọn domain trong `data/groups.yml` và actor trong `data/actors.yml`.
+2. Tạo `data/use_cases/<domain>/UC-<DOMAIN>-<ACTION>.yml` theo mẫu ở trên.
+3. Dùng tên dạng động từ + tân ngữ, ví dụ `Create Task`; không tạo Use Case cho bước UI hoặc xử lý kỹ thuật.
+4. Ghi authentication và permission trong `preconditions`; không `include` Login.
+5. Nếu có quan hệ UML, khai báo ngay trong file Use Case:
+
+```yaml
+relationships:
+  - type: include
+    target: UC-<DOMAIN>-<SHARED-GOAL>
+```
+
+Với `extend`, file Use Case mở rộng trỏ `target` về Use Case gốc. Điều kiện
+và extension point phải được ghi trong Use Case Description.
+
+6. Thêm semantic key vào `data/diagrams/use-case-diagrams.yml`:
+
+```yaml
+diagrams:
+  - key: overview
+    use_cases:
+      - UC-<DOMAIN>-<ACTION>
+```
+
+7. Chạy `.\build-all.ps1`, sau đó kiểm tra:
+
+```text
+output/
+├── use-case-list.md
+├── use-case-descriptions.md
+├── use-case-descriptions.docx
+└── diagrams/
+    ├── use-case-overview.svg
+    ├── use-case-overview.png
+    └── manifest.json
+```

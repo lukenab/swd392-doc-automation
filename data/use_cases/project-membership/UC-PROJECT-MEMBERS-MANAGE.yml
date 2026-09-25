@@ -1,0 +1,52 @@
+key: UC-PROJECT-MEMBERS-MANAGE
+group: PROJECT_MEMBERSHIP
+order: 400
+name: Manage Project Members
+summary: Review, add, and remove members of an active project.
+created_by: Tran Cong Luan
+date_created: 2026-09-25
+primary_actor: Project Owner
+secondary_actors: []
+trigger: The Project Owner opens project membership management.
+description: >
+  This use case allows the Project Owner to maintain project membership while
+  preserving ownership and active-work constraints.
+preconditions:
+  - The actor is the current Project Owner.
+  - The project is active.
+postconditions:
+  - The project membership reflects the confirmed change.
+  - Membership changes are recorded in activity history.
+normal_flow:
+  - actor: Project Owner
+    action: Opens project membership management.
+  - actor: System
+    action: Displays current members and their project-specific responsibilities.
+  - actor: Project Owner
+    action: Adds an active User or selects a member to remove.
+  - actor: System
+    action: Validates the requested membership change.
+  - actor: System
+    action: Saves the change and refreshes the member list.
+alternative_flows:
+  - id: AF-01
+    condition: The selected member owns unfinished Sprint Tasks.
+    steps:
+      - The system warns that the member has unfinished work.
+      - The Project Owner confirms removal after the work is unassigned or reassigned.
+  - id: AF-02
+    condition: The User is already a member of the project.
+    steps:
+      - The system rejects the duplicate membership request.
+exceptions:
+  - id: EX-01
+    description: The Project Owner attempts to remove the current Project Owner membership.
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-ACTIVE-USER-REQUIRED
+  - BR-PROJECT-ONE-OWNER
+  - BR-PROJECT-OWNER-ADMINISTRATION
+other_information: Access roles other than Project Owner and Project Member are outside Iteration 1.
+assumptions:
+  - A User account must exist before it can be added to a project.

@@ -1,0 +1,48 @@
+key: UC-SCRUM-ACCOUNTABILITY-ASSIGN
+group: PROJECT_MEMBERSHIP
+order: 500
+name: Assign Scrum Accountability
+summary: Assign Product Owner, Scrum Master, or Developer accountability within a project.
+created_by: Tran Cong Luan
+date_created: 2026-09-25
+primary_actor: Project Owner
+secondary_actors: []
+trigger: The Project Owner chooses to assign a Scrum accountability to a project member.
+description: >
+  This use case allows the Project Owner to maintain project-scoped Scrum
+  accountabilities independently from the member's responsibilities in other projects.
+preconditions:
+  - The actor is the current Project Owner.
+  - The target User is an active member of the project.
+  - The project is active.
+postconditions:
+  - The selected Scrum accountability is assigned within the project.
+  - The accountability change is recorded in activity history.
+normal_flow:
+  - actor: Project Owner
+    action: Selects an active project member.
+  - actor: System
+    action: Displays the member's current Scrum accountability.
+  - actor: Project Owner
+    action: Selects Product Owner, Scrum Master, or Developer.
+  - actor: System
+    action: Validates the assignment against project constraints.
+  - actor: System
+    action: Saves and confirms the project-scoped accountability.
+alternative_flows:
+  - id: AF-01
+    condition: Assigning Product Owner would leave the project with conflicting accountability assignments.
+    steps:
+      - The system requests confirmation of the replacement.
+      - The system transfers Product Owner accountability after confirmation.
+exceptions:
+  - id: EX-01
+    description: The target member leaves or is removed before the assignment is saved.
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED
+  - BR-PROJECT-OWNER-ADMINISTRATION
+other_information: Scrum Master is stored as an accountability but has no exclusive Use Case in Iteration 1.
+assumptions:
+  - Iteration 1 assigns one primary Scrum accountability to each active member.

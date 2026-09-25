@@ -1,0 +1,51 @@
+key: UC-SPRINT-TASKS-MANAGE
+group: SPRINT_WORK
+order: 200
+name: Manage Sprint Tasks
+summary: Create, edit, assign, prioritize, and remove tasks within an active Sprint.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-25
+primary_actor: Developer
+secondary_actors: []
+trigger: The Developer needs to organize executable work for a Sprint Backlog Item.
+description: >
+  This use case enables Developers to manage Sprint tasks, including task
+  assignment, priority, estimates, dates, and dependency relationships.
+preconditions:
+  - The Developer is an active member of the project.
+  - The project has an active Sprint.
+  - The related Product Backlog Item belongs to that Sprint.
+postconditions:
+  - The Sprint task data and dependencies reflect the confirmed changes.
+  - The change is recorded in work item activity.
+normal_flow:
+  - actor: Developer
+    action: Selects a Sprint Backlog Item and chooses to manage its tasks.
+  - actor: System
+    action: Displays the existing tasks and allowed task operations.
+  - actor: Developer
+    action: Creates or updates task details, assignment, priority, dates, and estimate.
+  - actor: Developer
+    action: Adds or removes task dependencies when required.
+  - actor: System
+    action: Validates the task data and dependency graph.
+  - actor: System
+    action: Saves the change and records it in activity history.
+alternative_flows:
+  - id: AF-01
+    condition: The Developer removes an unstarted task.
+    steps:
+      - The system displays the task's dependency impact.
+      - The Developer confirms removal and the system deletes the task.
+exceptions:
+  - id: EX-01
+    description: The requested dependency would create a circular dependency.
+priority: Must Have
+frequency_of_use: Very Frequent
+business_rules:
+  - BR-SPRINT-TASK-ACTIVE-SPRINT
+  - BR-SPRINT-TASK-DEVELOPER
+  - BR-TASK-DEPENDENCY-ACYCLIC
+other_information: Task dependency management is included here rather than modeled as a separate use case.
+assumptions:
+  - A task belongs to one Sprint Backlog Item.

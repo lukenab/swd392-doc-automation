@@ -1,0 +1,47 @@
+key: UC-SPRINT-CANCEL
+group: SPRINT_MANAGEMENT
+order: 400
+name: Cancel Sprint
+summary: Cancel a Sprint when its goal is no longer valid and return its work to the Product Backlog.
+created_by: Nguyen Tan Trung
+date_created: 2026-09-25
+primary_actor: Product Owner
+secondary_actors: []
+trigger: The Product Owner determines that the Sprint Goal has become obsolete.
+description: >
+  This use case allows the Product Owner to cancel a planned or active Sprint
+  and safely return its incomplete Product Backlog Items to the Product Backlog.
+preconditions:
+  - The Product Owner is an active project member.
+  - The Sprint is planned or active.
+postconditions:
+  - The Sprint is cancelled and cannot receive further work updates.
+  - Incomplete items are returned to the Product Backlog.
+normal_flow:
+  - actor: Product Owner
+    action: Requests Sprint cancellation and provides a reason.
+  - actor: System
+    action: Displays the impact on selected and completed work.
+  - actor: Product Owner
+    action: Confirms the cancellation.
+  - actor: System
+    action: Cancels the Sprint and returns incomplete items to the Product Backlog.
+  - actor: System
+    action: Records the cancellation reason and timestamp.
+alternative_flows:
+  - id: AF-01
+    condition: The Product Owner decides to continue the Sprint.
+    steps:
+      - The Product Owner cancels the confirmation.
+      - The system leaves the Sprint unchanged.
+exceptions:
+  - id: EX-01
+    description: The Sprint has already been completed or cancelled.
+priority: Should Have
+frequency_of_use: Rare
+business_rules:
+  - BR-SPRINT-CANCEL-PO-ONLY
+  - BR-SPRINT-INCOMPLETE-RETURN-BACKLOG
+other_information: Cancelling a Sprint is exceptional and must retain an audit trail.
+assumptions:
+  - The Product Owner has consulted the Scrum Team before cancellation.

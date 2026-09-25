@@ -1,0 +1,49 @@
+key: UC-PROJECT-LEAVE
+group: PROJECT_MEMBERSHIP
+order: 800
+name: Leave Project
+summary: End the actor's membership in a project when project rules allow it.
+created_by: Tran Cong Luan
+date_created: 2026-09-25
+primary_actor: Project Member
+secondary_actors: []
+trigger: The Project Member chooses to leave the project.
+description: >
+  This use case allows a Project Member to leave a project without requiring
+  manual removal by the Project Owner.
+preconditions:
+  - The actor is an active member of the project.
+  - The actor is not the current Project Owner.
+  - The project is active.
+postconditions:
+  - The actor is no longer a member of the project.
+  - Project-scoped access and Scrum accountability are removed.
+  - Historical contributions remain attributed to the actor.
+normal_flow:
+  - actor: Project Member
+    action: Requests to leave the project.
+  - actor: System
+    action: Checks ownership and unfinished work constraints.
+  - actor: System
+    action: Explains the effects of leaving and requests confirmation.
+  - actor: Project Member
+    action: Confirms leaving the project.
+  - actor: System
+    action: Removes active membership and project-scoped permissions.
+alternative_flows:
+  - id: AF-01
+    condition: The member owns unfinished Sprint Tasks.
+    steps:
+      - The system warns that unfinished work will become unclaimed.
+      - The member confirms leaving or cancels the request.
+exceptions:
+  - id: EX-01
+    description: The current Project Owner attempts to leave before transferring ownership.
+priority: Must Have
+frequency_of_use: Rare
+business_rules:
+  - BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE
+  - BR-PROJECT-MEMBER-ACCESS
+other_information: Leaving a project does not delete the User account.
+assumptions:
+  - Historical activity remains visible after the member leaves.
