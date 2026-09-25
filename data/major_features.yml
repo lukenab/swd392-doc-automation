@@ -1,0 +1,50 @@
+major_features:
+  - key: FE-01
+    order: 100
+    name: Project Management
+    description: Create, view, update, and archive projects, and transfer project ownership between members.
+
+  - key: FE-02
+    order: 200
+    name: Member and Role Administration
+    description: Add or remove project members, and assign each member's project access role and Scrum accountability independently per project.
+
+  - key: FE-03
+    order: 300
+    name: Product Backlog Management
+    description: Define the Product Goal, and create, refine, and order Product Backlog Items.
+
+  - key: FE-04
+    order: 400
+    name: Backlog Estimation
+    description: Estimate the size of Product Backlog Items collaboratively between the Product Owner and Developers.
+
+  - key: FE-05
+    order: 500
+    name: Sprint Lifecycle Management
+    description: Plan, start, complete, and cancel a Sprint when its Sprint Goal becomes obsolete.
+
+  - key: FE-06
+    order: 600
+    name: Sprint Board and Task Tracking
+    description: Track Sprint work on a Sprint Board, and create, claim, and update the status of Sprint tasks.
+
+  - key: FE-07
+    order: 700
+    name: Subtasks and Task Dependencies
+    description: Break Sprint tasks into subtasks and manage dependency relationships between tasks.
+
+  - key: FE-08
+    order: 800
+    name: Collaboration and Notifications
+    description: Comment on backlog items and tasks, review activity history, receive in-app notifications, and receive email notifications for relevant project events according to each user's notification preference.
+
+  - key: FE-09
+    order: 900
+    name: Sprint Progress Monitoring
+    description: Monitor the progress of the currently active Sprint.
+
+  - key: FE-10
+    order: 1000
+    name: Account and Audit Trail Management
+    description: Manage user accounts and review a security-focused system audit log for account and ownership events.

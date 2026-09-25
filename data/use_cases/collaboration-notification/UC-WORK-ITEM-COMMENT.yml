@@ -16,7 +16,7 @@ preconditions:
   - The work item exists and is accessible to the actor.
 postconditions:
   - The comment is attached to the work item.
-  - Relevant notifications are created.
+  - Relevant in-app notifications are created and eligible email deliveries are requested.
 normal_flow:
   - actor: Project Member
     action: Opens a work item and enters a comment.
@@ -27,7 +27,7 @@ normal_flow:
   - actor: System
     action: Saves the comment and records it in activity history.
   - actor: System
-    action: Creates notifications for mentioned or relevant members.
+    action: Creates in-app notifications and requests email delivery for eligible mentioned or relevant members.
 alternative_flows:
   - id: AF-01
     condition: The comment contains no content.
@@ -36,11 +36,15 @@ alternative_flows:
 exceptions:
   - id: EX-01
     description: The work item is removed before the comment is submitted.
+  - id: EX-02
+    description: An email notification cannot be delivered; the comment and in-app notification remain saved, and the failed delivery is recorded.
 priority: Should Have
 frequency_of_use: Frequent
 business_rules:
   - BR-COMMENT-PROJECT-MEMBER
   - BR-ACTIVITY-IMMUTABLE
+  - BR-NOTIFICATION-EMAIL-PREFERENCE
+  - BR-NOTIFICATION-DELIVERY-INDEPENDENT
 other_information: Comment editing and deletion are not included in Iteration 1.
 assumptions:
   - Mentioned users are active members of the same project.

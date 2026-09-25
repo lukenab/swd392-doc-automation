@@ -114,6 +114,16 @@ business_rules:
     order: 300
     description: A User can review only notifications addressed to that User.
 
+  - key: BR-NOTIFICATION-EMAIL-PREFERENCE
+    group: COLLABORATION_NOTIFICATION
+    order: 400
+    description: An email notification is sent only to the intended recipient's verified email address when that User has enabled email delivery.
+
+  - key: BR-NOTIFICATION-DELIVERY-INDEPENDENT
+    group: COLLABORATION_NOTIFICATION
+    order: 500
+    description: An email delivery failure must not roll back the originating project operation or remove the corresponding in-app notification.
+
   - key: BR-REPORT-PROJECT-MEMBER
     group: SCRUM_REPORTING
     order: 100

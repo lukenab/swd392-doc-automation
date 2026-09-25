@@ -36,8 +36,9 @@ swd392-doc-automation/
 ├── data/
 │   ├── groups.yml          # Danh sách business domain
 │   ├── actors.yml          # Danh sách actor
+│   ├── major_features.yml  # Danh sách major feature
 │   ├── business_rules.yml  # Danh sách business rule
-│   ├── diagrams/           # Cấu hình Use Case Diagram
+│   ├── diagrams/           # Cấu hình dự kiến cho Use Case Diagram
 │   └── use_cases/          # Use Case được chia theo domain
 │       ├── <domain-folder>/
 │       │   └── UC-<DOMAIN>-<ACTION>.yml
@@ -46,7 +47,7 @@ swd392-doc-automation/
 ├── tests/                  # Unit test
 ├── usecase_tool/           # Mã nguồn xử lý
 ├── cli.py                  # Điểm chạy CLI
-├── build-all.ps1           # Build bảng + diagram + DOCX tích hợp
+├── build-all.ps1           # Validate và sinh Markdown + DOCX
 └── requirements.txt        # Thư viện Python
 ```
 
@@ -59,9 +60,10 @@ swd392-doc-automation/
 | `py cli.py build` | Sinh tất cả định dạng |
 | `py cli.py build --format markdown` | Chỉ sinh Markdown |
 | `py cli.py build --format docx` | Chỉ sinh Word |
+| `py cli.py build --format business-rules` | Chỉ sinh bảng Business Rule dạng Markdown và Word |
 | `py cli.py build --format plantuml` | Chỉ sinh PlantUML |
 | `py cli.py build --use-case UC-<DOMAIN>-<ACTION>` | Chỉ sinh một Use Case theo semantic key |
-| `.\build-all.ps1` | Validate và sinh Markdown, diagram, DOCX có nhúng diagram |
+| `.\build-all.ps1` | Validate và sinh Markdown, DOCX |
 
 Kết quả được đặt trong `output/`:
 
@@ -70,6 +72,8 @@ Kết quả được đặt trong `output/`:
 | `use-case-list.md` | Bảng tổng hợp Use Case |
 | `use-case-descriptions.md` | Mô tả chi tiết để review trên GitHub |
 | `use-case-descriptions.docx` | Bảng Word để đưa vào báo cáo |
+| `business-rule-list.md` | Danh sách Business Rule để review trên GitHub |
+| `business-rules.docx` | Bảng Business Rule để đưa vào báo cáo |
 | `use-case-diagram.puml` | Source Use Case Diagram |
 | `id-mapping.md` | Mapping semantic key với ID được sinh tự động |
 
@@ -203,66 +207,28 @@ py -m unittest discover -s tests -v
 YAML là **nguồn dữ liệu chính thức**. Word, Markdown và PlantUML chỉ là các định
 dạng đầu ra được sinh tự động.
 
-## Sinh bảng và Use Case Diagram bằng một lệnh
+## Sinh toàn bộ tài liệu
 
-Đặt hai repository cùng cấp:
-
-```text
-SWD392/
-├── swd392-doc-automation/
-└── swd392-usecase-diagram-tool/
-```
-
-Cài dependency một lần cho từng tool, sau đó chạy từ repo này:
+Cài dependency Python một lần, sau đó chạy từ repository này:
 
 ```powershell
 py -m pip install -r requirements.txt
-Push-Location ..\swd392-usecase-diagram-tool
-npm install
-Pop-Location
-
 .\build-all.ps1
 ```
 
-Script dùng chung `data/` làm source of truth, sinh diagram vào
-`output/diagrams/`, sau đó chèn PNG theo `manifest.json` vào
-`output/use-case-descriptions.docx`.
-
-## Tạo một Use Case và đưa lên diagram
-
-1. Chọn domain trong `data/groups.yml` và actor trong `data/actors.yml`.
-2. Tạo `data/use_cases/<domain>/UC-<DOMAIN>-<ACTION>.yml` theo mẫu ở trên.
-3. Dùng tên dạng động từ + tân ngữ, ví dụ `Create Task`; không tạo Use Case cho bước UI hoặc xử lý kỹ thuật.
-4. Ghi authentication và permission trong `preconditions`; không `include` Login.
-5. Nếu có quan hệ UML, khai báo ngay trong file Use Case:
-
-```yaml
-relationships:
-  - type: include
-    target: UC-<DOMAIN>-<SHARED-GOAL>
-```
-
-Với `extend`, file Use Case mở rộng trỏ `target` về Use Case gốc. Điều kiện
-và extension point phải được ghi trong Use Case Description.
-
-6. Thêm semantic key vào `data/diagrams/use-case-diagrams.yml`:
-
-```yaml
-diagrams:
-  - key: overview
-    use_cases:
-      - UC-<DOMAIN>-<ACTION>
-```
-
-7. Chạy `.\build-all.ps1`, sau đó kiểm tra:
+Script sử dụng `data/` làm source of truth và tạo các file sau:
 
 ```text
 output/
 ├── use-case-list.md
 ├── use-case-descriptions.md
 ├── use-case-descriptions.docx
-└── diagrams/
-    ├── use-case-overview.svg
-    ├── use-case-overview.png
-    └── manifest.json
+├── business-rule-list.md
+└── business-rules.docx
 ```
+
+## Use Case Diagram
+
+Việc sinh và nhúng Use Case Diagram vào DOCX đang được tạm hoãn. Cấu hình
+trong `data/diagrams/` vẫn được giữ để tiếp tục triển khai ở giai đoạn sau,
+nhưng `build-all.ps1` hiện không gọi diagram tool và không chèn hình vào Word.

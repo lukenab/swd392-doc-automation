@@ -22,9 +22,13 @@ from .loader import ProjectData
 
 FONT_NAME = "Times New Roman"
 FONT_SIZE = Pt(12)
+TABLE_CONTENT_FONT_SIZE = Pt(11)
+TABLE_LABEL_FONT_SIZE = Pt(12)
 USE_CASE_HEADING_FONT_SIZE = Pt(13)
 DIAGRAM_MAX_WIDTH = Cm(16.5)
 DIAGRAM_MAX_HEIGHT = Cm(20.5)
+TABLE_HEADER_FILL = "1F4E78"
+TABLE_HEADER_TEXT = RGBColor(255, 255, 255)
 
 
 def _format_date(value: Any) -> str:
@@ -57,6 +61,18 @@ def _group_name(project: ProjectData, item: dict[str, Any]) -> str:
 def _business_rule_ids(project: ProjectData, use_case: dict[str, Any]) -> str:
     keys = use_case.get("business_rules", []) or []
     return ", ".join(project.business_rules[key]["_display_id"] for key in keys) or "N/A"
+
+
+def _business_rule_name(rule: dict[str, Any]) -> str:
+    semantic_name = str(rule["key"]).removeprefix("BR-")
+    expanded_tokens = {
+        "PO": "Product Owner",
+        "SYSADMIN": "System Administrator",
+    }
+    return " ".join(
+        expanded_tokens.get(token, token.title())
+        for token in semantic_name.split("-")
+    )
 
 
 def _numbered(items: Iterable[Any]) -> str:
@@ -194,7 +210,29 @@ def _generate_markdown(project: ProjectData, use_cases: list[dict[str, Any]], ou
             f"{_escape_markdown(rule['description'])} | {rule['order']} |"
         )
     mapping_path.write_text("\n".join(mapping_lines) + "\n", encoding="utf-8")
-    return [summary_path, details_path, mapping_path]
+    business_rule_path = _generate_business_rules_markdown(project, output_dir)
+    return [summary_path, details_path, business_rule_path, mapping_path]
+
+
+def _generate_business_rules_markdown(project: ProjectData, output_dir: Path) -> Path:
+    lines = [
+        "# Business Rules",
+        "",
+        "This section defines the business constraints that govern system behavior.",
+        "",
+        "| ID | Business Rule | Description |",
+        "|---|---|---|",
+    ]
+    for rule in project.business_rules.values():
+        lines.append(
+            f"| {rule['_display_id']} | {_escape_markdown(_business_rule_name(rule))} | "
+            f"{_escape_markdown(rule['description'])} |"
+        )
+    lines.append("")
+
+    output_path = output_dir / "business-rule-list.md"
+    output_path.write_text("\n".join(lines), encoding="utf-8")
+    return output_path
 
 
 def _set_cell_shading(cell, fill: str) -> None:
@@ -206,10 +244,12 @@ def _set_cell_shading(cell, fill: str) -> None:
     shading.set(qn("w:fill"), fill)
 
 
-def _set_run_font(run, size=FONT_SIZE) -> None:
+def _set_run_font(run, size=FONT_SIZE, color: RGBColor | None = None) -> None:
     run.font.name = FONT_NAME
-    run.font.size = size
-    run.font.color.rgb = RGBColor(0, 0, 0)
+    if size is not None:
+        run.font.size = size
+    if color is not None:
+        run.font.color.rgb = color
     run_properties = run._element.get_or_add_rPr()
     fonts = run_properties.find(qn("w:rFonts"))
     if fonts is None:
@@ -234,7 +274,14 @@ def _set_cell_margins(cell) -> None:
         margin.set(qn("w:type"), "dxa")
 
 
-def _set_cell_text(cell, text: str, bold: bool = False, center: bool = False) -> None:
+def _set_cell_text(
+    cell,
+    text: str,
+    bold: bool = False,
+    center: bool = False,
+    color: RGBColor | None = None,
+    size=FONT_SIZE,
+) -> None:
     cell.text = ""
     paragraph = cell.paragraphs[0]
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER if center else WD_ALIGN_PARAGRAPH.LEFT
@@ -245,7 +292,7 @@ def _set_cell_text(cell, text: str, bold: bool = False, center: bool = False) ->
             paragraph.add_run().add_break()
         run = paragraph.add_run(line)
         run.bold = bold
-        _set_run_font(run)
+        _set_run_font(run, size=size, color=color)
     cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
     _set_cell_margins(cell)
 
@@ -262,6 +309,13 @@ def _style_table(table) -> None:
         for cell in row.cells:
             cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
             _set_cell_margins(cell)
+
+
+def _set_table_column_widths(table, widths: list[Cm]) -> None:
+    for index, width in enumerate(widths):
+        table.columns[index].width = width
+        for cell in table.columns[index].cells:
+            cell.width = width
 
 
 def _enforce_document_font(document: Document) -> None:
@@ -293,7 +347,7 @@ def _enforce_document_font(document: Document) -> None:
             for cell in row.cells:
                 for paragraph in cell.paragraphs:
                     for run in paragraph.runs:
-                        _set_run_font(run)
+                        _set_run_font(run, size=None)
 
 
 def _load_diagram_images(diagram_dir: Path | None) -> list[tuple[str, Path]]:
@@ -388,15 +442,29 @@ def _generate_docx(
     _style_table(summary_table)
     headers = ["ID", "Use Case", "Actors", "Use Case Description"]
     for index, header in enumerate(headers):
-        _set_cell_text(summary_table.rows[0].cells[index], header, bold=True, center=True)
-        _set_cell_shading(summary_table.rows[0].cells[index], "FCE4D6")
-    widths = [Cm(1.5), Cm(4), Cm(4), Cm(7)]
+        _set_cell_text(
+            summary_table.rows[0].cells[index],
+            header,
+            bold=True,
+            center=True,
+            color=TABLE_HEADER_TEXT,
+            size=TABLE_LABEL_FONT_SIZE,
+        )
+        _set_cell_shading(summary_table.rows[0].cells[index], TABLE_HEADER_FILL)
+    summary_table.rows[0]._tr.get_or_add_trPr().append(OxmlElement("w:tblHeader"))
+    widths = [Cm(1.6), Cm(3.6), Cm(3.7), Cm(8.1)]
     for use_case in use_cases:
         cells = summary_table.add_row().cells
         values = [_use_case_id(use_case), use_case["name"], _actor_text(use_case), use_case["summary"]]
         for index, value in enumerate(values):
-            _set_cell_text(cells[index], value, center=index == 0)
+            _set_cell_text(
+                cells[index],
+                value,
+                center=index == 0,
+                size=TABLE_CONTENT_FONT_SIZE,
+            )
             cells[index].width = widths[index]
+    _set_table_column_widths(summary_table, widths)
     _style_table(summary_table)
 
     for use_case in use_cases:
@@ -410,35 +478,102 @@ def _generate_docx(
         _style_table(table)
 
         first_row = table.rows[0].cells
-        _set_cell_text(first_row[0], "UC ID and Name", bold=True)
+        _set_cell_text(
+            first_row[0], "UC ID and Name", bold=True, size=TABLE_LABEL_FONT_SIZE
+        )
         merged = first_row[1].merge(first_row[3])
-        _set_cell_text(merged, f"{_use_case_id(use_case)} - {use_case['name']}")
+        _set_cell_text(
+            merged,
+            f"{_use_case_id(use_case)} - {use_case['name']}",
+            size=TABLE_CONTENT_FONT_SIZE,
+        )
 
         second_row = table.rows[1].cells
-        _set_cell_text(second_row[0], "Created By", bold=True)
-        _set_cell_text(second_row[1], use_case["created_by"])
-        _set_cell_text(second_row[2], "Date Created", bold=True)
-        _set_cell_text(second_row[3], _format_date(use_case["date_created"]))
+        _set_cell_text(second_row[0], "Created By", bold=True, size=TABLE_LABEL_FONT_SIZE)
+        _set_cell_text(second_row[1], use_case["created_by"], size=TABLE_CONTENT_FONT_SIZE)
+        _set_cell_text(second_row[2], "Date Created", bold=True, size=TABLE_LABEL_FONT_SIZE)
+        _set_cell_text(
+            second_row[3],
+            _format_date(use_case["date_created"]),
+            size=TABLE_CONTENT_FONT_SIZE,
+        )
 
         third_row = table.rows[2].cells
-        _set_cell_text(third_row[0], "Primary Actor", bold=True)
-        _set_cell_text(third_row[1], use_case["primary_actor"])
-        _set_cell_text(third_row[2], "Secondary Actors", bold=True)
-        _set_cell_text(third_row[3], ", ".join(use_case.get("secondary_actors", [])) or "None")
+        _set_cell_text(third_row[0], "Primary Actor", bold=True, size=TABLE_LABEL_FONT_SIZE)
+        _set_cell_text(third_row[1], use_case["primary_actor"], size=TABLE_CONTENT_FONT_SIZE)
+        _set_cell_text(
+            third_row[2], "Secondary Actors", bold=True, size=TABLE_LABEL_FONT_SIZE
+        )
+        _set_cell_text(
+            third_row[3],
+            ", ".join(use_case.get("secondary_actors", [])) or "None",
+            size=TABLE_CONTENT_FONT_SIZE,
+        )
 
         for label, value in _detail_fields(project, use_case):
             cells = table.add_row().cells
-            _set_cell_text(cells[0], label, bold=True)
+            _set_cell_text(cells[0], label, bold=True, size=TABLE_LABEL_FONT_SIZE)
             merged_value = cells[1].merge(cells[3])
-            _set_cell_text(merged_value, value)
+            _set_cell_text(merged_value, value, size=TABLE_CONTENT_FONT_SIZE)
 
         for row in table.rows:
             row.cells[0].width = Cm(3.7)
-            for label_cell in [row.cells[0]]:
-                _set_cell_shading(label_cell, "F2F2F2")
         _style_table(table)
 
     output_path = output_dir / "use-case-descriptions.docx"
+    _enforce_document_font(document)
+    document.save(output_path)
+    return output_path
+
+
+def _generate_business_rules_docx(project: ProjectData, output_dir: Path) -> Path:
+    document = Document()
+    section = document.sections[0]
+    section.top_margin = Cm(2)
+    section.bottom_margin = Cm(2)
+    section.left_margin = Cm(2)
+    section.right_margin = Cm(2)
+
+    heading = document.add_heading("II.4 Business Rules", level=1)
+    heading.paragraph_format.space_after = Pt(6)
+
+    introduction = document.add_paragraph(
+        "This section defines the business constraints that govern system behavior."
+    )
+    introduction.paragraph_format.space_after = Pt(8)
+
+    widths = [Cm(1.5), Cm(5.2), Cm(10.3)]
+    table = document.add_table(rows=1, cols=3)
+    table.style = "Table Grid"
+    headers = ["ID", "Business Rule", "Description"]
+    for index, header in enumerate(headers):
+        cell = table.rows[0].cells[index]
+        _set_cell_text(
+            cell,
+            header,
+            bold=True,
+            center=True,
+            color=TABLE_HEADER_TEXT,
+        )
+        _set_cell_shading(cell, TABLE_HEADER_FILL)
+        cell.width = widths[index]
+    table.rows[0]._tr.get_or_add_trPr().append(OxmlElement("w:tblHeader"))
+
+    for rule in project.business_rules.values():
+        cells = table.add_row().cells
+        values = [
+            rule["_display_id"],
+            _business_rule_name(rule),
+            rule["description"],
+        ]
+        for index, value in enumerate(values):
+            _set_cell_text(cells[index], value, center=index == 0)
+            cells[index].width = widths[index]
+
+    _set_table_column_widths(table, widths)
+    _style_table(table)
+
+    output_path = output_dir / "business-rules.docx"
     _enforce_document_font(document)
     document.save(output_path)
     return output_path
@@ -509,6 +644,10 @@ def build_outputs(
         generated.extend(_generate_markdown(project, use_cases, output_dir))
     if output_format in {"all", "docx"}:
         generated.append(_generate_docx(project, use_cases, output_dir, diagram_dir))
+        generated.append(_generate_business_rules_docx(project, output_dir))
+    if output_format == "business-rules":
+        generated.append(_generate_business_rules_markdown(project, output_dir))
+        generated.append(_generate_business_rules_docx(project, output_dir))
     if output_format in {"all", "plantuml"}:
         generated.append(_generate_plantuml(project, use_cases, output_dir))
     return generated

@@ -32,3 +32,8 @@ actors:
     description: A Project Member who estimates backlog items and manages work needed to create a usable Increment.
     side: left
     parent: project-member
+
+  - key: email-service
+    name: Email Service
+    description: An external delivery service that sends email notifications requested by the system and returns delivery results.
+    side: right

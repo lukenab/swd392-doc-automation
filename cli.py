@@ -31,9 +31,12 @@ def create_parser() -> argparse.ArgumentParser:
     build_parser = subparsers.add_parser("build", help="Sinh Markdown, DOCX và PlantUML.")
     build_parser.add_argument(
         "--format",
-        choices=["all", "markdown", "docx", "plantuml"],
+        choices=["all", "markdown", "docx", "plantuml", "business-rules"],
         default="all",
-        help="Định dạng cần sinh. Mặc định: all.",
+        help=(
+            "Định dạng cần sinh. Dùng business-rules để chỉ sinh bảng "
+            "Business Rule dạng Markdown và DOCX. Mặc định: all."
+        ),
     )
     build_parser.add_argument(
         "--output-dir",

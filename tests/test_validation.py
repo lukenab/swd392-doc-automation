@@ -5,9 +5,18 @@ from pathlib import Path
 import shutil
 import unittest
 
+import yaml
 from docx import Document
+from docx.oxml.ns import qn
+from docx.shared import RGBColor
 
-from usecase_tool.generator import _alternative_flow_text, _exception_text, _generate_docx
+from usecase_tool.generator import (
+    _alternative_flow_text,
+    _exception_text,
+    _generate_business_rules_docx,
+    _generate_business_rules_markdown,
+    _generate_docx,
+)
 from usecase_tool.loader import assign_display_ids, load_project
 from usecase_tool.validator import validate_project
 
@@ -21,6 +30,26 @@ class ValidationTests(unittest.TestCase):
 
     def test_sample_data_is_valid(self):
         self.assertEqual([], validate_project(self.project))
+
+    def test_email_notifications_are_in_iteration_scope(self):
+        feature_data = yaml.safe_load((ROOT / "data" / "major_features.yml").read_text(encoding="utf-8"))
+        feature = next(item for item in feature_data["major_features"] if item["key"] == "FE-08")
+        notification_use_case = next(
+            item for item in self.project.use_cases if item["key"] == "UC-NOTIFICATIONS-REVIEW"
+        )
+
+        self.assertIn("email notifications", feature["description"])
+        self.assertIn("Email Service", notification_use_case["secondary_actors"])
+        self.assertIn("email notification", notification_use_case["description"])
+        self.assertIn("push notifications remain outside scope", notification_use_case["other_information"])
+        self.assertIn("BR-NOTIFICATION-EMAIL-PREFERENCE", notification_use_case["business_rules"])
+        self.assertIn("BR-NOTIFICATION-DELIVERY-INDEPENDENT", notification_use_case["business_rules"])
+        self.assertTrue(
+            any(
+                "Email Service cannot deliver" in exception["description"]
+                for exception in notification_use_case["exceptions"]
+            )
+        )
 
     def test_unknown_actor_is_reported(self):
         changed = deepcopy(self.project.use_cases)
@@ -174,6 +203,95 @@ class ValidationTests(unittest.TestCase):
                 "II.5.2.2 Use Case Descriptions",
                 [paragraph.text for paragraph in document.paragraphs],
             )
+        finally:
+            shutil.rmtree(root, ignore_errors=True)
+
+    def test_business_rule_outputs_include_all_rules(self):
+        root = ROOT / "tests" / "_tmp_business_rules"
+        if root.exists():
+            shutil.rmtree(root)
+        root.mkdir()
+        self.addCleanup(lambda: shutil.rmtree(root, ignore_errors=True))
+        try:
+            markdown_path = _generate_business_rules_markdown(self.project, root)
+            docx_path = _generate_business_rules_docx(self.project, root)
+
+            markdown = markdown_path.read_text(encoding="utf-8")
+            document = Document(docx_path)
+            table_rows = sum(len(table.rows) - 1 for table in document.tables)
+
+            self.assertIn("# Business Rules", markdown)
+            self.assertIn("BR-01", markdown)
+            self.assertIn(f"BR-{len(self.project.business_rules):02d}", markdown)
+            self.assertEqual(1, markdown.count("| ID | Business Rule | Description |"))
+            self.assertEqual(1, len(document.tables))
+            self.assertEqual(len(self.project.business_rules), table_rows)
+            self.assertEqual("II.4 Business Rules", document.paragraphs[0].text)
+        finally:
+            shutil.rmtree(root, ignore_errors=True)
+
+    def test_use_case_summary_table_has_balanced_columns_and_navy_header(self):
+        root = ROOT / "tests" / "_tmp_summary_table_style"
+        if root.exists():
+            shutil.rmtree(root)
+        root.mkdir()
+        self.addCleanup(lambda: shutil.rmtree(root, ignore_errors=True))
+        try:
+            generated = _generate_docx(
+                self.project,
+                self.project.use_cases,
+                root,
+                None,
+            )
+            document = Document(generated)
+            summary_table = document.tables[0]
+
+            self.assertEqual(
+                [1.6, 3.6, 3.7, 8.1],
+                [round(column.width.cm, 1) for column in summary_table.columns],
+            )
+            for cell in summary_table.rows[0].cells:
+                shading = cell._tc.get_or_add_tcPr().find(qn("w:shd"))
+                self.assertIsNotNone(shading)
+                self.assertEqual("1F4E78", shading.get(qn("w:fill")))
+                visible_runs = [
+                    run for paragraph in cell.paragraphs for run in paragraph.runs if run.text
+                ]
+                self.assertTrue(visible_runs)
+                self.assertTrue(
+                    all(run.font.color.rgb == RGBColor(255, 255, 255) for run in visible_runs)
+                )
+                self.assertTrue(all(run.font.size.pt == 12 for run in visible_runs))
+
+            summary_body_runs = [
+                run
+                for paragraph in summary_table.rows[1].cells[1].paragraphs
+                for run in paragraph.runs
+                if run.text
+            ]
+            self.assertTrue(summary_body_runs)
+            self.assertTrue(all(run.font.size.pt == 11 for run in summary_body_runs))
+
+            detail_table = document.tables[1]
+            label_runs = [
+                run
+                for paragraph in detail_table.rows[0].cells[0].paragraphs
+                for run in paragraph.runs
+                if run.text
+            ]
+            value_runs = [
+                run
+                for paragraph in detail_table.rows[0].cells[1].paragraphs
+                for run in paragraph.runs
+                if run.text
+            ]
+            self.assertTrue(label_runs)
+            self.assertTrue(value_runs)
+            self.assertTrue(all(run.font.size.pt == 12 for run in label_runs))
+            self.assertTrue(all(run.font.size.pt == 11 for run in value_runs))
+            for row in detail_table.rows:
+                shading = row.cells[0]._tc.get_or_add_tcPr().find(qn("w:shd"))
+                self.assertIsNone(shading)
         finally:
             shutil.rmtree(root, ignore_errors=True)
 
