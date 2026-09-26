@@ -22,12 +22,12 @@ major_features:
   - key: FE-05
     order: 500
     name: Sprint Lifecycle Management
-    description: Plan, start, complete, and cancel a Sprint when its Sprint Goal becomes obsolete.
+    description: Prepare a Draft Sprint, start and complete an active Sprint, and cancel an active Sprint when its Sprint Goal becomes obsolete.
 
   - key: FE-06
     order: 600
     name: Sprint Board and Task Tracking
-    description: Track Sprint work on a Sprint Board, and create, claim, and update the status of Sprint tasks.
+    description: Track Sprint Work Items on a Sprint Board, and create, claim, and update their execution status.
 
   - key: FE-07
     order: 700

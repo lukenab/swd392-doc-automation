@@ -40,6 +40,7 @@ business_rules:
   - BR-AUDIT-IMMUTABLE
   - BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
   - BR-AUDIT-EVENT-COMPLETENESS
+  - BR-AUDIT-VIEW-SYSADMIN-ONLY
 other_information: Exporting audit logs is outside Iteration 1 scope.
 assumptions:
   - Audited events include actor identity, timestamp, action, and target.

@@ -2,18 +2,18 @@ key: UC-SPRINT-START
 group: SPRINT_MANAGEMENT
 order: 200
 name: Start Sprint
-summary: Activate a planned Sprint and make its Sprint Backlog available for execution.
+summary: Activate a Draft Sprint and make its Sprint Backlog available for execution.
 created_by: Nguyen Tan Trung
 date_created: 2026-09-25
 primary_actor: Product Owner
 secondary_actors:
   - Developer
-trigger: The Scrum Team confirms that the planned Sprint is ready to begin.
+trigger: The Scrum Team confirms that the Draft Sprint is ready to begin.
 description: >
-  This use case changes a valid planned Sprint to active so Developers can
+  This use case changes a valid Draft Sprint to active so Developers can
   execute and track the selected work on the Sprint Board.
 preconditions:
-  - The Sprint is in Planned status.
+  - The Sprint is in Draft status.
   - The Sprint has a goal, valid dates, and at least one selected item.
   - No other Sprint is active in the project.
 postconditions:
@@ -21,7 +21,7 @@ postconditions:
   - Its selected items are visible on the Sprint Board.
 normal_flow:
   - actor: Product Owner
-    action: Requests to start the planned Sprint.
+    action: Requests to start the Draft Sprint.
   - actor: System
     action: Validates the Sprint Goal, dates, selected work, and active-Sprint constraint.
   - actor: Developer

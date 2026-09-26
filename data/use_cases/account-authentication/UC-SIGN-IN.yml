@@ -47,6 +47,8 @@ exceptions:
     description: The User account is pending, suspended, or deleted; sign-in is rejected.
   - id: EX-03
     description: The Identity Provider is unavailable or rejects authentication; no session is created.
+  - id: EX-04
+    description: The Identity Provider returns a verified identity but no matching User account exists; no session is created and the person is directed to Register Account.
 priority: Must Have
 frequency_of_use: Very Frequent
 business_rules:

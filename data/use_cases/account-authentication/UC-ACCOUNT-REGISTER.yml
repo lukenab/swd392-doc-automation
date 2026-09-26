@@ -62,6 +62,6 @@ business_rules:
   - BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP
   - BR-ACCOUNT-VERIFIED-IDENTITY
   - BR-PASSWORD-STRENGTH
-other_information: Registration is self-service; a System Administrator does not create the account through this use case.
+other_information: Registration is self-service; a System Administrator does not create the account through this use case. Duplicate-email handling applies to both email/password registration and Google registration.
 assumptions:
   - Email/password authentication and Google OAuth are configured through a managed authentication provider.

@@ -40,6 +40,6 @@ frequency_of_use: Very Frequent
 business_rules:
   - BR-SPRINT-TASK-DEVELOPER
   - BR-WORK-ITEM-STATUS
-other_information: Drag and drop and a status selector invoke the same use case.
+other_information: A Sprint Work Item is a selected Product Backlog Item, task, or subtask that belongs to the active Sprint. Drag and drop and a status selector invoke the same use case.
 assumptions:
   - The client has loaded the latest Sprint Board state.

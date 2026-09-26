@@ -27,7 +27,7 @@ business_rules:
   - key: BR-PROJECT-OWNER-ADMINISTRATION
     group: PROJECT_MEMBERSHIP
     order: 600
-    description: Only the Project Owner can change project information, membership, Scrum accountabilities, or archive the project.
+    description: Only the Project Owner may update project information, manage project membership, assign Scrum accountabilities, transfer project ownership, or archive the project.
 
   - key: BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED
     group: PROJECT_MEMBERSHIP
@@ -42,7 +42,7 @@ business_rules:
   - key: BR-PRODUCT-ONE-GOAL
     group: PRODUCT_BACKLOG
     order: 100
-    description: A Scrum project has one current Product Goal at a time.
+    description: A Scrum project has one current Product Goal at a time, and only the Product Owner may create, replace, or revise the stored Product Goal.
 
   - key: BR-PRODUCT-OWNER-BACKLOG
     group: PRODUCT_BACKLOG
@@ -57,7 +57,7 @@ business_rules:
   - key: BR-BACKLOG-ITEM-READY
     group: PRODUCT_BACKLOG
     order: 400
-    description: A Product Backlog Item must be sufficiently refined and estimated before selection for a Sprint.
+    description: A Product Backlog Item may be selected for a Sprint only after its description, acceptance criteria, and estimate have been recorded and the Developers determine that it can be completed within one Sprint.
 
   - key: BR-SPRINT-ONE-ACTIVE
     group: SPRINT_MANAGEMENT
@@ -84,20 +84,25 @@ business_rules:
     order: 500
     description: Incomplete Product Backlog Items return to the Product Backlog when a Sprint is completed or cancelled.
 
+  - key: BR-SPRINT-ONE-DRAFT
+    group: SPRINT_MANAGEMENT
+    order: 600
+    description: A project may have at most one Draft Sprint at a time.
+
   - key: BR-SPRINT-TASK-ACTIVE-SPRINT
     group: SPRINT_WORK
     order: 100
-    description: A Sprint Task must belong to a Product Backlog Item selected for the active Sprint.
+    description: A Sprint Work Item must belong to the project's active Sprint.
 
   - key: BR-SPRINT-TASK-DEVELOPER
     group: SPRINT_WORK
     order: 200
-    description: Only an active Developer in the project can claim or modify a Sprint Task.
+    description: Only an active Developer in the project may claim a Sprint Work Item or update its execution status.
 
   - key: BR-WORK-ITEM-STATUS
     group: SPRINT_WORK
     order: 300
-    description: A work item status must correspond to an active Sprint Board status.
+    description: A Sprint Work Item status must correspond to an active Sprint Board status.
 
   - key: BR-TASK-DEPENDENCY-ACYCLIC
     group: SPRINT_WORK
@@ -174,6 +179,11 @@ business_rules:
     order: 600
     description: Every audit event must record the actor identity, timestamp, action performed, and target entity.
 
+  - key: BR-AUDIT-VIEW-SYSADMIN-ONLY
+    group: SYSTEM_ADMINISTRATION
+    order: 700
+    description: Only an authenticated System Administrator may search or review the system audit log.
+
   - key: BR-ACCOUNT-EMAIL-UNIQUE
     group: ACCOUNT_AUTHENTICATION
     order: 100
@@ -212,4 +222,4 @@ business_rules:
   - key: BR-SIGN-OUT-SESSION
     group: ACCOUNT_AUTHENTICATION
     order: 800
-    description: Signing out invalidates the current session and removes its client-side authentication credentials without ending other active sessions.
+    description: Signing out invalidates only the current session; other active sessions of the same User remain unaffected.

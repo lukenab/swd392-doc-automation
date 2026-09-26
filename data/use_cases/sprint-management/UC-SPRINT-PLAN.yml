@@ -2,7 +2,7 @@ key: UC-SPRINT-PLAN
 group: SPRINT_MANAGEMENT
 order: 100
 name: Plan Sprint
-summary: Define a Sprint Goal and select Product Backlog Items for the upcoming Sprint.
+summary: Prepare a Draft Sprint with a proposed Sprint Goal and selected Product Backlog Items.
 created_by: Nguyen Tan Trung
 date_created: 2026-09-25
 primary_actor: Product Owner
@@ -10,15 +10,16 @@ secondary_actors:
   - Developer
 trigger: The Scrum Team is ready to prepare the next Sprint.
 description: >
-  This use case allows the Product Owner and Developers to agree on a Sprint
-  Goal, select ready Product Backlog Items, and establish an initial Sprint Backlog.
+  This use case allows the Product Owner and Developers to prepare a Draft Sprint,
+  agree on a proposed Sprint Goal, select ready Product Backlog Items, and establish
+  an initial Sprint Backlog before activation.
 preconditions:
   - Both actors are active project members with the stated Scrum accountabilities.
-  - The project has no other Sprint in planning.
+  - The project has no other Draft Sprint.
   - The Product Backlog contains at least one ready item.
 postconditions:
-  - A planned Sprint exists with a Sprint Goal, dates, and selected backlog items.
-  - Selected items are associated with the planned Sprint.
+  - A Draft Sprint exists with a proposed Sprint Goal, dates, and selected backlog items.
+  - Selected items are associated with the Draft Sprint.
 normal_flow:
   - actor: Product Owner
     action: Starts Sprint planning and proposes the Sprint Goal and date range.
@@ -31,7 +32,7 @@ normal_flow:
   - actor: Product Owner
     action: Confirms the Sprint Goal and selected items with the Developer.
   - actor: System
-    action: Creates the planned Sprint and its initial Sprint Backlog.
+    action: Creates the Draft Sprint and its initial Sprint Backlog.
 alternative_flows:
   - id: AF-01
     condition: A selected item is not ready.
@@ -47,6 +48,7 @@ business_rules:
   - BR-SPRINT-GOAL-REQUIRED
   - BR-SPRINT-DATE-RANGE
   - BR-BACKLOG-ITEM-READY
-other_information: Planning prepares a Sprint but does not make it active.
+  - BR-SPRINT-ONE-DRAFT
+other_information: Planning prepares a Draft Sprint but does not make it active.
 assumptions:
   - The team discusses capacity before confirming the Sprint Backlog.

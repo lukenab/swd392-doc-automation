@@ -47,6 +47,6 @@ business_rules:
   - BR-PRODUCT-OWNER-BACKLOG
   - BR-BACKLOG-ITEM-READY
   - BR-PROJECT-ARCHIVED-READ-ONLY
-other_information: Refinement is an ongoing activity rather than a formal Scrum event.
+other_information: Refinement is an ongoing activity rather than a formal Scrum event. Developer input during refinement is advisory; the Product Owner confirms the resulting Product Backlog update.
 assumptions:
   - Product Owner and Developer collaborate outside or through the system as needed.

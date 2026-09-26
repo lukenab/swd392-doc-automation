@@ -45,6 +45,7 @@ frequency_of_use: Rare
 business_rules:
   - BR-PROJECT-ONE-OWNER
   - BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE
+  - BR-PROJECT-OWNER-ADMINISTRATION
   - BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED
 other_information: The new owner retains the member's existing Scrum accountability.
 assumptions:

@@ -6,7 +6,8 @@ summary: Add a discussion comment to a Product Backlog Item, task, or subtask.
 created_by: Nguyen Tan Trung
 date_created: 2026-09-25
 primary_actor: Project Member
-secondary_actors: []
+secondary_actors:
+  - Email Service
 trigger: The Project Member needs to communicate about a work item.
 description: >
   This use case allows project members to record contextual discussion on a
@@ -28,6 +29,8 @@ normal_flow:
     action: Saves the comment and records it in activity history.
   - actor: System
     action: Creates in-app notifications and requests email delivery for eligible mentioned or relevant members.
+  - actor: Email Service
+    action: Returns the email delivery result to the system.
 alternative_flows:
   - id: AF-01
     condition: The comment contains no content.

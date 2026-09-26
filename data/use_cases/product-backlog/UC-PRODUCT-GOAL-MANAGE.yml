@@ -40,7 +40,6 @@ priority: Must Have
 frequency_of_use: Occasional
 business_rules:
   - BR-PRODUCT-ONE-GOAL
-  - BR-PRODUCT-OWNER-BACKLOG
   - BR-PROJECT-ARCHIVED-READ-ONLY
 other_information: Product Goal history may be retained for audit purposes.
 assumptions:

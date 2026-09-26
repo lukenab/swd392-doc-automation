@@ -2,18 +2,18 @@ key: UC-SPRINT-CANCEL
 group: SPRINT_MANAGEMENT
 order: 400
 name: Cancel Sprint
-summary: Cancel a Sprint when its goal is no longer valid and return its work to the Product Backlog.
+summary: Cancel an active Sprint when its goal is no longer valid and return its work to the Product Backlog.
 created_by: Nguyen Tan Trung
 date_created: 2026-09-25
 primary_actor: Product Owner
 secondary_actors: []
 trigger: The Product Owner determines that the Sprint Goal has become obsolete.
 description: >
-  This use case allows the Product Owner to cancel a planned or active Sprint
+  This use case allows the Product Owner to cancel an active Sprint
   and safely return its incomplete Product Backlog Items to the Product Backlog.
 preconditions:
   - The Product Owner is an active project member.
-  - The Sprint is planned or active.
+  - The Sprint is active.
 postconditions:
   - The Sprint is cancelled and cannot receive further work updates.
   - Incomplete items are returned to the Product Backlog.
