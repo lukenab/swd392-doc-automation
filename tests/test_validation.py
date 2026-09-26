@@ -37,19 +37,26 @@ class ValidationTests(unittest.TestCase):
         notification_use_case = next(
             item for item in self.project.use_cases if item["key"] == "UC-NOTIFICATIONS-REVIEW"
         )
+        comment_use_case = next(
+            item for item in self.project.use_cases if item["key"] == "UC-WORK-ITEM-COMMENT"
+        )
 
         self.assertIn("email notifications", feature["description"])
-        self.assertIn("Email Service", notification_use_case["secondary_actors"])
-        self.assertIn("by email", notification_use_case["description"])
-        self.assertIn("Push delivery remains outside", notification_use_case["other_information"])
+        self.assertIn("Email Service", comment_use_case["secondary_actors"])
+        self.assertIn("email delivery", notification_use_case["other_information"])
+        self.assertIn("push delivery remains outside", notification_use_case["other_information"].lower())
         self.assertEqual(
-            ["BR-NOTIFICATION-OWNER-ONLY", "BR-PROJECT-MEMBER-ACCESS"],
+            [
+                "BR-NOTIFICATION-OWNER-ONLY",
+                "BR-PROJECT-MEMBER-ACCESS",
+                "BR-NOTIFICATION-EMAIL-PREFERENCE",
+            ],
             notification_use_case["business_rules"],
         )
         self.assertTrue(
             any(
-                "Email Service cannot deliver" in exception["description"]
-                for exception in notification_use_case["exceptions"]
+                "email notification cannot be delivered" in exception["description"]
+                for exception in comment_use_case["exceptions"]
             )
         )
 
@@ -60,7 +67,7 @@ class ValidationTests(unittest.TestCase):
             if item["group"] == "ACCOUNT_AUTHENTICATION"
         ]
         self.assertEqual(
-            ["UC-29", "UC-30", "UC-31", "UC-32"],
+            ["UC-01", "UC-02", "UC-03", "UC-04"],
             [item["_display_id"] for item in authentication_cases],
         )
         self.assertEqual(
@@ -76,6 +83,40 @@ class ValidationTests(unittest.TestCase):
         for use_case in authentication_cases:
             for rule_key in use_case["business_rules"]:
                 self.assertIn(rule_key, self.project.business_rules)
+
+    def test_audit_feedback_changes_are_synchronized(self):
+        use_cases = {item["key"]: item for item in self.project.use_cases}
+
+        self.assertIn(
+            "BR-PROJECT-OWNER-ADMINISTRATION",
+            use_cases["UC-PROJECT-OWNERSHIP-TRANSFER"]["business_rules"],
+        )
+        self.assertNotIn(
+            "BR-PRODUCT-OWNER-BACKLOG",
+            use_cases["UC-PRODUCT-GOAL-MANAGE"]["business_rules"],
+        )
+        self.assertIn(
+            "BR-SPRINT-ONE-DRAFT",
+            use_cases["UC-SPRINT-PLAN"]["business_rules"],
+        )
+        self.assertEqual(
+            ["BR-NOTIFICATION-OWNER-ONLY", "BR-PROJECT-MEMBER-ACCESS", "BR-NOTIFICATION-EMAIL-PREFERENCE"],
+            use_cases["UC-NOTIFICATIONS-REVIEW"]["business_rules"],
+        )
+        self.assertIn(
+            "BR-AUDIT-VIEW-SYSADMIN-ONLY",
+            use_cases["UC-SYSTEM-AUDIT-LOG-REVIEW"]["business_rules"],
+        )
+        self.assertTrue(
+            any(
+                exception["id"] == "EX-04"
+                for exception in use_cases["UC-SIGN-IN"]["exceptions"]
+            )
+        )
+        self.assertEqual(
+            "BR-14",
+            self.project.business_rules["BR-SPRINT-GOAL-REQUIRED"]["_display_id"],
+        )
 
     def test_unknown_actor_is_reported(self):
         changed = deepcopy(self.project.use_cases)
@@ -123,6 +164,26 @@ class ValidationTests(unittest.TestCase):
             [(item["key"], item["_display_id"]) for item in use_cases],
         )
 
+    def test_use_case_domain_order_can_differ_from_business_rule_order(self):
+        groups = {
+            "PROJECT": {"key": "PROJECT", "order": 100, "use_case_order": 200},
+            "AUTH": {"key": "AUTH", "order": 200, "use_case_order": 100},
+        }
+        use_cases = [
+            {"key": "UC-PROJECT", "group": "PROJECT", "order": 100},
+            {"key": "UC-SIGN-IN", "group": "AUTH", "order": 100},
+        ]
+        rules = [
+            {"key": "BR-PROJECT", "group": "PROJECT", "order": 100},
+            {"key": "BR-AUTH", "group": "AUTH", "order": 100},
+        ]
+
+        assign_display_ids(use_cases, "UC", groups, group_order_field="use_case_order")
+        assign_display_ids(rules, "BR", groups)
+
+        self.assertEqual("UC-SIGN-IN", use_cases[0]["key"])
+        self.assertEqual("BR-PROJECT", rules[0]["key"])
+
     def test_non_integer_order_is_reported(self):
         changed = deepcopy(self.project.use_cases)
         changed[0]["order"] = "first"
@@ -151,7 +212,8 @@ class ValidationTests(unittest.TestCase):
 
     def test_use_case_in_wrong_domain_folder_is_reported(self):
         changed = deepcopy(self.project.use_cases)
-        changed[0]["_source_file"] = "sprint-work/UC-PROJECT-CREATE.yml"
+        project_create = next(item for item in changed if item["key"] == "UC-PROJECT-CREATE")
+        project_create["_source_file"] = "sprint-work/UC-PROJECT-CREATE.yml"
         invalid_project = self.project.__class__(
             data_dir=self.project.data_dir,
             groups=self.project.groups,
@@ -253,6 +315,9 @@ class ValidationTests(unittest.TestCase):
             self.assertEqual(1, len(document.tables))
             self.assertEqual(len(self.project.business_rules), table_rows)
             self.assertEqual("II.4 Business Rules", document.paragraphs[0].text)
+            self.assertIsNone(
+                document.tables[0].rows[0]._tr.get_or_add_trPr().find(qn("w:tblHeader"))
+            )
         finally:
             shutil.rmtree(root, ignore_errors=True)
 
@@ -271,6 +336,10 @@ class ValidationTests(unittest.TestCase):
             )
             document = Document(generated)
             summary_table = document.tables[0]
+
+            self.assertIsNone(
+                summary_table.rows[0]._tr.get_or_add_trPr().find(qn("w:tblHeader"))
+            )
 
             self.assertEqual(
                 [1.6, 3.6, 3.7, 8.1],
