@@ -451,7 +451,6 @@ def _generate_docx(
             size=TABLE_LABEL_FONT_SIZE,
         )
         _set_cell_shading(summary_table.rows[0].cells[index], TABLE_HEADER_FILL)
-    summary_table.rows[0]._tr.get_or_add_trPr().append(OxmlElement("w:tblHeader"))
     widths = [Cm(1.6), Cm(3.6), Cm(3.7), Cm(8.1)]
     for use_case in use_cases:
         cells = summary_table.add_row().cells
@@ -557,8 +556,6 @@ def _generate_business_rules_docx(project: ProjectData, output_dir: Path) -> Pat
         )
         _set_cell_shading(cell, TABLE_HEADER_FILL)
         cell.width = widths[index]
-    table.rows[0]._tr.get_or_add_trPr().append(OxmlElement("w:tblHeader"))
-
     for rule in project.business_rules.values():
         cells = table.add_row().cells
         values = [
