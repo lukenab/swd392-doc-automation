@@ -1,0 +1,67 @@
+key: UC-ACCOUNT-REGISTER
+group: ACCOUNT_AUTHENTICATION
+order: 100
+name: Register Account
+summary: Create a system-wide User account using email and password or Google.
+created_by: Nguyen An Binh
+date_created: 2026-09-26
+primary_actor: Visitor
+secondary_actors:
+  - Email Service
+  - Identity Provider
+trigger: The Visitor chooses to create a system-wide account.
+description: >
+  This use case allows a Visitor to register with an email address and password
+  or with a verified Google identity and become a system-wide User.
+preconditions:
+  - The Visitor is not authenticated.
+  - The Visitor can access the submitted email account or Google identity.
+postconditions:
+  - One active User account is linked to the verified email address.
+  - The new User is not automatically a member of any project.
+normal_flow:
+  - actor: Visitor
+    action: Opens account registration and chooses email and password.
+  - actor: System
+    action: Requests the display name, email address, and password.
+  - actor: Visitor
+    action: Provides the required registration information.
+  - actor: System
+    action: Validates the information, email uniqueness, and password strength.
+  - actor: System
+    action: Creates a pending account and requests an email verification message.
+  - actor: Email Service
+    action: Delivers the verification message to the submitted email address.
+  - actor: Visitor
+    action: Opens the valid verification link.
+  - actor: System
+    action: Activates the User account and confirms registration.
+alternative_flows:
+  - id: AF-01
+    condition: The Visitor chooses to register with Google.
+    steps:
+      - The system redirects the Visitor to the Identity Provider.
+      - The Identity Provider authenticates the Visitor and returns a verified identity.
+      - The system validates email uniqueness and creates an active User account.
+  - id: AF-02
+    condition: The submitted email address is already linked to an account.
+    steps:
+      - The system does not create a duplicate account.
+      - The system directs the Visitor to sign in or reset the password.
+exceptions:
+  - id: EX-01
+    description: The Email Service cannot deliver the verification message; the account remains pending and verification can be requested again.
+  - id: EX-02
+    description: The Identity Provider does not return a valid verified identity; registration is cancelled.
+  - id: EX-03
+    description: Account data cannot be persisted, so no User account is created.
+priority: Must Have
+frequency_of_use: Rare
+business_rules:
+  - BR-ACCOUNT-EMAIL-UNIQUE
+  - BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP
+  - BR-ACCOUNT-VERIFIED-IDENTITY
+  - BR-PASSWORD-STRENGTH
+other_information: Registration is self-service; a System Administrator does not create the account through this use case.
+assumptions:
+  - Email/password authentication and Google OAuth are configured through a managed authentication provider.

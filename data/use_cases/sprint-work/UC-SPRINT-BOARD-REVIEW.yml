@@ -38,7 +38,6 @@ priority: Must Have
 frequency_of_use: Very Frequent
 business_rules:
   - BR-PROJECT-MEMBER-ACCESS
-  - BR-SPRINT-ONE-ACTIVE
 other_information: Board access is read-only unless another use case authorizes an update.
 assumptions:
   - The default workflow contains To Do, In Progress, and Done statuses.

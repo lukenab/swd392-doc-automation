@@ -46,6 +46,8 @@ business_rules:
   - BR-SPRINT-TASK-ACTIVE-SPRINT
   - BR-SPRINT-TASK-DEVELOPER
   - BR-TASK-DEPENDENCY-ACYCLIC
+  - BR-TASK-NO-SELF-DEPENDENCY
+  - BR-TASK-DEPENDENCY-SAME-PROJECT
 other_information: Task dependency management is included here rather than modeled as a separate use case.
 assumptions:
   - A task belongs to one Sprint Backlog Item.

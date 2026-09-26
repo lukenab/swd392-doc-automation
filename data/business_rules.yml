@@ -34,6 +34,11 @@ business_rules:
     order: 700
     description: A Scrum accountability is assigned to an active member within one project and does not apply to other projects.
 
+  - key: BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE
+    group: PROJECT_MEMBERSHIP
+    order: 800
+    description: A project has at most one active Product Owner accountability at a time; assigning a new Product Owner automatically replaces the previous one.
+
   - key: BR-PRODUCT-ONE-GOAL
     group: PRODUCT_BACKLOG
     order: 100
@@ -42,12 +47,12 @@ business_rules:
   - key: BR-PRODUCT-OWNER-BACKLOG
     group: PRODUCT_BACKLOG
     order: 200
-    description: The Product Owner is accountable for Product Backlog content, transparency, and ordering.
+    description: Only the Product Owner may create, update, remove, or reorder Product Backlog Items.
 
   - key: BR-DEVELOPER-ESTIMATION
     group: PRODUCT_BACKLOG
     order: 300
-    description: Developers who will perform the work are responsible for estimating Product Backlog Items.
+    description: Only Developers who will perform the work may set or revise the estimate of a Product Backlog Item.
 
   - key: BR-BACKLOG-ITEM-READY
     group: PRODUCT_BACKLOG
@@ -99,6 +104,16 @@ business_rules:
     order: 400
     description: Task dependency relationships must not create direct or indirect cycles.
 
+  - key: BR-TASK-NO-SELF-DEPENDENCY
+    group: SPRINT_WORK
+    order: 500
+    description: A task must not depend on itself.
+
+  - key: BR-TASK-DEPENDENCY-SAME-PROJECT
+    group: SPRINT_WORK
+    order: 600
+    description: A task may only depend on another task within the same project.
+
   - key: BR-COMMENT-PROJECT-MEMBER
     group: COLLABORATION_NOTIFICATION
     order: 100
@@ -124,20 +139,15 @@ business_rules:
     order: 500
     description: An email delivery failure must not roll back the originating project operation or remove the corresponding in-app notification.
 
-  - key: BR-REPORT-PROJECT-MEMBER
-    group: SCRUM_REPORTING
-    order: 100
-    description: Scrum progress information is available only to active members of the project.
-
   - key: BR-PROGRESS-ACTIVE-SPRINT
     group: SCRUM_REPORTING
-    order: 200
-    description: Iteration 1 Sprint progress is calculated only for the project's active Sprint.
+    order: 100
+    description: Sprint progress is calculated only for the project's active Sprint.
 
   - key: BR-SYSADMIN-USER-ACCOUNT
     group: SYSTEM_ADMINISTRATION
     order: 100
-    description: Only a System Administrator can create, suspend, reactivate, or delete system user accounts.
+    description: Only a System Administrator can suspend, reactivate, or delete existing system user accounts.
 
   - key: BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
     group: SYSTEM_ADMINISTRATION
@@ -148,3 +158,58 @@ business_rules:
     group: SYSTEM_ADMINISTRATION
     order: 300
     description: System audit records cannot be manually edited or deleted.
+
+  - key: BR-OWNER-ACCOUNT-DELETION-GUARD
+    group: SYSTEM_ADMINISTRATION
+    order: 400
+    description: A System Administrator must not delete or suspend a User account that is the current Project Owner of an active project unless ownership has been transferred first.
+
+  - key: BR-LAST-ADMINISTRATOR-PROTECTION
+    group: SYSTEM_ADMINISTRATION
+    order: 500
+    description: The system must not allow the suspension or deletion of the last active System Administrator account.
+
+  - key: BR-AUDIT-EVENT-COMPLETENESS
+    group: SYSTEM_ADMINISTRATION
+    order: 600
+    description: Every audit event must record the actor identity, timestamp, action performed, and target entity.
+
+  - key: BR-ACCOUNT-EMAIL-UNIQUE
+    group: ACCOUNT_AUTHENTICATION
+    order: 100
+    description: Each normalized email address may be linked to at most one system-wide User account.
+
+  - key: BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP
+    group: ACCOUNT_AUTHENTICATION
+    order: 200
+    description: Registering a User account does not automatically grant membership in any project.
+
+  - key: BR-ACCOUNT-VERIFIED-IDENTITY
+    group: ACCOUNT_AUTHENTICATION
+    order: 300
+    description: A new account becomes active only after control of its email address is verified directly or by a trusted Identity Provider.
+
+  - key: BR-AUTH-ACTIVE-ACCOUNT
+    group: ACCOUNT_AUTHENTICATION
+    order: 400
+    description: Only an active, non-suspended User account may establish an authenticated session.
+
+  - key: BR-PASSWORD-STRENGTH
+    group: ACCOUNT_AUTHENTICATION
+    order: 500
+    description: A locally managed password must satisfy the configured password-strength requirements.
+
+  - key: BR-PASSWORD-RESET-TOKEN
+    group: ACCOUNT_AUTHENTICATION
+    order: 600
+    description: A password-reset token is single-use and must expire after the configured validity period.
+
+  - key: BR-PASSWORD-RESET-PRIVACY
+    group: ACCOUNT_AUTHENTICATION
+    order: 700
+    description: A password-reset request must not reveal whether the submitted email address belongs to an account.
+
+  - key: BR-SIGN-OUT-SESSION
+    group: ACCOUNT_AUTHENTICATION
+    order: 800
+    description: Signing out invalidates the current session and removes its client-side authentication credentials without ending other active sessions.

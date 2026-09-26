@@ -11,6 +11,8 @@ defaults:
   domain_diagrams: never
 
 actors:
+  visitor:
+    side: left
   system-administrator:
     side: left
   user:
@@ -27,6 +29,10 @@ actors:
   developer:
     side: left
     parent: project-member
+  email-service:
+    side: right
+  identity-provider:
+    side: right
 
 diagrams:
   - key: overview
@@ -40,6 +46,7 @@ diagrams:
       - UC-WORK-ITEM-COMMENT
       - UC-SPRINT-PROGRESS-MONITOR
       - UC-USER-ACCOUNTS-MANAGE
+      - UC-SIGN-IN
 
   - key: project-membership
     title: Project and Membership Use Case Model
@@ -103,3 +110,12 @@ diagrams:
     use_cases:
       - UC-USER-ACCOUNTS-MANAGE
       - UC-SYSTEM-AUDIT-LOG-REVIEW
+
+  - key: account-authentication
+    title: Account Access and Authentication Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-ACCOUNT-REGISTER
+      - UC-SIGN-IN
+      - UC-SIGN-OUT
+      - UC-PASSWORD-RESET

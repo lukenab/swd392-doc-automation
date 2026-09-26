@@ -2,14 +2,14 @@ key: UC-USER-ACCOUNTS-MANAGE
 group: SYSTEM_ADMINISTRATION
 order: 100
 name: Manage User Accounts
-summary: Review, activate, suspend, and restore system-wide user accounts.
+summary: Review, suspend, reactivate, and delete existing system-wide user accounts.
 created_by: Nguyen Quoc Khanh
 date_created: 2026-09-25
 primary_actor: System Administrator
 secondary_actors: []
 trigger: The System Administrator needs to administer a system user account.
 description: >
-  This use case allows a System Administrator to manage account availability at
+  This use case allows a System Administrator to manage existing accounts at
   system scope without automatically gaining membership in users' projects.
 preconditions:
   - The System Administrator is authenticated and authorized.
@@ -43,6 +43,8 @@ frequency_of_use: Occasional
 business_rules:
   - BR-SYSADMIN-USER-ACCOUNT
   - BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
-other_information: Project roles are managed within each project, not through this use case.
+  - BR-OWNER-ACCOUNT-DELETION-GUARD
+  - BR-LAST-ADMINISTRATOR-PROTECTION
+other_information: Accounts are created through self-service Register Account; project roles are managed within each project, not through this use case.
 assumptions:
   - At least one active System Administrator must always remain.

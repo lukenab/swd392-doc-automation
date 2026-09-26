@@ -43,6 +43,7 @@ frequency_of_use: Occasional
 business_rules:
   - BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED
   - BR-PROJECT-OWNER-ADMINISTRATION
+  - BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE
 other_information: Scrum Master is stored as an accountability but has no exclusive Use Case in Iteration 1.
 assumptions:
   - Iteration 1 assigns one primary Scrum accountability to each active member.

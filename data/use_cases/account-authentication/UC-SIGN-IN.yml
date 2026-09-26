@@ -1,0 +1,57 @@
+key: UC-SIGN-IN
+group: ACCOUNT_AUTHENTICATION
+order: 200
+name: Sign In
+summary: Establish an authenticated session using email and password or Google.
+created_by: Nguyen An Binh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors:
+  - Identity Provider
+trigger: The User chooses to sign in to the system.
+description: >
+  This use case authenticates a registered User with email and password or
+  Google and creates a session for accessing authorized system functions.
+preconditions:
+  - The User has a registered system-wide account.
+  - The User is not already authenticated in the current client session.
+postconditions:
+  - An authenticated session is established for the User.
+  - No project membership or project-scoped responsibility is changed.
+normal_flow:
+  - actor: User
+    action: Opens the sign-in page and chooses email and password.
+  - actor: System
+    action: Requests the registered email address and password.
+  - actor: User
+    action: Submits the credentials.
+  - actor: System
+    action: Validates the credentials and confirms that the account is active.
+  - actor: System
+    action: Creates an authenticated session and displays the User's available projects.
+alternative_flows:
+  - id: AF-01
+    condition: The User chooses to sign in with Google.
+    steps:
+      - The system redirects the User to the Identity Provider.
+      - The Identity Provider authenticates the User and returns a verified identity.
+      - The system matches the identity to an existing active User account and creates a session.
+  - id: AF-02
+    condition: The User has forgotten the locally managed password.
+    steps:
+      - The system directs the User to Reset Password.
+exceptions:
+  - id: EX-01
+    description: The submitted credentials are invalid; no session is created.
+  - id: EX-02
+    description: The User account is pending, suspended, or deleted; sign-in is rejected.
+  - id: EX-03
+    description: The Identity Provider is unavailable or rejects authentication; no session is created.
+priority: Must Have
+frequency_of_use: Very Frequent
+business_rules:
+  - BR-ACCOUNT-VERIFIED-IDENTITY
+  - BR-AUTH-ACTIVE-ACCOUNT
+other_information: Sign-in authenticates the User but does not grant access to projects in which the User is not an active member.
+assumptions:
+  - Session credentials are issued and validated by the managed authentication provider.

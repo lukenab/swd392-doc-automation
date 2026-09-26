@@ -36,8 +36,8 @@ major_features:
 
   - key: FE-08
     order: 800
-    name: Collaboration and Notifications
-    description: Comment on backlog items and tasks, review activity history, receive in-app notifications, and receive email notifications for relevant project events according to each user's notification preference.
+    name: Collaboration & Notifications
+    description: Comment on backlog items and tasks, review activity history, and receive in-app and email notifications about relevant events.
 
   - key: FE-09
     order: 900
@@ -47,4 +47,9 @@ major_features:
   - key: FE-10
     order: 1000
     name: Account and Audit Trail Management
-    description: Manage user accounts and review a security-focused system audit log for account and ownership events.
+    description: Administer existing user accounts and review a security-focused system audit log for account and ownership events.
+
+  - key: FE-11
+    order: 1100
+    name: Account Registration and Authentication
+    description: Register a system-wide account, sign in using email and password or Google, sign out, and reset a forgotten password.

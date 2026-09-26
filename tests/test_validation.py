@@ -40,16 +40,42 @@ class ValidationTests(unittest.TestCase):
 
         self.assertIn("email notifications", feature["description"])
         self.assertIn("Email Service", notification_use_case["secondary_actors"])
-        self.assertIn("email notification", notification_use_case["description"])
-        self.assertIn("push notifications remain outside scope", notification_use_case["other_information"])
-        self.assertIn("BR-NOTIFICATION-EMAIL-PREFERENCE", notification_use_case["business_rules"])
-        self.assertIn("BR-NOTIFICATION-DELIVERY-INDEPENDENT", notification_use_case["business_rules"])
+        self.assertIn("by email", notification_use_case["description"])
+        self.assertIn("Push delivery remains outside", notification_use_case["other_information"])
+        self.assertEqual(
+            ["BR-NOTIFICATION-OWNER-ONLY", "BR-PROJECT-MEMBER-ACCESS"],
+            notification_use_case["business_rules"],
+        )
         self.assertTrue(
             any(
                 "Email Service cannot deliver" in exception["description"]
                 for exception in notification_use_case["exceptions"]
             )
         )
+
+    def test_authentication_use_cases_and_rules_are_synchronized(self):
+        authentication_cases = [
+            item
+            for item in self.project.use_cases
+            if item["group"] == "ACCOUNT_AUTHENTICATION"
+        ]
+        self.assertEqual(
+            ["UC-29", "UC-30", "UC-31", "UC-32"],
+            [item["_display_id"] for item in authentication_cases],
+        )
+        self.assertEqual(
+            ["Register Account", "Sign In", "Sign Out", "Reset Password"],
+            [item["name"] for item in authentication_cases],
+        )
+        self.assertEqual("Visitor", authentication_cases[0]["primary_actor"])
+        self.assertIn("Identity Provider", authentication_cases[0]["secondary_actors"])
+        self.assertIn("Email Service", authentication_cases[3]["secondary_actors"])
+
+        account_rule = self.project.business_rules["BR-SYSADMIN-USER-ACCOUNT"]
+        self.assertNotIn("create", account_rule["description"].lower())
+        for use_case in authentication_cases:
+            for rule_key in use_case["business_rules"]:
+                self.assertIn(rule_key, self.project.business_rules)
 
     def test_unknown_actor_is_reported(self):
         changed = deepcopy(self.project.use_cases)

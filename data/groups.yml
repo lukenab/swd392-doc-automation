@@ -33,3 +33,8 @@ groups:
     name: System Administration
     folder: system-administration
     order: 700
+
+  - key: ACCOUNT_AUTHENTICATION
+    name: Account Access and Authentication
+    folder: account-authentication
+    order: 800

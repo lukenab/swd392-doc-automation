@@ -1,4 +1,9 @@
 actors:
+  - key: visitor
+    name: Visitor
+    description: A person who has not signed in and may register a new system-wide account.
+    side: left
+
   - key: system-administrator
     name: System Administrator
     description: Manages system-wide user accounts, audit information, and operational statistics.
@@ -6,7 +11,7 @@ actors:
 
   - key: user
     name: User
-    description: An active system account that can create projects and join projects with project-specific responsibilities.
+    description: A person with a registered system-wide account who can sign in, create projects, and join projects with project-specific responsibilities.
     side: left
 
   - key: project-member
@@ -36,4 +41,9 @@ actors:
   - key: email-service
     name: Email Service
     description: An external delivery service that sends email notifications requested by the system and returns delivery results.
+    side: right
+
+  - key: identity-provider
+    name: Identity Provider
+    description: An external OAuth identity service, such as Google, that authenticates a person and returns a verified identity.
     side: right

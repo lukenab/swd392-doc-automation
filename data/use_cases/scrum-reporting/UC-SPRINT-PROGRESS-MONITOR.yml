@@ -37,7 +37,7 @@ exceptions:
 priority: Must Have
 frequency_of_use: Frequent
 business_rules:
-  - BR-REPORT-PROJECT-MEMBER
+  - BR-PROJECT-MEMBER-ACCESS
   - BR-PROGRESS-ACTIVE-SPRINT
 other_information: Iteration 1 reporting is operational and does not forecast delivery dates.
 assumptions:
