@@ -1,0 +1,35 @@
+key: UC-SPRINT-TASK-VIEW
+parent: UC-SPRINT-TASKS-MANAGE
+group: SPRINT_WORK
+order: 210
+name: View Sprint Task
+summary: Review the details, assignment, dependencies, and status of a Sprint Task.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: A Project Member selects a Sprint Task.
+description: This use case displays the current information of a Sprint Task without modifying it.
+preconditions:
+  - The User is an active member of the project.
+  - The Sprint Task exists in a Sprint accessible to the User.
+postconditions:
+  - Current Sprint Task information is displayed without modification.
+normal_flow:
+  - actor: User
+    action: Selects a Sprint Task.
+  - actor: System
+    action: Retrieves the task details, assignment, dependencies, and activity summary.
+  - actor: System
+    action: Displays the Sprint Task.
+alternative_flows: []
+exceptions:
+  - id: EX-01
+    description: The selected Sprint Task is no longer available.
+priority: Must Have
+frequency_of_use: Very Frequent
+business_rules:
+  - BR-PROJECT-MEMBER-ACCESS
+other_information: Task changes are handled by the corresponding concrete management use cases.
+assumptions:
+  - The User can access the Sprint containing the task.

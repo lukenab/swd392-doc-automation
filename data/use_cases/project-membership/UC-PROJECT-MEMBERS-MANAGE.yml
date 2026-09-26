@@ -2,6 +2,7 @@ key: UC-PROJECT-MEMBERS-MANAGE
 group: PROJECT_MEMBERSHIP
 order: 400
 name: Manage Project Members
+abstract: true
 summary: Review, add, and remove members of an active project.
 created_by: Tran Cong Luan
 date_created: 2026-09-25

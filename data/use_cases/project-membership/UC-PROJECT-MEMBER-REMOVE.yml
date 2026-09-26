@@ -1,0 +1,46 @@
+key: UC-PROJECT-MEMBER-REMOVE
+parent: UC-PROJECT-MEMBERS-MANAGE
+group: PROJECT_MEMBERSHIP
+order: 430
+name: Remove Project Member
+summary: Remove a non-owner member from an active project after resolving assigned work.
+created_by: Tran Cong Luan
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: The Project Owner chooses to remove a member from the project.
+description: This use case allows the Project Owner to revoke a member's access without violating ownership or active-work constraints.
+preconditions:
+  - The actor is the current Project Owner.
+  - The project is active.
+  - The target User is an active Project Member and is not the Project Owner.
+postconditions:
+  - The target User no longer has access through project membership.
+  - The removal is recorded in project activity history.
+normal_flow:
+  - actor: User
+    action: Selects a project member and requests removal.
+  - actor: System
+    action: Displays the member's active assignments and asks for confirmation.
+  - actor: User
+    action: Confirms removal after active work has been reassigned or cleared.
+  - actor: System
+    action: Removes Scrum accountabilities and project membership.
+  - actor: System
+    action: Records the removal and refreshes the member list.
+alternative_flows:
+  - id: AF-01
+    condition: The target member owns unfinished Sprint work.
+    steps:
+      - The system requires the work to be reassigned before removal.
+exceptions:
+  - id: EX-01
+    description: The Project Owner attempts to remove their own membership.
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-PROJECT-ONE-OWNER
+  - BR-PROJECT-OWNER-ADMINISTRATION
+other_information: A Project Owner must transfer ownership before leaving or being removed.
+assumptions:
+  - Removing membership does not delete historical activity created by the User.

@@ -103,16 +103,29 @@ class ValidationTests(unittest.TestCase):
             if item["group"] == "ACCOUNT_AUTHENTICATION"
         ]
         self.assertEqual(
-            ["UC-01", "UC-02", "UC-03", "UC-04"],
+            ["UC-01", "UC-02", "UC-03", "UC-04", "UC-05", "UC-05.1", "UC-05.2", "UC-05.3"],
             [item["_display_id"] for item in authentication_cases],
         )
         self.assertEqual(
-            ["Register Account", "Sign In", "Sign Out", "Reset Password"],
+            [
+                "Register Account",
+                "Sign In",
+                "Sign Out",
+                "Reset Password",
+                "Manage Personal Profile",
+                "View Personal Profile",
+                "Update Personal Profile",
+                "Change Password",
+            ],
             [item["name"] for item in authentication_cases],
         )
         self.assertEqual("Visitor", authentication_cases[0]["primary_actor"])
         self.assertIn("Identity Provider", authentication_cases[0]["secondary_actors"])
         self.assertIn("Email Service", authentication_cases[3]["secondary_actors"])
+        self.assertTrue(authentication_cases[4]["abstract"])
+        self.assertTrue(
+            all(item["parent"] == "UC-PROFILE-MANAGE" for item in authentication_cases[5:])
+        )
 
         account_rule = self.project.business_rules["BR-SYSADMIN-USER-ACCOUNT"]
         self.assertNotIn("create", account_rule["description"].lower())
@@ -199,6 +212,66 @@ class ValidationTests(unittest.TestCase):
             ],
             [(item["key"], item["_display_id"]) for item in use_cases],
         )
+
+    def test_hierarchical_display_ids_follow_abstract_parent(self):
+        groups = {"PROJECT": {"key": "PROJECT", "order": 100}}
+        use_cases = [
+            {"key": "UC-PROJECT-CREATE", "group": "PROJECT", "order": 100},
+            {
+                "key": "UC-MEMBERS-MANAGE",
+                "group": "PROJECT",
+                "order": 200,
+                "abstract": True,
+            },
+            {
+                "key": "UC-MEMBER-VIEW",
+                "parent": "UC-MEMBERS-MANAGE",
+                "group": "PROJECT",
+                "order": 210,
+            },
+            {
+                "key": "UC-MEMBER-ADD",
+                "parent": "UC-MEMBERS-MANAGE",
+                "group": "PROJECT",
+                "order": 220,
+            },
+            {"key": "UC-PROJECT-ARCHIVE", "group": "PROJECT", "order": 300},
+        ]
+
+        assign_display_ids(use_cases, "UC", groups)
+
+        self.assertEqual(
+            [
+                ("UC-PROJECT-CREATE", "UC-01"),
+                ("UC-MEMBERS-MANAGE", "UC-02"),
+                ("UC-MEMBER-VIEW", "UC-02.1"),
+                ("UC-MEMBER-ADD", "UC-02.2"),
+                ("UC-PROJECT-ARCHIVE", "UC-03"),
+            ],
+            [(item["key"], item["_display_id"]) for item in use_cases],
+        )
+
+    def test_abstract_parent_is_listed_but_has_no_detail_table(self):
+        root = ROOT / "tests" / "_tmp_abstract_use_case"
+        if root.exists():
+            shutil.rmtree(root)
+        root.mkdir()
+        self.addCleanup(lambda: shutil.rmtree(root, ignore_errors=True))
+        try:
+            generated = _generate_docx(self.project, self.project.use_cases, root, None)
+            document = Document(generated)
+            summary_ids = [row.cells[0].text for row in document.tables[0].rows[1:]]
+            detail_ids = [
+                table.rows[0].cells[1].text.split(" - ", 1)[0]
+                for table in document.tables[1:]
+            ]
+
+            self.assertIn("UC-05", summary_ids)
+            self.assertIn("UC-05.1", summary_ids)
+            self.assertNotIn("UC-05", detail_ids)
+            self.assertIn("UC-05.1", detail_ids)
+        finally:
+            shutil.rmtree(root, ignore_errors=True)
 
     def test_use_case_domain_order_can_differ_from_business_rule_order(self):
         groups = {

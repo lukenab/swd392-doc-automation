@@ -1,0 +1,44 @@
+key: UC-PRODUCT-GOAL-UPDATE
+parent: UC-PRODUCT-GOAL-MANAGE
+group: PRODUCT_BACKLOG
+order: 130
+name: Update Product Goal
+summary: Revise the current Product Goal while preserving project traceability.
+created_by: Nguyen An Binh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: The Product Owner decides that the current Product Goal must be revised.
+description: This use case allows the Product Owner to replace the wording of the current Product Goal.
+preconditions:
+  - The actor holds Product Owner accountability in the project.
+  - The project is active.
+  - A current Product Goal exists.
+postconditions:
+  - The revised Product Goal becomes the project's current Product Goal.
+  - The change is recorded in project activity history.
+normal_flow:
+  - actor: User
+    action: Opens the current Product Goal and chooses to edit it.
+  - actor: System
+    action: Displays the current goal text.
+  - actor: User
+    action: Revises the Product Goal and confirms the change.
+  - actor: System
+    action: Validates and saves the revised Product Goal.
+alternative_flows:
+  - id: AF-01
+    condition: The User cancels before saving.
+    steps:
+      - The system keeps the current Product Goal unchanged.
+exceptions:
+  - id: EX-01
+    description: The actor loses Product Owner accountability before confirmation.
+priority: Should Have
+frequency_of_use: Rare
+business_rules:
+  - BR-PRODUCT-ONE-GOAL
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: Product Goal revision history may be retained for audit purposes.
+assumptions:
+  - The revised goal is communicated to the Scrum Team outside this use case.

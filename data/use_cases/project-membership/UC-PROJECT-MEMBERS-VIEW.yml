@@ -1,0 +1,39 @@
+key: UC-PROJECT-MEMBERS-VIEW
+parent: UC-PROJECT-MEMBERS-MANAGE
+group: PROJECT_MEMBERSHIP
+order: 410
+name: View Project Members
+summary: Review active project members and their project-scoped assignments.
+created_by: Tran Cong Luan
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: A Project Member opens the project member list.
+description: This use case displays the active members, Project Owner, and Scrum accountabilities within one project.
+preconditions:
+  - The User is an active member of the project.
+  - The project is accessible.
+postconditions:
+  - Current project membership information is displayed without modification.
+normal_flow:
+  - actor: User
+    action: Opens the project member list.
+  - actor: System
+    action: Retrieves active members and their project-scoped assignments.
+  - actor: System
+    action: Displays the member list.
+alternative_flows:
+  - id: AF-01
+    condition: The project has no members other than its Project Owner.
+    steps:
+      - The system displays only the Project Owner.
+exceptions:
+  - id: EX-01
+    description: Membership information is temporarily unavailable.
+priority: Must Have
+frequency_of_use: Regular
+business_rules:
+  - BR-PROJECT-MEMBER-ACCESS
+other_information: System-level administrative status is not displayed as a project role.
+assumptions:
+  - Each listed member has an active project membership record.

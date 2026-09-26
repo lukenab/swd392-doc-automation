@@ -1,0 +1,35 @@
+key: UC-PROFILE-VIEW
+parent: UC-PROFILE-MANAGE
+group: ACCOUNT_AUTHENTICATION
+order: 510
+name: View Personal Profile
+summary: Display the signed-in User's personal account and profile information.
+created_by: Nguyen An Binh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: The User opens their personal profile.
+description: This use case allows an authenticated User to review their own profile and account information.
+preconditions:
+  - The User is authenticated with an active account.
+postconditions:
+  - The User's current profile information is displayed without modification.
+normal_flow:
+  - actor: User
+    action: Opens the personal profile page.
+  - actor: System
+    action: Retrieves the profile belonging to the authenticated User.
+  - actor: System
+    action: Displays the User's profile and non-sensitive account information.
+alternative_flows: []
+exceptions:
+  - id: EX-01
+    description: The profile information is temporarily unavailable.
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-AUTH-ACTIVE-ACCOUNT
+  - BR-PROFILE-SELF-ACCESS
+other_information: Password values and password-reset tokens are never displayed.
+assumptions:
+  - The authenticated account has an existing profile.

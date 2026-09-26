@@ -1,0 +1,43 @@
+key: UC-USER-ACCOUNT-REACTIVATE
+parent: UC-USER-ACCOUNTS-MANAGE
+group: SYSTEM_ADMINISTRATION
+order: 130
+name: Reactivate User Account
+summary: Restore authentication access for an eligible suspended User account.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-26
+primary_actor: System Administrator
+secondary_actors: []
+trigger: The System Administrator determines that a suspended account may be restored.
+description: This use case allows an authorized administrator to return a suspended User account to active status.
+preconditions:
+  - The System Administrator is authenticated and authorized.
+  - The target User account is suspended and has not been deleted.
+postconditions:
+  - The target account is active.
+  - The reactivation is recorded in the system audit log.
+normal_flow:
+  - actor: System Administrator
+    action: Selects a suspended User account and requests reactivation.
+  - actor: System
+    action: Displays the account status and requests confirmation.
+  - actor: System Administrator
+    action: Confirms reactivation.
+  - actor: System
+    action: Reactivates the account and records the audit event.
+alternative_flows:
+  - id: AF-01
+    condition: The administrator cancels before confirmation.
+    steps:
+      - The system leaves the account suspended.
+exceptions:
+  - id: EX-01
+    description: The account has been deleted and cannot be reactivated.
+priority: Should Have
+frequency_of_use: Rare
+business_rules:
+  - BR-SYSADMIN-USER-ACCOUNT
+  - BR-AUDIT-EVENT-COMPLETENESS
+other_information: Reactivation does not automatically restore removed project memberships.
+assumptions:
+  - The reason for the original suspension has been resolved.

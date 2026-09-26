@@ -1,0 +1,35 @@
+key: UC-BACKLOG-ITEM-VIEW
+parent: UC-BACKLOG-ITEMS-MANAGE
+group: PRODUCT_BACKLOG
+order: 210
+name: View Product Backlog Item
+summary: Review the current details of a Product Backlog Item.
+created_by: Nguyen An Binh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: A Project Member selects a Product Backlog Item.
+description: This use case displays the item's details, order, estimate, and current Sprint association when available.
+preconditions:
+  - The User is an active member of the project.
+  - The Product Backlog Item exists.
+postconditions:
+  - The item is displayed without modification.
+normal_flow:
+  - actor: User
+    action: Selects a Product Backlog Item.
+  - actor: System
+    action: Retrieves the item's current information.
+  - actor: System
+    action: Displays the item details and related Sprint information.
+alternative_flows: []
+exceptions:
+  - id: EX-01
+    description: The selected item is no longer available.
+priority: Must Have
+frequency_of_use: Very Frequent
+business_rules:
+  - BR-PROJECT-MEMBER-ACCESS
+other_information: Editing is handled by Update Product Backlog Item.
+assumptions:
+  - The User can access the project's Product Backlog.

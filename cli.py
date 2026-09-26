@@ -111,14 +111,25 @@ def main() -> int:
     selected_use_cases = project.use_cases
     if args.use_case:
         wanted = args.use_case.upper()
-        selected_use_cases = [
+        matches = [
             uc
             for uc in project.use_cases
             if uc["key"].upper() == wanted or uc["_display_id"].upper() == wanted
         ]
-        if not selected_use_cases:
+        if not matches:
             print(f"Use Case not found: {args.use_case}", file=sys.stderr)
             return 2
+        selected_keys = {item["key"] for item in matches}
+        changed = True
+        while changed:
+            changed = False
+            for use_case in project.use_cases:
+                if use_case.get("parent") in selected_keys and use_case["key"] not in selected_keys:
+                    selected_keys.add(use_case["key"])
+                    changed = True
+        selected_use_cases = [
+            use_case for use_case in project.use_cases if use_case["key"] in selected_keys
+        ]
 
     try:
         generated = build_outputs(

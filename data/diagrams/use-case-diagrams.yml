@@ -2,7 +2,7 @@ system_name: Project Management System
 
 defaults:
   direction: LR
-  max_use_cases: 10
+  max_use_cases: 14
   show_ids: true
   font_family: Times New Roman
   font_size: 12
@@ -23,28 +23,18 @@ actors:
     side: right
 
 diagrams:
-  - key: overview
-    title: Project Management System Use Case Model
-    auto_include_related_actors: true
-    use_cases:
-      - UC-ACCOUNT-REGISTER
-      - UC-SIGN-IN
-      - UC-PROJECT-CREATE
-      - UC-PRODUCT-GOAL-MANAGE
-      - UC-SPRINT-PLAN
-      - UC-SPRINT-BOARD-REVIEW
-      - UC-WORK-ITEM-COMMENT
-      - UC-SPRINT-PROGRESS-MONITOR
-      - UC-USER-ACCOUNTS-MANAGE
-
   - key: account-authentication
-    title: Account Access and Authentication Use Case Model
+    title: Account Authentication and Profile Use Case Model
     auto_include_related_actors: true
     use_cases:
       - UC-ACCOUNT-REGISTER
       - UC-SIGN-IN
       - UC-SIGN-OUT
       - UC-PASSWORD-RESET
+      - UC-PROFILE-MANAGE
+      - UC-PROFILE-VIEW
+      - UC-PROFILE-UPDATE
+      - UC-PASSWORD-CHANGE
 
   - key: project-membership
     title: Project and Membership Use Case Model
@@ -54,20 +44,32 @@ diagrams:
       - UC-PROJECT-DASHBOARD-VIEW
       - UC-PROJECT-UPDATE
       - UC-PROJECT-MEMBERS-MANAGE
+      - UC-PROJECT-MEMBERS-VIEW
+      - UC-PROJECT-MEMBER-ADD
+      - UC-PROJECT-MEMBER-REMOVE
       - UC-SCRUM-ACCOUNTABILITY-ASSIGN
       - UC-PROJECT-ARCHIVE
       - UC-PROJECT-OWNERSHIP-TRANSFER
       - UC-PROJECT-LEAVE
+      - UC-SIGN-IN
 
   - key: product-backlog
     title: Product Backlog Management Use Case Model
     auto_include_related_actors: true
     use_cases:
       - UC-PRODUCT-GOAL-MANAGE
+      - UC-PRODUCT-GOAL-VIEW
+      - UC-PRODUCT-GOAL-SET
+      - UC-PRODUCT-GOAL-UPDATE
       - UC-BACKLOG-ITEMS-MANAGE
+      - UC-BACKLOG-ITEM-VIEW
+      - UC-BACKLOG-ITEM-CREATE
+      - UC-BACKLOG-ITEM-UPDATE
+      - UC-BACKLOG-ITEM-REMOVE
       - UC-BACKLOG-ORDER
       - UC-BACKLOG-ITEM-REFINE
       - UC-BACKLOG-ITEM-ESTIMATE
+      - UC-SIGN-IN
 
   - key: sprint-management
     title: Sprint Management Use Case Model
@@ -77,34 +79,55 @@ diagrams:
       - UC-SPRINT-START
       - UC-SPRINT-COMPLETE
       - UC-SPRINT-CANCEL
+      - UC-SIGN-IN
 
-  - key: sprint-work
-    title: Sprint Work Management Use Case Model
+  - key: sprint-task-management
+    title: Sprint Board and Task Management Use Case Model
     auto_include_related_actors: true
     use_cases:
       - UC-SPRINT-BOARD-REVIEW
       - UC-SPRINT-TASKS-MANAGE
+      - UC-SPRINT-TASK-VIEW
+      - UC-SPRINT-TASK-CREATE
+      - UC-SPRINT-TASK-UPDATE
+      - UC-SPRINT-TASK-ASSIGN
+      - UC-SPRINT-TASK-DELETE
+      - UC-TASK-DEPENDENCY-ADD
+      - UC-TASK-DEPENDENCY-REMOVE
       - UC-SPRINT-TASK-CLAIM
       - UC-WORK-ITEM-STATUS-UPDATE
-      - UC-SUBTASKS-MANAGE
+      - UC-SIGN-IN
 
-  - key: collaboration-notification
-    title: Collaboration and Notification Use Case Model
+  - key: subtask-management
+    title: Subtask Management Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-SUBTASKS-MANAGE
+      - UC-SUBTASKS-VIEW
+      - UC-SUBTASK-CREATE
+      - UC-SUBTASK-UPDATE
+      - UC-SUBTASK-COMPLETE
+      - UC-SUBTASK-DELETE
+      - UC-SIGN-IN
+
+  - key: collaboration-reporting
+    title: Collaboration Notification and Reporting Use Case Model
     auto_include_related_actors: true
     use_cases:
       - UC-WORK-ITEM-COMMENT
       - UC-WORK-ITEM-ACTIVITY-REVIEW
       - UC-NOTIFICATIONS-REVIEW
-
-  - key: scrum-reporting
-    title: Scrum Reporting Use Case Model
-    auto_include_related_actors: true
-    use_cases:
       - UC-SPRINT-PROGRESS-MONITOR
+      - UC-SIGN-IN
 
   - key: system-administration
     title: System Administration Use Case Model
     auto_include_related_actors: true
     use_cases:
       - UC-USER-ACCOUNTS-MANAGE
+      - UC-USER-ACCOUNTS-SEARCH
+      - UC-USER-ACCOUNT-SUSPEND
+      - UC-USER-ACCOUNT-REACTIVATE
+      - UC-USER-ACCOUNT-DELETE
       - UC-SYSTEM-AUDIT-LOG-REVIEW
+      - UC-SIGN-IN

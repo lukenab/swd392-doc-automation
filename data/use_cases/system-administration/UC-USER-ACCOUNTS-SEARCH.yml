@@ -1,0 +1,41 @@
+key: UC-USER-ACCOUNTS-SEARCH
+parent: UC-USER-ACCOUNTS-MANAGE
+group: SYSTEM_ADMINISTRATION
+order: 110
+name: Search and View User Accounts
+summary: Find an existing system-wide User account and review its administrative status.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-26
+primary_actor: System Administrator
+secondary_actors: []
+trigger: The System Administrator needs to inspect a User account.
+description: This use case allows an authorized administrator to search for accounts and review administrative information without accessing project content.
+preconditions:
+  - The System Administrator is authenticated and authorized.
+postconditions:
+  - Matching account information is displayed without modification.
+normal_flow:
+  - actor: System Administrator
+    action: Opens user account administration and enters search criteria.
+  - actor: System
+    action: Displays matching User accounts.
+  - actor: System Administrator
+    action: Selects an account.
+  - actor: System
+    action: Displays its administrative status and relevant account metadata.
+alternative_flows:
+  - id: AF-01
+    condition: No account matches the search criteria.
+    steps:
+      - The system reports that no matching account was found.
+exceptions:
+  - id: EX-01
+    description: Account administration data is temporarily unavailable.
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-SYSADMIN-USER-ACCOUNT
+  - BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
+other_information: Project content is not exposed through system account administration.
+assumptions:
+  - The administrator searches by approved account identifiers.

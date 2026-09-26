@@ -1,0 +1,44 @@
+key: UC-BACKLOG-ITEM-UPDATE
+parent: UC-BACKLOG-ITEMS-MANAGE
+group: PRODUCT_BACKLOG
+order: 230
+name: Update Product Backlog Item
+summary: Revise the editable details of an existing Product Backlog Item.
+created_by: Nguyen An Binh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: The Product Owner chooses to edit a Product Backlog Item.
+description: This use case allows the Product Owner to keep a Product Backlog Item clear and current.
+preconditions:
+  - The actor holds Product Owner accountability in the project.
+  - The project is active.
+  - The Product Backlog Item exists.
+postconditions:
+  - Valid changes are stored on the selected Product Backlog Item.
+  - The update is recorded in item activity history.
+normal_flow:
+  - actor: User
+    action: Opens an existing Product Backlog Item for editing.
+  - actor: System
+    action: Displays the editable item values.
+  - actor: User
+    action: Revises the desired values and submits the item.
+  - actor: System
+    action: Validates and saves the changes.
+alternative_flows:
+  - id: AF-01
+    condition: The item belongs to an active Sprint.
+    steps:
+      - The system limits changes that would invalidate active Sprint planning.
+exceptions:
+  - id: EX-01
+    description: The item was changed by another User before the update was submitted.
+priority: Must Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-PRODUCT-OWNER-BACKLOG
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: Reordering and estimation are handled by separate use cases.
+assumptions:
+  - Concurrent updates are detected by the system.

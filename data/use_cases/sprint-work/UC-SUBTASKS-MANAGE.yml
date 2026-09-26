@@ -2,6 +2,7 @@ key: UC-SUBTASKS-MANAGE
 group: SPRINT_WORK
 order: 500
 name: Manage Subtasks
+abstract: true
 summary: Break a Sprint task into smaller trackable units and maintain them.
 created_by: Nguyen Quoc Khanh
 date_created: 2026-09-25

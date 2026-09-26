@@ -1,0 +1,42 @@
+key: UC-TASK-DEPENDENCY-ADD
+parent: UC-SPRINT-TASKS-MANAGE
+group: SPRINT_WORK
+order: 260
+name: Add Task Dependency
+summary: Define a valid dependency between two tasks in the same project.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: A Developer identifies that one task depends on another task.
+description: This use case allows a Developer to add a dependency while preventing self-dependency and cycles.
+preconditions:
+  - The User holds Developer accountability in the project.
+  - Both tasks exist in the same project.
+postconditions:
+  - A valid dependency relationship is stored between the selected tasks.
+normal_flow:
+  - actor: User
+    action: Opens a Sprint Task and chooses to add a dependency.
+  - actor: System
+    action: Displays eligible tasks in the same project.
+  - actor: User
+    action: Selects the dependency target and confirms the relationship.
+  - actor: System
+    action: Validates and stores the dependency.
+alternative_flows: []
+exceptions:
+  - id: EX-01
+    description: The selected relationship would create a direct or indirect cycle.
+  - id: EX-02
+    description: The User selects the same task as its own dependency.
+priority: Should Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-SPRINT-TASK-DEVELOPER
+  - BR-TASK-DEPENDENCY-ACYCLIC
+  - BR-TASK-NO-SELF-DEPENDENCY
+  - BR-TASK-DEPENDENCY-SAME-PROJECT
+other_information: Dependency scheduling automation is outside Iteration 1.
+assumptions:
+  - The tool models task dependencies as directed relationships.

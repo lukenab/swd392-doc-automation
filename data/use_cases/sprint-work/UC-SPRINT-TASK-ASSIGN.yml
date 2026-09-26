@@ -1,0 +1,44 @@
+key: UC-SPRINT-TASK-ASSIGN
+parent: UC-SPRINT-TASKS-MANAGE
+group: SPRINT_WORK
+order: 240
+name: Assign Sprint Task
+summary: Assign or reassign a Sprint Task to an active Developer in the project.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: A Developer chooses to assign or reassign a Sprint Task.
+description: This use case records responsibility for a Sprint Task within the active Sprint.
+preconditions:
+  - The User holds Developer accountability in the project.
+  - The Sprint Task belongs to the active Sprint.
+  - The selected assignee is an active Developer in the project.
+postconditions:
+  - The Sprint Task has the confirmed assignee.
+  - The assignment change is recorded in activity history.
+normal_flow:
+  - actor: User
+    action: Opens the task assignment control.
+  - actor: System
+    action: Displays eligible Developers.
+  - actor: User
+    action: Selects an assignee and confirms the assignment.
+  - actor: System
+    action: Saves the assignment and records the change.
+alternative_flows:
+  - id: AF-01
+    condition: The User clears the current assignment.
+    steps:
+      - The system marks the Sprint Task as unassigned.
+exceptions:
+  - id: EX-01
+    description: The selected assignee is no longer active in the project.
+priority: Should Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-SPRINT-TASK-ACTIVE-SPRINT
+  - BR-SPRINT-TASK-DEVELOPER
+other_information: A Developer may claim an unassigned task through Claim Sprint Task.
+assumptions:
+  - Sprint Task assignment is limited to one assignee in Iteration 1.

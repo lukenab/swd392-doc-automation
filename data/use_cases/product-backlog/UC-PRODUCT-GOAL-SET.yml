@@ -1,0 +1,40 @@
+key: UC-PRODUCT-GOAL-SET
+parent: UC-PRODUCT-GOAL-MANAGE
+group: PRODUCT_BACKLOG
+order: 120
+name: Set Product Goal
+summary: Define the initial Product Goal for a Scrum project.
+created_by: Nguyen An Binh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: The Product Owner chooses to define a Product Goal for a project that has none.
+description: This use case allows the Product Owner to establish the project's current long-term Product Goal.
+preconditions:
+  - The actor holds Product Owner accountability in the project.
+  - The project is active.
+  - The project does not yet have a Product Goal.
+postconditions:
+  - The project has one current Product Goal.
+  - The creation is recorded in project activity history.
+normal_flow:
+  - actor: User
+    action: Chooses to define the Product Goal.
+  - actor: System
+    action: Requests the desired future product outcome.
+  - actor: User
+    action: Enters the Product Goal and confirms it.
+  - actor: System
+    action: Validates and stores the Product Goal.
+alternative_flows: []
+exceptions:
+  - id: EX-01
+    description: The submitted Product Goal is empty.
+priority: Must Have
+frequency_of_use: Rare
+business_rules:
+  - BR-PRODUCT-ONE-GOAL
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: A later revision is handled by Update Product Goal.
+assumptions:
+  - The Product Goal is stored as plain text in Iteration 1.

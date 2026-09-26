@@ -29,7 +29,7 @@ def assign_display_ids(
     groups: dict[str, dict[str, Any]] | None = None,
     group_order_field: str = "order",
 ) -> None:
-    """Sort items by domain and item order, then assign presentation-only IDs."""
+    """Sort items and assign stable presentation IDs, including child IDs."""
     groups = groups or {}
 
     def sort_key(item: dict[str, Any]) -> tuple[int, Any, int, Any, str]:
@@ -47,8 +47,47 @@ def assign_display_ids(
         )
 
     items.sort(key=sort_key)
-    for index, item in enumerate(items, start=1):
-        item["_display_id"] = f"{prefix}-{index:02d}"
+
+    # Business Rules and legacy flat Use Case collections keep sequential IDs.
+    if not any(item.get("parent") for item in items):
+        for index, item in enumerate(items, start=1):
+            item["_display_id"] = f"{prefix}-{index:02d}"
+        return
+
+    by_key = {str(item.get("key")): item for item in items if item.get("key")}
+    children: dict[str, list[dict[str, Any]]] = {}
+    for item in items:
+        parent = item.get("parent")
+        if parent:
+            children.setdefault(str(parent), []).append(item)
+
+    ordered: list[dict[str, Any]] = []
+    visited: set[str] = set()
+
+    def visit(item: dict[str, Any], display_id: str) -> None:
+        key = str(item.get("key", ""))
+        if key in visited:
+            return
+        visited.add(key)
+        item["_display_id"] = display_id
+        ordered.append(item)
+        for child_index, child in enumerate(children.get(key, []), start=1):
+            visit(child, f"{display_id}.{child_index}")
+
+    roots = [
+        item
+        for item in items
+        if not item.get("parent") or str(item.get("parent")) not in by_key
+    ]
+    for root_index, root in enumerate(roots, start=1):
+        visit(root, f"{prefix}-{root_index:02d}")
+
+    # Keep invalid cycles visible so the validator can report them.
+    for item in items:
+        if str(item.get("key", "")) not in visited:
+            visit(item, f"{prefix}-{len(roots) + 1:02d}")
+
+    items[:] = ordered
 
 
 def load_project(data_dir: Path) -> ProjectData:

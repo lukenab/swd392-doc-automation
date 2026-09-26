@@ -115,6 +115,8 @@ Quy tắc đặt tên:
 - `key`: định danh ổn định của Use Case.
 - `group`: domain chứa Use Case.
 - `order`: vị trí của Use Case bên trong domain.
+- `abstract: true`: đánh dấu Use Case cha chỉ dùng để nhóm hành vi.
+- `parent`: semantic key của Use Case cha đối với một Use Case con.
 - Các trường còn lại: nội dung dùng để generate tài liệu.
 
 ```yaml
@@ -147,6 +149,36 @@ other_information: ""
 assumptions: []
 ```
 
+### Use Case cha và Use Case con
+
+Với một mục tiêu lớn như `Manage Project Members`, khai báo một Use Case cha
+abstract và để mỗi thao tác độc lập trong một file YAML riêng.
+
+```yaml
+key: UC-PROJECT-MEMBERS-MANAGE
+group: PROJECT_MEMBERSHIP
+order: 400
+name: Manage Project Members
+abstract: true
+```
+
+```yaml
+key: UC-PROJECT-MEMBERS-VIEW
+parent: UC-PROJECT-MEMBERS-MANAGE
+group: PROJECT_MEMBERSHIP
+order: 410
+name: View Project Members
+```
+
+Quy tắc:
+
+- Parent và child phải thuộc cùng domain.
+- Parent phải khai báo `abstract: true`.
+- Mỗi child có specification và file YAML riêng.
+- Parent xuất hiện trong bảng tổng hợp nhưng không sinh bảng description chi tiết.
+- Child được sinh ID dạng `UC-09.1`, `UC-09.2`,... theo `order`.
+- Quan hệ parent-child là phân cấp/generalization, không phải `include`.
+
 Các giá trị tham chiếu phải tồn tại trước:
 
 - Actor trong `data/actors.yml`.
@@ -177,7 +209,8 @@ py cli.py build
 - Không cần thay đổi semantic key khi thay đổi `order`.
 
 CLI sắp xếp theo `group.order`, sau đó theo `order`. Trong DOCX, trường
-`UC ID and Name` vẫn có dạng `UC-05 - <Use Case Name>`.
+`UC ID and Name` có dạng `UC-05 - <Use Case Name>` hoặc
+`UC-05.1 - <Child Use Case Name>`.
 
 ### Tạo domain mới
 

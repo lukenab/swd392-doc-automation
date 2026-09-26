@@ -1,0 +1,43 @@
+key: UC-SPRINT-TASK-DELETE
+parent: UC-SPRINT-TASKS-MANAGE
+group: SPRINT_WORK
+order: 250
+name: Delete Sprint Task
+summary: Remove an eligible unstarted Sprint Task after checking dependency impact.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: A Developer requests deletion of a Sprint Task.
+description: This use case allows a Developer to remove an unstarted task that can be deleted without invalidating task dependencies.
+preconditions:
+  - The User holds Developer accountability in the project.
+  - The Sprint Task belongs to the active Sprint and has not started.
+postconditions:
+  - The Sprint Task is removed from active Sprint work.
+  - The deletion is recorded in activity history.
+normal_flow:
+  - actor: User
+    action: Selects a Sprint Task and requests deletion.
+  - actor: System
+    action: Displays the task's dependency impact and asks for confirmation.
+  - actor: User
+    action: Confirms deletion.
+  - actor: System
+    action: Deletes the task and records the action.
+alternative_flows:
+  - id: AF-01
+    condition: Other tasks depend on the selected task.
+    steps:
+      - The system requires the dependencies to be removed before deletion.
+exceptions:
+  - id: EX-01
+    description: The Sprint Task has already entered execution.
+priority: Should Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-SPRINT-TASK-ACTIVE-SPRINT
+  - BR-SPRINT-TASK-DEVELOPER
+other_information: Historical audit information is preserved after deletion.
+assumptions:
+  - Deletion is a soft removal from active Sprint work.

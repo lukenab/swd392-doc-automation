@@ -1,0 +1,46 @@
+key: UC-PROJECT-MEMBER-ADD
+parent: UC-PROJECT-MEMBERS-MANAGE
+group: PROJECT_MEMBERSHIP
+order: 420
+name: Add Project Member
+summary: Add an existing active User to an active project as a Project Member.
+created_by: Tran Cong Luan
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: The Project Owner chooses to add a member to the project.
+description: This use case allows the Project Owner to grant an existing active User membership in the selected project.
+preconditions:
+  - The actor is the current Project Owner.
+  - The project is active.
+  - The target User account is active.
+postconditions:
+  - The target User becomes an active Project Member.
+  - The membership change is recorded in project activity history.
+normal_flow:
+  - actor: User
+    action: Opens project membership management and chooses to add a member.
+  - actor: System
+    action: Requests an existing User account.
+  - actor: User
+    action: Selects the User and confirms the addition.
+  - actor: System
+    action: Verifies that the User is active and is not already a member.
+  - actor: System
+    action: Creates the membership and refreshes the member list.
+alternative_flows:
+  - id: AF-01
+    condition: The selected User is already a project member.
+    steps:
+      - The system reports that no new membership is required.
+exceptions:
+  - id: EX-01
+    description: The selected User account becomes inactive before confirmation.
+priority: Must Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-ACTIVE-USER-REQUIRED
+  - BR-PROJECT-OWNER-ADMINISTRATION
+other_information: Scrum accountability is assigned separately after membership is created.
+assumptions:
+  - User discovery is limited to accounts that may be added to the project.

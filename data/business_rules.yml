@@ -97,7 +97,7 @@ business_rules:
   - key: BR-SPRINT-TASK-DEVELOPER
     group: SPRINT_WORK
     order: 200
-    description: Only an active Developer in the project may claim a Sprint Work Item or update its execution status.
+    description: Only an active Developer in the project may create, update, assign, claim, or remove Sprint Tasks, manage their dependencies, or update Sprint Work Item execution status.
 
   - key: BR-WORK-ITEM-STATUS
     group: SPRINT_WORK
@@ -118,6 +118,11 @@ business_rules:
     group: SPRINT_WORK
     order: 600
     description: A task may only depend on another task within the same project.
+
+  - key: BR-SUBTASK-SINGLE-LEVEL
+    group: SPRINT_WORK
+    order: 700
+    description: A subtask cannot contain another level of subtasks in Iteration 1.
 
   - key: BR-COMMENT-PROJECT-MEMBER
     group: COLLABORATION_NOTIFICATION
@@ -152,7 +157,7 @@ business_rules:
   - key: BR-SYSADMIN-USER-ACCOUNT
     group: SYSTEM_ADMINISTRATION
     order: 100
-    description: Only a System Administrator can suspend, reactivate, or delete existing system user accounts.
+    description: Only a System Administrator can search, review, suspend, reactivate, or delete existing system user accounts.
 
   - key: BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
     group: SYSTEM_ADMINISTRATION
@@ -223,3 +228,8 @@ business_rules:
     group: ACCOUNT_AUTHENTICATION
     order: 800
     description: Signing out invalidates only the current session; other active sessions of the same User remain unaffected.
+
+  - key: BR-PROFILE-SELF-ACCESS
+    group: ACCOUNT_AUTHENTICATION
+    order: 900
+    description: An authenticated User may view or update only their own personal profile through profile management functions.

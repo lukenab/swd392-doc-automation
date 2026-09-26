@@ -1,0 +1,44 @@
+key: UC-SUBTASK-DELETE
+parent: UC-SUBTASKS-MANAGE
+group: SPRINT_WORK
+order: 550
+name: Delete Subtask
+summary: Remove an eligible subtask and recalculate parent-task progress.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: A Developer requests removal of a subtask that is no longer required.
+description: This use case allows a Developer to remove an incomplete subtask from an active Sprint Task.
+preconditions:
+  - The User holds Developer accountability in the project.
+  - The subtask belongs to a task in the active Sprint.
+  - The subtask is incomplete.
+postconditions:
+  - The subtask is removed from the parent task.
+  - Parent-task progress is recalculated.
+normal_flow:
+  - actor: User
+    action: Selects an incomplete subtask and requests deletion.
+  - actor: System
+    action: Requests confirmation.
+  - actor: User
+    action: Confirms deletion.
+  - actor: System
+    action: Removes the subtask and recalculates parent-task progress.
+alternative_flows:
+  - id: AF-01
+    condition: The User cancels deletion.
+    steps:
+      - The system leaves the subtask unchanged.
+exceptions:
+  - id: EX-01
+    description: The subtask was completed or the Sprint ended before confirmation.
+priority: Should Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-SPRINT-TASK-ACTIVE-SPRINT
+  - BR-SPRINT-TASK-DEVELOPER
+other_information: Historical activity referring to the removed subtask remains available.
+assumptions:
+  - Deletion is a soft removal from active Sprint work.

@@ -2,6 +2,7 @@ key: UC-SPRINT-TASKS-MANAGE
 group: SPRINT_WORK
 order: 200
 name: Manage Sprint Tasks
+abstract: true
 summary: Create, edit, assign, prioritize, and remove tasks within an active Sprint.
 created_by: Nguyen Quoc Khanh
 date_created: 2026-09-25
@@ -48,6 +49,6 @@ business_rules:
   - BR-TASK-DEPENDENCY-ACYCLIC
   - BR-TASK-NO-SELF-DEPENDENCY
   - BR-TASK-DEPENDENCY-SAME-PROJECT
-other_information: Task dependency management is included here rather than modeled as a separate use case.
+other_information: This abstract use case groups concrete Sprint Task and task-dependency operations.
 assumptions:
   - A task belongs to one Sprint Backlog Item.

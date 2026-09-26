@@ -1,0 +1,43 @@
+key: UC-BACKLOG-ITEM-CREATE
+parent: UC-BACKLOG-ITEMS-MANAGE
+group: PRODUCT_BACKLOG
+order: 220
+name: Create Product Backlog Item
+summary: Add a new item to the Product Backlog.
+created_by: Nguyen An Binh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: The Product Owner chooses to add a Product Backlog Item.
+description: This use case allows the Product Owner to create a new Product Backlog Item with its initial details.
+preconditions:
+  - The actor holds Product Owner accountability in the project.
+  - The project is active.
+postconditions:
+  - A new Product Backlog Item is stored in the Product Backlog.
+  - The creation is recorded in item activity history.
+normal_flow:
+  - actor: User
+    action: Chooses to create a Product Backlog Item.
+  - actor: System
+    action: Requests the title, description, acceptance criteria, and item type.
+  - actor: User
+    action: Provides the required information and confirms creation.
+  - actor: System
+    action: Validates and stores the new item.
+alternative_flows:
+  - id: AF-01
+    condition: The User saves incomplete information as a draft item.
+    steps:
+      - The system stores the item but does not mark it ready for Sprint planning.
+exceptions:
+  - id: EX-01
+    description: Required identifying information is missing.
+priority: Must Have
+frequency_of_use: Frequent
+business_rules:
+  - BR-PRODUCT-OWNER-BACKLOG
+  - BR-PROJECT-ARCHIVED-READ-ONLY
+other_information: Estimation is handled separately by Estimate Backlog Item.
+assumptions:
+  - Product Backlog Items use system-generated identifiers.

@@ -1,0 +1,45 @@
+key: UC-TASK-DEPENDENCY-REMOVE
+parent: UC-SPRINT-TASKS-MANAGE
+group: SPRINT_WORK
+order: 270
+name: Remove Task Dependency
+summary: Remove an existing dependency relationship between two tasks.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: A Developer determines that an existing task dependency is no longer required.
+description: This use case allows a Developer to remove a stored dependency without deleting either task.
+preconditions:
+  - The User holds Developer accountability in the project.
+  - The selected dependency exists.
+postconditions:
+  - The selected dependency relationship no longer affects the tasks.
+  - The removal is recorded in work item activity.
+normal_flow:
+  - actor: User
+    action: Opens a Sprint Task and selects an existing dependency.
+  - actor: User
+    action: Requests removal of the dependency.
+  - actor: System
+    action: Requests confirmation and displays the affected tasks.
+  - actor: User
+    action: Confirms removal.
+  - actor: System
+    action: Removes the relationship and records the change.
+alternative_flows:
+  - id: AF-01
+    condition: The User cancels before confirmation.
+    steps:
+      - The system leaves the dependency unchanged.
+exceptions:
+  - id: EX-01
+    description: The dependency was already removed by another User.
+priority: Should Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-SPRINT-TASK-DEVELOPER
+  - BR-TASK-DEPENDENCY-SAME-PROJECT
+other_information: Removing a dependency does not modify either task's status.
+assumptions:
+  - The User understands the planning impact of the removal.

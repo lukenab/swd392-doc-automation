@@ -54,6 +54,14 @@ def _use_case_id(use_case: dict[str, Any]) -> str:
     return str(use_case["_display_id"])
 
 
+def _is_abstract(use_case: dict[str, Any]) -> bool:
+    return use_case.get("abstract") is True
+
+
+def _concrete_use_cases(use_cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [use_case for use_case in use_cases if not _is_abstract(use_case)]
+
+
 def _group_name(project: ProjectData, item: dict[str, Any]) -> str:
     return str(project.groups[item["group"]]["name"])
 
@@ -153,7 +161,7 @@ def _generate_markdown(project: ProjectData, use_cases: list[dict[str, Any]], ou
 
     details_lines = ["# Use Case Descriptions", ""]
     current_group = None
-    for use_case in use_cases:
+    for use_case in _concrete_use_cases(use_cases):
         if use_case["group"] != current_group:
             current_group = use_case["group"]
             details_lines.extend([f"## {_group_name(project, use_case)}", ""])
@@ -468,7 +476,7 @@ def _generate_docx(
     _set_table_column_widths(summary_table, widths)
     _style_table(summary_table)
 
-    for use_case in use_cases:
+    for use_case in _concrete_use_cases(use_cases):
         heading = document.add_heading(f"{_use_case_id(use_case)} - {use_case['name']}", level=2)
         heading.paragraph_format.space_before = Pt(12)
         heading.paragraph_format.space_after = Pt(6)
@@ -614,19 +622,27 @@ def _generate_plantuml(project: ProjectData, use_cases: list[dict[str, Any]], ou
                 f'  package "{_group_name(project, use_case)}" '
                 f'as DOMAIN_{_plantuml_alias(current_group)} {{'
             )
+        stereotype = " <<abstract>>" if _is_abstract(use_case) else ""
         lines.append(
             f'    usecase "{_use_case_id(use_case)}\\n{use_case["name"]}" '
-            f'as {_plantuml_alias(use_case["key"])}'
+            f'as {_plantuml_alias(use_case["key"])}{stereotype}'
         )
     if current_group is not None:
         lines.append("  }")
     lines.append("}")
     lines.append("")
     for use_case in use_cases:
+        if _is_abstract(use_case):
+            continue
         use_case_alias = _plantuml_alias(use_case["key"])
         actors = [use_case["primary_actor"], *(use_case.get("secondary_actors") or [])]
         for actor_name in dict.fromkeys(actors):
             lines.append(f"ACT_{_plantuml_alias(actor_name)} --> {use_case_alias}")
+        parent = use_case.get("parent")
+        if parent:
+            lines.append(
+                f"{use_case_alias} -|> {_plantuml_alias(str(parent))}"
+            )
     lines.extend(["", "@enduml", ""])
 
     output_path = output_dir / "use-case-diagram.puml"

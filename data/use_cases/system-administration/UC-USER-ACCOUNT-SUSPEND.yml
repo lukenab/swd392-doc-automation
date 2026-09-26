@@ -1,0 +1,48 @@
+key: UC-USER-ACCOUNT-SUSPEND
+parent: UC-USER-ACCOUNTS-MANAGE
+group: SYSTEM_ADMINISTRATION
+order: 120
+name: Suspend User Account
+summary: Prevent an eligible User account from establishing new authenticated sessions.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-26
+primary_actor: System Administrator
+secondary_actors: []
+trigger: The System Administrator determines that a User account must be suspended.
+description: This use case allows an authorized administrator to suspend an eligible account and record the reason.
+preconditions:
+  - The System Administrator is authenticated and authorized.
+  - The target User account is active.
+  - The target account is not protected by ownership or last-administrator constraints.
+postconditions:
+  - The target account is suspended.
+  - The suspension reason and actor are recorded in the system audit log.
+normal_flow:
+  - actor: System Administrator
+    action: Selects an active User account and requests suspension.
+  - actor: System
+    action: Displays the impact and requests a reason and confirmation.
+  - actor: System Administrator
+    action: Provides a reason and confirms suspension.
+  - actor: System
+    action: Suspends the account and records the audit event.
+alternative_flows:
+  - id: AF-01
+    condition: The administrator cancels before confirmation.
+    steps:
+      - The system leaves the account active.
+exceptions:
+  - id: EX-01
+    description: The account is the current Project Owner of an active project.
+  - id: EX-02
+    description: The account is the last active System Administrator.
+priority: Must Have
+frequency_of_use: Rare
+business_rules:
+  - BR-SYSADMIN-USER-ACCOUNT
+  - BR-OWNER-ACCOUNT-DELETION-GUARD
+  - BR-LAST-ADMINISTRATOR-PROTECTION
+  - BR-AUDIT-EVENT-COMPLETENESS
+other_information: Existing session invalidation policy is enforced by the authentication subsystem.
+assumptions:
+  - The administrator has verified the reason for suspension.

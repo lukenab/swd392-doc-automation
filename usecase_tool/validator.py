@@ -48,6 +48,9 @@ def validate_project(project: ProjectData) -> list[str]:
         return errors
 
     keys = [str(uc.get("key", "")) for uc in project.use_cases]
+    use_cases_by_key = {
+        str(uc.get("key")): uc for uc in project.use_cases if uc.get("key")
+    }
     for duplicated_key, count in Counter(keys).items():
         if duplicated_key and count > 1:
             errors.append(f"Duplicate Use Case key: {duplicated_key}.")
@@ -165,6 +168,26 @@ def validate_project(project: ProjectData) -> list[str]:
         if use_case.get("order") is not None and not isinstance(use_case.get("order"), int):
             errors.append(f"{use_case_key}: order must be an integer.")
 
+        if "abstract" in use_case and not isinstance(use_case.get("abstract"), bool):
+            errors.append(f"{use_case_key}: abstract must be true or false.")
+
+        parent_key = use_case.get("parent")
+        if parent_key:
+            parent = use_cases_by_key.get(str(parent_key))
+            if parent is None:
+                errors.append(f"{use_case_key}: unknown parent Use Case '{parent_key}'.")
+            elif parent is use_case:
+                errors.append(f"{use_case_key}: a Use Case cannot be its own parent.")
+            else:
+                if parent.get("group") != use_case.get("group"):
+                    errors.append(
+                        f"{use_case_key}: parent '{parent_key}' must belong to the same domain."
+                    )
+                if parent.get("abstract") is not True:
+                    errors.append(
+                        f"{use_case_key}: parent '{parent_key}' must declare abstract: true."
+                    )
+
         primary_actor = use_case.get("primary_actor")
         if primary_actor and primary_actor not in project.actors:
             errors.append(f"{use_case_key}: unknown primary actor '{primary_actor}'.")
@@ -250,5 +273,31 @@ def validate_project(project: ProjectData) -> list[str]:
         created_date = use_case.get("date_created")
         if created_date and not isinstance(created_date, (str, date)):
             errors.append(f"{use_case_key}: date_created must be a date or ISO date string.")
+
+    child_counts = Counter(
+        str(use_case.get("parent"))
+        for use_case in project.use_cases
+        if use_case.get("parent")
+    )
+    for use_case in project.use_cases:
+        if use_case.get("abstract") is True and child_counts[str(use_case.get("key"))] == 0:
+            errors.append(
+                f"{use_case.get('key')}: abstract Use Case must have at least one child."
+            )
+
+    for use_case in project.use_cases:
+        start_key = str(use_case.get("key", ""))
+        seen: set[str] = set()
+        current = use_case
+        while current.get("parent"):
+            current_key = str(current.get("key", ""))
+            if current_key in seen:
+                errors.append(f"{start_key}: parent relationship contains a cycle.")
+                break
+            seen.add(current_key)
+            parent = use_cases_by_key.get(str(current.get("parent")))
+            if parent is None:
+                break
+            current = parent
 
     return errors

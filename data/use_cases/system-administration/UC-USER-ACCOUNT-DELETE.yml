@@ -1,0 +1,48 @@
+key: UC-USER-ACCOUNT-DELETE
+parent: UC-USER-ACCOUNTS-MANAGE
+group: SYSTEM_ADMINISTRATION
+order: 140
+name: Delete User Account
+summary: Remove an eligible User account while preserving required audit history.
+created_by: Nguyen Quoc Khanh
+date_created: 2026-09-26
+primary_actor: System Administrator
+secondary_actors: []
+trigger: The System Administrator determines that an eligible User account must be deleted.
+description: This use case allows an authorized administrator to delete a User account after ownership and administrator safeguards are satisfied.
+preconditions:
+  - The System Administrator is authenticated and authorized.
+  - The target User account exists.
+  - The target account is not a current Project Owner and is not the last active System Administrator.
+postconditions:
+  - The User account can no longer authenticate.
+  - Required audit and historical attribution data are preserved.
+normal_flow:
+  - actor: System Administrator
+    action: Selects a User account and requests deletion.
+  - actor: System
+    action: Displays ownership, membership, and administrative impact.
+  - actor: System Administrator
+    action: Provides a reason and confirms deletion.
+  - actor: System
+    action: Deletes the account and records the audit event.
+alternative_flows:
+  - id: AF-01
+    condition: The administrator cancels before confirmation.
+    steps:
+      - The system leaves the account unchanged.
+exceptions:
+  - id: EX-01
+    description: The account is the current Project Owner of an active project.
+  - id: EX-02
+    description: The account is the last active System Administrator.
+priority: Should Have
+frequency_of_use: Rare
+business_rules:
+  - BR-SYSADMIN-USER-ACCOUNT
+  - BR-OWNER-ACCOUNT-DELETION-GUARD
+  - BR-LAST-ADMINISTRATOR-PROTECTION
+  - BR-AUDIT-EVENT-COMPLETENESS
+other_information: Deletion preserves immutable audit records and historical work attribution.
+assumptions:
+  - Account deletion follows the project's approved data-retention policy.

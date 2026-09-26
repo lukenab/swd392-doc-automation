@@ -1,0 +1,43 @@
+key: UC-PROFILE-UPDATE
+parent: UC-PROFILE-MANAGE
+group: ACCOUNT_AUTHENTICATION
+order: 520
+name: Update Personal Profile
+summary: Update editable personal profile information for the signed-in User.
+created_by: Nguyen An Binh
+date_created: 2026-09-26
+primary_actor: User
+secondary_actors: []
+trigger: The User chooses to edit their personal profile.
+description: This use case allows an authenticated User to update their own editable profile information.
+preconditions:
+  - The User is authenticated with an active account.
+postconditions:
+  - Valid profile changes are stored for the authenticated User.
+normal_flow:
+  - actor: User
+    action: Opens profile editing.
+  - actor: System
+    action: Displays the current editable profile values.
+  - actor: User
+    action: Changes the desired values and submits the profile.
+  - actor: System
+    action: Validates and saves the profile changes.
+  - actor: System
+    action: Displays the updated profile.
+alternative_flows:
+  - id: AF-01
+    condition: The User cancels before saving.
+    steps:
+      - The system discards the unsaved changes.
+exceptions:
+  - id: EX-01
+    description: One or more submitted values do not satisfy the configured format or length constraints.
+priority: Should Have
+frequency_of_use: Occasional
+business_rules:
+  - BR-AUTH-ACTIVE-ACCOUNT
+  - BR-PROFILE-SELF-ACCESS
+other_information: Changing the account password is handled by Change Password.
+assumptions:
+  - Editable profile fields are configured consistently for all Users.

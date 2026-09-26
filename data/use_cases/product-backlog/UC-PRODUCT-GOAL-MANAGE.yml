@@ -2,6 +2,7 @@ key: UC-PRODUCT-GOAL-MANAGE
 group: PRODUCT_BACKLOG
 order: 100
 name: Manage Product Goal
+abstract: true
 summary: Establish and maintain the project's current long-term Product Goal.
 created_by: Nguyen An Binh
 date_created: 2026-09-25

@@ -47,9 +47,9 @@ major_features:
   - key: FE-10
     order: 1000
     name: Account and Audit Trail Management
-    description: Administer existing user accounts and review a security-focused system audit log for account and ownership events.
+    description: Search, review, suspend, reactivate, and delete existing user accounts, and review a security-focused system audit log for account and ownership events.
 
   - key: FE-11
     order: 1100
     name: Account Registration and Authentication
-    description: Register a system-wide account, sign in using email and password or Google, sign out, and reset a forgotten password.
+    description: Register a system-wide account, sign in using email and password or Google, sign out, reset a forgotten password, and maintain the signed-in User's personal profile.

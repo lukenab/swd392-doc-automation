@@ -2,6 +2,7 @@ key: UC-USER-ACCOUNTS-MANAGE
 group: SYSTEM_ADMINISTRATION
 order: 100
 name: Manage User Accounts
+abstract: true
 summary: Review, suspend, reactivate, and delete existing system-wide user accounts.
 created_by: Nguyen Quoc Khanh
 date_created: 2026-09-25
