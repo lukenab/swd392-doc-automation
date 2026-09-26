@@ -5,7 +5,7 @@ name: Manage Product Backlog Items
 summary: Create, review, update, and remove Product Backlog Items.
 created_by: Nguyen An Binh
 date_created: 2026-09-25
-primary_actor: Product Owner
+primary_actor: User
 secondary_actors: []
 trigger: The Product Owner opens the Product Backlog to maintain its items.
 description: >
@@ -18,15 +18,15 @@ postconditions:
   - The Product Backlog reflects the confirmed changes.
   - Changed items remain traceable in activity history.
 normal_flow:
-  - actor: Product Owner
+  - actor: User
     action: Opens the Product Backlog.
   - actor: System
     action: Displays current items in Product Backlog order.
-  - actor: Product Owner
+  - actor: User
     action: Creates an item or selects an existing item to review or update.
   - actor: System
     action: Requests the item's title, description, acceptance criteria, and type.
-  - actor: Product Owner
+  - actor: User
     action: Provides or updates the item information and confirms the change.
   - actor: System
     action: Validates, saves, and displays the updated Product Backlog.

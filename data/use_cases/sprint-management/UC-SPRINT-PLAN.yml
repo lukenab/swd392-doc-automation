@@ -5,9 +5,8 @@ name: Plan Sprint
 summary: Prepare a Draft Sprint with a proposed Sprint Goal and selected Product Backlog Items.
 created_by: Nguyen Tan Trung
 date_created: 2026-09-25
-primary_actor: Product Owner
-secondary_actors:
-  - Developer
+primary_actor: User
+secondary_actors: []
 trigger: The Scrum Team is ready to prepare the next Sprint.
 description: >
   This use case allows the Product Owner and Developers to prepare a Draft Sprint,
@@ -21,16 +20,16 @@ postconditions:
   - A Draft Sprint exists with a proposed Sprint Goal, dates, and selected backlog items.
   - Selected items are associated with the Draft Sprint.
 normal_flow:
-  - actor: Product Owner
-    action: Starts Sprint planning and proposes the Sprint Goal and date range.
+  - actor: User
+    action: Acting as the Product Owner, starts Sprint planning and proposes the Sprint Goal and date range.
   - actor: System
     action: Displays ordered Product Backlog Items that are ready for selection.
-  - actor: Product Owner
-    action: Proposes backlog items that support the Sprint Goal.
-  - actor: Developer
-    action: Reviews capacity, estimates, and item readiness.
-  - actor: Product Owner
-    action: Confirms the Sprint Goal and selected items with the Developer.
+  - actor: User
+    action: Acting as the Product Owner, proposes backlog items that support the Sprint Goal.
+  - actor: User
+    action: Acting as a Developer, reviews capacity, estimates, and item readiness.
+  - actor: User
+    action: Acting as the Product Owner, confirms the Sprint Goal and selected items with the Developer.
   - actor: System
     action: Creates the Draft Sprint and its initial Sprint Backlog.
 alternative_flows:

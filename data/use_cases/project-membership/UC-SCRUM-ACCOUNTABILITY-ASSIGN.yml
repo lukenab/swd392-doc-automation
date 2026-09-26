@@ -2,10 +2,10 @@ key: UC-SCRUM-ACCOUNTABILITY-ASSIGN
 group: PROJECT_MEMBERSHIP
 order: 500
 name: Assign Scrum Accountability
-summary: Assign Product Owner, Scrum Master, or Developer accountability within a project.
+summary: Assign Product Owner or Developer accountability within a project.
 created_by: Tran Cong Luan
 date_created: 2026-09-25
-primary_actor: Project Owner
+primary_actor: User
 secondary_actors: []
 trigger: The Project Owner chooses to assign a Scrum accountability to a project member.
 description: >
@@ -19,12 +19,12 @@ postconditions:
   - The selected Scrum accountability is assigned within the project.
   - The accountability change is recorded in activity history.
 normal_flow:
-  - actor: Project Owner
+  - actor: User
     action: Selects an active project member.
   - actor: System
     action: Displays the member's current Scrum accountability.
-  - actor: Project Owner
-    action: Selects Product Owner, Scrum Master, or Developer.
+  - actor: User
+    action: Selects Product Owner or Developer.
   - actor: System
     action: Validates the assignment against project constraints.
   - actor: System
@@ -44,6 +44,6 @@ business_rules:
   - BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED
   - BR-PROJECT-OWNER-ADMINISTRATION
   - BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE
-other_information: Scrum Master is stored as an accountability but has no exclusive Use Case in Iteration 1.
+other_information: Scrum Master accountability is outside Iteration 1 scope.
 assumptions:
   - Iteration 1 assigns one primary Scrum accountability to each active member.

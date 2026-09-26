@@ -5,7 +5,7 @@ name: Update Work Item Status
 summary: Move a Sprint work item to an allowed workflow status.
 created_by: Nguyen Quoc Khanh
 date_created: 2026-09-25
-primary_actor: Developer
+primary_actor: User
 secondary_actors: []
 trigger: The Developer changes the state of a task or Sprint Backlog Item.
 description: >
@@ -18,7 +18,7 @@ postconditions:
   - The work item has the selected valid status.
   - The Sprint Board and progress information reflect the change.
 normal_flow:
-  - actor: Developer
+  - actor: User
     action: Selects a new status or moves a card to another workflow column.
   - actor: System
     action: Validates the requested transition and actor permission.

@@ -5,9 +5,8 @@ name: Transfer Project Ownership
 summary: Transfer project ownership to another active Project Member.
 created_by: Tran Cong Luan
 date_created: 2026-09-25
-primary_actor: Project Owner
-secondary_actors:
-  - Project Member
+primary_actor: User
+secondary_actors: []
 trigger: The Project Owner chooses an active member as the new owner.
 description: >
   This use case transfers the unique ownership responsibility of a project
@@ -21,11 +20,11 @@ postconditions:
   - The previous owner remains a Project Member unless that User later leaves.
   - The transfer is recorded in project and system audit history.
 normal_flow:
-  - actor: Project Owner
+  - actor: User
     action: Selects Transfer Project Ownership.
   - actor: System
     action: Displays eligible active Project Members.
-  - actor: Project Owner
+  - actor: User
     action: Selects the new owner and confirms the transfer.
   - actor: System
     action: Validates both memberships and the current ownership state.

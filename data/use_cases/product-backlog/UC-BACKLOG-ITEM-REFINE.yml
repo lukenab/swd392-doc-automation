@@ -5,9 +5,8 @@ name: Refine Backlog Item
 summary: Clarify and decompose a Product Backlog Item so it can be understood and selected for a Sprint.
 created_by: Nguyen An Binh
 date_created: 2026-09-25
-primary_actor: Product Owner
-secondary_actors:
-  - Developer
+primary_actor: User
+secondary_actors: []
 trigger: The Product Owner and Developer select a Product Backlog Item for refinement.
 description: >
   This collaborative use case improves the detail, scope, acceptance criteria,
@@ -20,16 +19,16 @@ postconditions:
   - The item contains the clarified information agreed during refinement.
   - The item can be evaluated for Sprint selection readiness.
 normal_flow:
-  - actor: Product Owner
-    action: Selects an item that requires refinement.
+  - actor: User
+    action: Acting as the Product Owner, selects an item that requires refinement.
   - actor: System
     action: Displays the item's current details and estimate.
-  - actor: Product Owner
-    action: Clarifies the expected outcome and acceptance criteria.
-  - actor: Developer
-    action: Adds implementation-relevant clarification and proposes decomposition when needed.
-  - actor: Product Owner
-    action: Confirms the refined scope and description.
+  - actor: User
+    action: Acting as the Product Owner, clarifies the expected outcome and acceptance criteria.
+  - actor: User
+    action: Acting as a Developer, adds implementation-relevant clarification and proposes decomposition when needed.
+  - actor: User
+    action: Acting as the Product Owner, confirms the refined scope and description.
   - actor: System
     action: Saves the refined item and records the participants.
 alternative_flows:

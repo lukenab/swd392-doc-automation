@@ -17,18 +17,6 @@ actors:
     side: left
   user:
     side: left
-  project-member:
-    side: left
-    parent: user
-  project-owner:
-    side: left
-    parent: project-member
-  product-owner:
-    side: left
-    parent: project-member
-  developer:
-    side: left
-    parent: project-member
   email-service:
     side: right
   identity-provider:

@@ -5,7 +5,7 @@ name: Order Product Backlog
 summary: Arrange Product Backlog Items in the order desired by the Product Owner.
 created_by: Nguyen An Binh
 date_created: 2026-09-25
-primary_actor: Product Owner
+primary_actor: User
 secondary_actors: []
 trigger: The Product Owner chooses to change the order of Product Backlog Items.
 description: >
@@ -18,11 +18,11 @@ preconditions:
 postconditions:
   - Product Backlog Items are stored and displayed in the confirmed order.
 normal_flow:
-  - actor: Product Owner
+  - actor: User
     action: Opens the ordered Product Backlog.
   - actor: System
     action: Displays all available items in their current order.
-  - actor: Product Owner
+  - actor: User
     action: Changes the relative order of one or more items.
   - actor: System
     action: Validates and saves the new order.

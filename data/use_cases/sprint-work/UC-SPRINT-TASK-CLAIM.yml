@@ -5,7 +5,7 @@ name: Claim Sprint Task
 summary: Assign an available Sprint task to oneself.
 created_by: Nguyen Quoc Khanh
 date_created: 2026-09-25
-primary_actor: Developer
+primary_actor: User
 secondary_actors: []
 trigger: The Developer chooses an unassigned task on the active Sprint Board.
 description: >
@@ -18,7 +18,7 @@ postconditions:
   - The task is assigned to the Developer.
   - The assignment is recorded in activity history.
 normal_flow:
-  - actor: Developer
+  - actor: User
     action: Opens an unassigned task and chooses to claim it.
   - actor: System
     action: Verifies that the task is active and still unassigned.

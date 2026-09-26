@@ -5,7 +5,7 @@ name: Comment on Work Item
 summary: Add a discussion comment to a Product Backlog Item, task, or subtask.
 created_by: Nguyen Tan Trung
 date_created: 2026-09-25
-primary_actor: Project Member
+primary_actor: User
 secondary_actors:
   - Email Service
 trigger: The Project Member needs to communicate about a work item.
@@ -19,11 +19,11 @@ postconditions:
   - The comment is attached to the work item.
   - Relevant in-app notifications are created and eligible email deliveries are requested.
 normal_flow:
-  - actor: Project Member
+  - actor: User
     action: Opens a work item and enters a comment.
   - actor: System
     action: Validates the comment and referenced members.
-  - actor: Project Member
+  - actor: User
     action: Submits the comment.
   - actor: System
     action: Saves the comment and records it in activity history.

@@ -11,32 +11,8 @@ actors:
 
   - key: user
     name: User
-    description: A person with a registered system-wide account who can sign in, create projects, and join projects with project-specific responsibilities.
+    description: A person with a registered system-wide account. Within each project, the User may participate as a Project Member or Project Owner and may hold Product Owner or Developer accountability; these project-scoped assignments determine authorized actions.
     side: left
-
-  - key: project-member
-    name: Project Member
-    description: A User who participates in a project and can access its shared Scrum information.
-    side: left
-    parent: user
-
-  - key: project-owner
-    name: Project Owner
-    description: A Project Member who owns and administers one project.
-    side: left
-    parent: project-member
-
-  - key: product-owner
-    name: Product Owner
-    description: A Project Member accountable for the Product Goal and effective Product Backlog management.
-    side: left
-    parent: project-member
-
-  - key: developer
-    name: Developer
-    description: A Project Member who estimates backlog items and manages work needed to create a usable Increment.
-    side: left
-    parent: project-member
 
   - key: email-service
     name: Email Service

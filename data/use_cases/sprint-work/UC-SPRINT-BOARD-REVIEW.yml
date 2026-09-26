@@ -5,7 +5,7 @@ name: Review Sprint Board
 summary: View active Sprint work grouped by workflow status.
 created_by: Nguyen Quoc Khanh
 date_created: 2026-09-25
-primary_actor: Project Member
+primary_actor: User
 secondary_actors: []
 trigger: The Project Member opens the active Sprint Board.
 description: >
@@ -17,7 +17,7 @@ preconditions:
 postconditions:
   - The actor sees the current Sprint Board without changing project data.
 normal_flow:
-  - actor: Project Member
+  - actor: User
     action: Opens the Sprint Board.
   - actor: System
     action: Loads the active Sprint and its work items.

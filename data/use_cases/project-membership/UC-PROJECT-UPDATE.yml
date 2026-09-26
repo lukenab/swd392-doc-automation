@@ -5,7 +5,7 @@ name: Update Project Information
 summary: Maintain the name, description, and planned dates of an active project.
 created_by: Tran Cong Luan
 date_created: 2026-09-25
-primary_actor: Project Owner
+primary_actor: User
 secondary_actors: []
 trigger: The Project Owner chooses to edit project information.
 description: >
@@ -19,11 +19,11 @@ postconditions:
   - Valid project information is updated.
   - The change is recorded in project activity history.
 normal_flow:
-  - actor: Project Owner
+  - actor: User
     action: Requests to update project information.
   - actor: System
     action: Presents the current project information.
-  - actor: Project Owner
+  - actor: User
     action: Changes the permitted values and submits the update.
   - actor: System
     action: Validates and saves the updated information.

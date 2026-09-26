@@ -5,7 +5,7 @@ name: Archive Project
 summary: Preserve a completed project and make its contents read-only.
 created_by: Tran Cong Luan
 date_created: 2026-09-25
-primary_actor: Project Owner
+primary_actor: User
 secondary_actors: []
 trigger: The Project Owner chooses to archive the project.
 description: >
@@ -19,13 +19,13 @@ postconditions:
   - The project is archived.
   - Project information remains available in read-only mode.
 normal_flow:
-  - actor: Project Owner
+  - actor: User
     action: Requests project archival.
   - actor: System
     action: Checks that the project has no active Sprint.
   - actor: System
     action: Summarizes the effects of archival and requests confirmation.
-  - actor: Project Owner
+  - actor: User
     action: Confirms archival.
   - actor: System
     action: Marks the project and its contained work as read-only.

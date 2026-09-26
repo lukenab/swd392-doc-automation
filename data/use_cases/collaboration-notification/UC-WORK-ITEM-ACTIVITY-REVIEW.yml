@@ -5,7 +5,7 @@ name: Review Work Item Activity
 summary: Review the chronological history of significant changes to a work item.
 created_by: Nguyen Tan Trung
 date_created: 2026-09-25
-primary_actor: Project Member
+primary_actor: User
 secondary_actors: []
 trigger: The Project Member opens a work item's activity history.
 description: >
@@ -17,13 +17,13 @@ preconditions:
 postconditions:
   - The actor has reviewed the current activity history without changing it.
 normal_flow:
-  - actor: Project Member
+  - actor: User
     action: Requests the activity history for a work item.
   - actor: System
     action: Retrieves activity entries in reverse chronological order.
   - actor: System
     action: Displays each event with its actor, time, and change summary.
-  - actor: Project Member
+  - actor: User
     action: Reviews the displayed history.
 alternative_flows:
   - id: AF-01

@@ -5,7 +5,7 @@ name: Manage Product Goal
 summary: Establish and maintain the project's current long-term Product Goal.
 created_by: Nguyen An Binh
 date_created: 2026-09-25
-primary_actor: Product Owner
+primary_actor: User
 secondary_actors: []
 trigger: The Product Owner chooses to define or revise the Product Goal.
 description: >
@@ -18,11 +18,11 @@ postconditions:
   - The project has one current Product Goal.
   - The change is recorded in project activity history.
 normal_flow:
-  - actor: Product Owner
+  - actor: User
     action: Requests to manage the Product Goal.
   - actor: System
     action: Displays the current Product Goal, if one exists.
-  - actor: Product Owner
+  - actor: User
     action: Defines or revises the desired future product outcome.
   - actor: System
     action: Validates and saves the Product Goal.

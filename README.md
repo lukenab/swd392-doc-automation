@@ -153,6 +153,13 @@ Các giá trị tham chiếu phải tồn tại trước:
 - Business Rule trong `data/business_rules.yml`.
 - Domain trong `data/groups.yml`.
 
+Trong mô hình hiện tại, `User` là actor duy nhất đại diện cho người dùng đã đăng ký.
+`Project Member`, `Project Owner`, `Product Owner` và `Developer` là vai trò hoặc
+Scrum accountability theo từng dự án, vì vậy không khai báo các tên này trong
+`primary_actor`, `secondary_actors` hoặc `normal_flow[].actor`. Hãy dùng
+`User` cho các trường actor và ghi vai trò bắt buộc trong precondition,
+business rule hoặc nội dung bước.
+
 ### 4. Kiểm tra và generate
 
 Sau mỗi thay đổi, chạy:

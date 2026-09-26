@@ -5,9 +5,8 @@ name: Start Sprint
 summary: Activate a Draft Sprint and make its Sprint Backlog available for execution.
 created_by: Nguyen Tan Trung
 date_created: 2026-09-25
-primary_actor: Product Owner
-secondary_actors:
-  - Developer
+primary_actor: User
+secondary_actors: []
 trigger: The Scrum Team confirms that the Draft Sprint is ready to begin.
 description: >
   This use case changes a valid Draft Sprint to active so Developers can
@@ -20,14 +19,14 @@ postconditions:
   - The Sprint is active.
   - Its selected items are visible on the Sprint Board.
 normal_flow:
-  - actor: Product Owner
-    action: Requests to start the Draft Sprint.
+  - actor: User
+    action: Acting as the Product Owner, requests to start the Draft Sprint.
   - actor: System
     action: Validates the Sprint Goal, dates, selected work, and active-Sprint constraint.
-  - actor: Developer
-    action: Confirms that the selected work is understood and executable.
-  - actor: Product Owner
-    action: Confirms Sprint activation.
+  - actor: User
+    action: Acting as a Developer, confirms that the selected work is understood and executable.
+  - actor: User
+    action: Acting as the Product Owner, confirms Sprint activation.
   - actor: System
     action: Marks the Sprint active and opens its Sprint Board.
 alternative_flows:

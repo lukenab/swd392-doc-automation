@@ -5,7 +5,7 @@ name: Monitor Sprint Progress
 summary: Review current Sprint completion, remaining work, and workload indicators.
 created_by: Nguyen An Binh
 date_created: 2026-09-25
-primary_actor: Project Member
+primary_actor: User
 secondary_actors: []
 trigger: The Project Member opens Sprint progress reporting.
 description: >
@@ -17,7 +17,7 @@ preconditions:
 postconditions:
   - The actor sees a current progress snapshot without changing Sprint data.
 normal_flow:
-  - actor: Project Member
+  - actor: User
     action: Opens the active Sprint progress view.
   - actor: System
     action: Aggregates current work item status and estimate data.

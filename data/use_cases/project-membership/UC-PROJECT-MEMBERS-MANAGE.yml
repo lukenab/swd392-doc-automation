@@ -5,7 +5,7 @@ name: Manage Project Members
 summary: Review, add, and remove members of an active project.
 created_by: Tran Cong Luan
 date_created: 2026-09-25
-primary_actor: Project Owner
+primary_actor: User
 secondary_actors: []
 trigger: The Project Owner opens project membership management.
 description: >
@@ -18,11 +18,11 @@ postconditions:
   - The project membership reflects the confirmed change.
   - Membership changes are recorded in activity history.
 normal_flow:
-  - actor: Project Owner
+  - actor: User
     action: Opens project membership management.
   - actor: System
     action: Displays current members and their project-specific responsibilities.
-  - actor: Project Owner
+  - actor: User
     action: Adds an active User or selects a member to remove.
   - actor: System
     action: Validates the requested membership change.

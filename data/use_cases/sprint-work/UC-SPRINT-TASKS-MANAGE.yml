@@ -5,7 +5,7 @@ name: Manage Sprint Tasks
 summary: Create, edit, assign, prioritize, and remove tasks within an active Sprint.
 created_by: Nguyen Quoc Khanh
 date_created: 2026-09-25
-primary_actor: Developer
+primary_actor: User
 secondary_actors: []
 trigger: The Developer needs to organize executable work for a Sprint Backlog Item.
 description: >
@@ -19,13 +19,13 @@ postconditions:
   - The Sprint task data and dependencies reflect the confirmed changes.
   - The change is recorded in work item activity.
 normal_flow:
-  - actor: Developer
+  - actor: User
     action: Selects a Sprint Backlog Item and chooses to manage its tasks.
   - actor: System
     action: Displays the existing tasks and allowed task operations.
-  - actor: Developer
+  - actor: User
     action: Creates or updates task details, assignment, priority, dates, and estimate.
-  - actor: Developer
+  - actor: User
     action: Adds or removes task dependencies when required.
   - actor: System
     action: Validates the task data and dependency graph.

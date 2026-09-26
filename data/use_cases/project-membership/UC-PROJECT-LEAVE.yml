@@ -5,7 +5,7 @@ name: Leave Project
 summary: End the actor's membership in a project when project rules allow it.
 created_by: Tran Cong Luan
 date_created: 2026-09-25
-primary_actor: Project Member
+primary_actor: User
 secondary_actors: []
 trigger: The Project Member chooses to leave the project.
 description: >
@@ -20,13 +20,13 @@ postconditions:
   - Project-scoped access and Scrum accountability are removed.
   - Historical contributions remain attributed to the actor.
 normal_flow:
-  - actor: Project Member
+  - actor: User
     action: Requests to leave the project.
   - actor: System
     action: Checks ownership and unfinished work constraints.
   - actor: System
     action: Explains the effects of leaving and requests confirmation.
-  - actor: Project Member
+  - actor: User
     action: Confirms leaving the project.
   - actor: System
     action: Removes active membership and project-scoped permissions.

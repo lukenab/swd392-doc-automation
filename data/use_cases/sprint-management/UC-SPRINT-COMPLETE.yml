@@ -5,9 +5,8 @@ name: Complete Sprint
 summary: Close an active Sprint and return unfinished items to the Product Backlog.
 created_by: Nguyen Tan Trung
 date_created: 2026-09-25
-primary_actor: Product Owner
-secondary_actors:
-  - Developer
+primary_actor: User
+secondary_actors: []
 trigger: The Scrum Team reaches the Sprint end and chooses to complete it.
 description: >
   This use case closes an active Sprint, records its final result, and moves
@@ -20,14 +19,14 @@ postconditions:
   - Incomplete Product Backlog Items return to the Product Backlog.
   - Completed work remains associated with the completed Sprint.
 normal_flow:
-  - actor: Product Owner
-    action: Requests to complete the active Sprint.
+  - actor: User
+    action: Acting as the Product Owner, requests to complete the active Sprint.
   - actor: System
     action: Displays completed and incomplete Sprint work.
-  - actor: Developer
-    action: Reviews the final work status and confirms that task data is current.
-  - actor: Product Owner
-    action: Confirms Sprint completion.
+  - actor: User
+    action: Acting as a Developer, reviews the final work status and confirms that task data is current.
+  - actor: User
+    action: Acting as the Product Owner, confirms Sprint completion.
   - actor: System
     action: Completes the Sprint and returns incomplete items to the Product Backlog.
   - actor: System

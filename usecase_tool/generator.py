@@ -425,6 +425,8 @@ def _generate_docx(
 ) -> Path:
     document = Document()
     section = document.sections[0]
+    section.page_width = Cm(21)
+    section.page_height = Cm(29.7)
     section.top_margin = Cm(2)
     section.bottom_margin = Cm(2)
     section.left_margin = Cm(2)
@@ -517,6 +519,10 @@ def _generate_docx(
 
         for row in table.rows:
             row.cells[0].width = Cm(3.7)
+        for row in table.rows[:2]:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    paragraph.paragraph_format.keep_with_next = True
         _style_table(table)
 
     output_path = output_dir / "use-case-descriptions.docx"
@@ -528,6 +534,8 @@ def _generate_docx(
 def _generate_business_rules_docx(project: ProjectData, output_dir: Path) -> Path:
     document = Document()
     section = document.sections[0]
+    section.page_width = Cm(21)
+    section.page_height = Cm(29.7)
     section.top_margin = Cm(2)
     section.bottom_margin = Cm(2)
     section.left_margin = Cm(2)

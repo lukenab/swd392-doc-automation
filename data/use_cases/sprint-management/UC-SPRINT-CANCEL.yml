@@ -5,7 +5,7 @@ name: Cancel Sprint
 summary: Cancel an active Sprint when its goal is no longer valid and return its work to the Product Backlog.
 created_by: Nguyen Tan Trung
 date_created: 2026-09-25
-primary_actor: Product Owner
+primary_actor: User
 secondary_actors: []
 trigger: The Product Owner determines that the Sprint Goal has become obsolete.
 description: >
@@ -18,11 +18,11 @@ postconditions:
   - The Sprint is cancelled and cannot receive further work updates.
   - Incomplete items are returned to the Product Backlog.
 normal_flow:
-  - actor: Product Owner
+  - actor: User
     action: Requests Sprint cancellation and provides a reason.
   - actor: System
     action: Displays the impact on selected and completed work.
-  - actor: Product Owner
+  - actor: User
     action: Confirms the cancellation.
   - actor: System
     action: Cancels the Sprint and returns incomplete items to the Product Backlog.

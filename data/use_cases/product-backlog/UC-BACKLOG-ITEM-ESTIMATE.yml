@@ -5,9 +5,8 @@ name: Estimate Backlog Item
 summary: Record the Developers' estimate for a Product Backlog Item.
 created_by: Nguyen An Binh
 date_created: 2026-09-25
-primary_actor: Developer
-secondary_actors:
-  - Product Owner
+primary_actor: User
+secondary_actors: []
 trigger: A Developer chooses a refined Product Backlog Item that requires an estimate.
 description: >
   This use case allows Developers to record or revise the size estimate used
@@ -20,14 +19,14 @@ postconditions:
   - The agreed estimate is associated with the Product Backlog Item.
   - The estimate change is recorded in item activity history.
 normal_flow:
-  - actor: Developer
-    action: Selects a refined Product Backlog Item.
+  - actor: User
+    action: Acting as a Developer, selects a refined Product Backlog Item.
   - actor: System
     action: Displays the item's details and current estimate.
-  - actor: Product Owner
-    action: Clarifies the expected outcome when requested.
-  - actor: Developer
-    action: Provides the agreed estimate.
+  - actor: User
+    action: Acting as the Product Owner, clarifies the expected outcome when requested.
+  - actor: User
+    action: Acting as a Developer, provides the agreed estimate.
   - actor: System
     action: Validates and records the estimate.
 alternative_flows:

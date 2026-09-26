@@ -5,7 +5,7 @@ name: View Project Dashboard
 summary: Review essential project information, membership, and current Sprint status in one place.
 created_by: Tran Cong Luan
 date_created: 2026-09-25
-primary_actor: Project Member
+primary_actor: User
 secondary_actors: []
 trigger: The Project Member selects a project from the list of participating projects.
 description: >
@@ -18,7 +18,7 @@ postconditions:
   - The current project overview is displayed.
   - No project data is modified.
 normal_flow:
-  - actor: Project Member
+  - actor: User
     action: Selects a project.
   - actor: System
     action: Verifies the actor's active project membership.

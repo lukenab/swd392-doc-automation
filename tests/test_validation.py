@@ -31,6 +31,42 @@ class ValidationTests(unittest.TestCase):
     def test_sample_data_is_valid(self):
         self.assertEqual([], validate_project(self.project))
 
+    def test_project_roles_and_scrum_accountabilities_are_modeled_as_user(self):
+        merged_role_names = {
+            "Project Member",
+            "Project Owner",
+            "Product Owner",
+            "Developer",
+        }
+        self.assertEqual(
+            {
+                "Visitor",
+                "System Administrator",
+                "User",
+                "Email Service",
+                "Identity Provider",
+            },
+            set(self.project.actors),
+        )
+
+        project_use_cases = [
+            item
+            for item in self.project.use_cases
+            if item["group"] not in {"ACCOUNT_AUTHENTICATION", "SYSTEM_ADMINISTRATION"}
+        ]
+        self.assertTrue(project_use_cases)
+        for use_case in project_use_cases:
+            self.assertEqual("User", use_case["primary_actor"])
+            self.assertTrue(
+                merged_role_names.isdisjoint(use_case.get("secondary_actors", []))
+            )
+            self.assertTrue(
+                all(
+                    step["actor"] not in merged_role_names
+                    for step in use_case.get("normal_flow", [])
+                )
+            )
+
     def test_email_notifications_are_in_iteration_scope(self):
         feature_data = yaml.safe_load((ROOT / "data" / "major_features.yml").read_text(encoding="utf-8"))
         feature = next(item for item in feature_data["major_features"] if item["key"] == "FE-08")
@@ -368,6 +404,13 @@ class ValidationTests(unittest.TestCase):
             self.assertTrue(all(run.font.size.pt == 11 for run in summary_body_runs))
 
             detail_table = document.tables[1]
+            self.assertTrue(
+                all(
+                    row._tr.get_or_add_trPr().find(qn("w:cantSplit")) is not None
+                    for table in document.tables
+                    for row in table.rows
+                )
+            )
             label_runs = [
                 run
                 for paragraph in detail_table.rows[0].cells[0].paragraphs
