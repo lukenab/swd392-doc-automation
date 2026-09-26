@@ -61,6 +61,15 @@ def validate_project(project: ProjectData) -> list[str]:
         if count > 1:
             errors.append(f"Duplicate domain order: {duplicated_order}.")
 
+    use_case_group_orders = [
+        group.get("use_case_order", group.get("order"))
+        for group in project.groups.values()
+        if isinstance(group.get("use_case_order", group.get("order")), int)
+    ]
+    for duplicated_order, count in Counter(use_case_group_orders).items():
+        if count > 1:
+            errors.append(f"Duplicate use-case domain order: {duplicated_order}.")
+
     group_folders = [
         group.get("folder")
         for group in project.groups.values()
@@ -75,6 +84,8 @@ def validate_project(project: ProjectData) -> list[str]:
             errors.append(f"Domain key '{group_key}' is invalid.")
         if not isinstance(group.get("order"), int):
             errors.append(f"{group_key}: domain order must be an integer.")
+        if not isinstance(group.get("use_case_order", group.get("order")), int):
+            errors.append(f"{group_key}: use_case_order must be an integer when provided.")
         if not _non_empty(group.get("name")):
             errors.append(f"{group_key}: missing domain name.")
         folder = group.get("folder")

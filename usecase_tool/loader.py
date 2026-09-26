@@ -27,13 +27,14 @@ def assign_display_ids(
     items: list[dict[str, Any]],
     prefix: str,
     groups: dict[str, dict[str, Any]] | None = None,
+    group_order_field: str = "order",
 ) -> None:
-    """Sort items by order and assign presentation-only sequential IDs."""
+    """Sort items by domain and item order, then assign presentation-only IDs."""
     groups = groups or {}
 
     def sort_key(item: dict[str, Any]) -> tuple[int, Any, int, Any, str]:
         group = groups.get(str(item.get("group", "")), {})
-        group_order = group.get("order")
+        group_order = group.get(group_order_field, group.get("order"))
         order = item.get("order")
         group_rank = group_order if isinstance(group_order, int) else str(group_order)
         item_rank = order if isinstance(order, int) else str(order)
@@ -95,7 +96,7 @@ def load_project(data_dir: Path) -> ProjectData:
         use_case["_source_file"] = str(path.relative_to(use_case_dir))
         use_cases.append(use_case)
 
-    assign_display_ids(use_cases, "UC", groups)
+    assign_display_ids(use_cases, "UC", groups, group_order_field="use_case_order")
     return ProjectData(
         data_dir=data_dir,
         groups=groups,

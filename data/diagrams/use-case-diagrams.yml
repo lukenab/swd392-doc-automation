@@ -39,6 +39,8 @@ diagrams:
     title: Project Management System Use Case Model
     auto_include_related_actors: true
     use_cases:
+      - UC-ACCOUNT-REGISTER
+      - UC-SIGN-IN
       - UC-PROJECT-CREATE
       - UC-PRODUCT-GOAL-MANAGE
       - UC-SPRINT-PLAN
@@ -46,7 +48,15 @@ diagrams:
       - UC-WORK-ITEM-COMMENT
       - UC-SPRINT-PROGRESS-MONITOR
       - UC-USER-ACCOUNTS-MANAGE
+
+  - key: account-authentication
+    title: Account Access and Authentication Use Case Model
+    auto_include_related_actors: true
+    use_cases:
+      - UC-ACCOUNT-REGISTER
       - UC-SIGN-IN
+      - UC-SIGN-OUT
+      - UC-PASSWORD-RESET
 
   - key: project-membership
     title: Project and Membership Use Case Model
@@ -110,12 +120,3 @@ diagrams:
     use_cases:
       - UC-USER-ACCOUNTS-MANAGE
       - UC-SYSTEM-AUDIT-LOG-REVIEW
-
-  - key: account-authentication
-    title: Account Access and Authentication Use Case Model
-    auto_include_related_actors: true
-    use_cases:
-      - UC-ACCOUNT-REGISTER
-      - UC-SIGN-IN
-      - UC-SIGN-OUT
-      - UC-PASSWORD-RESET

@@ -3,38 +3,46 @@ groups:
     name: Project and Membership
     folder: project-membership
     order: 100
+    use_case_order: 200
 
   - key: PRODUCT_BACKLOG
     name: Product Backlog Management
     folder: product-backlog
     order: 200
+    use_case_order: 300
 
   - key: SPRINT_MANAGEMENT
     name: Sprint Management
     folder: sprint-management
     order: 300
+    use_case_order: 400
 
   - key: SPRINT_WORK
     name: Sprint Work Management
     folder: sprint-work
     order: 400
+    use_case_order: 500
 
   - key: COLLABORATION_NOTIFICATION
     name: Collaboration and Notification
     folder: collaboration-notification
     order: 500
+    use_case_order: 600
 
   - key: SCRUM_REPORTING
     name: Scrum Reporting
     folder: scrum-reporting
     order: 600
+    use_case_order: 700
 
   - key: SYSTEM_ADMINISTRATION
     name: System Administration
     folder: system-administration
     order: 700
+    use_case_order: 800
 
   - key: ACCOUNT_AUTHENTICATION
     name: Account Access and Authentication
     folder: account-authentication
     order: 800
+    use_case_order: 100
