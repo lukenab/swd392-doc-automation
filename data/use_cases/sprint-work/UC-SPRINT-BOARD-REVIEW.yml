@@ -3,7 +3,7 @@ group: SPRINT_WORK
 order: 100
 name: Review Sprint Board
 summary: View active Sprint work grouped by workflow status.
-created_by: Nguyen Quoc Khanh
+created_by: Nguyen Tan Trung
 date_created: 2026-09-25
 primary_actor: User
 secondary_actors: []

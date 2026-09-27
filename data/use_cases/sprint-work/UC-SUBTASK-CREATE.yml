@@ -4,7 +4,7 @@ group: SPRINT_WORK
 order: 520
 name: Create Subtask
 summary: Add a smaller trackable unit of work beneath a Sprint Task.
-created_by: Nguyen Quoc Khanh
+created_by: Nguyen Tan Trung
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []
