@@ -4,7 +4,7 @@ group: PRODUCT_BACKLOG
 order: 210
 name: View Product Backlog Item
 summary: Review the current details of a Product Backlog Item.
-created_by: Nguyen An Binh
+created_by: Nguyen Quoc Khanh
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []
