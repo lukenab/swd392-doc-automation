@@ -1,0 +1,48 @@
+@startuml
+
+title UC-13 Leave Project Activity Diagram
+
+skinparam defaultFontName "Times New Roman"
+skinparam conditionStyle diamond
+skinparam ConditionEndStyle diamond
+skinparam shadowing false
+skinparam DiagramBorderColor black
+skinparam DiagramBorderThickness 1
+
+|Project Member|
+start
+:Request to leave the project;
+
+|System|
+:Check ownership and
+unfinished work constraints;
+
+if (Actor is current Project Owner?) then ([current owner])
+    :Reject the leave request and require
+    project ownership transfer;
+    stop
+else ([not current owner])
+    if (Member owns unfinished Sprint Tasks?) then ([owns unfinished tasks])
+        :Warn that unfinished work
+        will become unclaimed;
+    endif
+
+    :Explain the effects of leaving
+    and request confirmation;
+
+    |Project Member|
+    if (Member confirms leaving?) then ([confirmed])
+        :Confirm leaving the project;
+
+        |System|
+        :Remove active membership and
+        project-scoped permissions;
+        stop
+    else ([cancelled])
+        |Project Member|
+        :Cancel the leave request;
+        stop
+    endif
+endif
+
+@enduml

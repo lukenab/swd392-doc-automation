@@ -1,6 +1,4 @@
 from copy import deepcopy
-import base64
-import json
 from pathlib import Path
 import shutil
 import unittest
@@ -258,7 +256,7 @@ class ValidationTests(unittest.TestCase):
         root.mkdir()
         self.addCleanup(lambda: shutil.rmtree(root, ignore_errors=True))
         try:
-            generated = _generate_docx(self.project, self.project.use_cases, root, None)
+            generated = _generate_docx(self.project, self.project.use_cases, root)
             document = Document(generated)
             summary_ids = [row.cells[0].text for row in document.tables[0].rows[1:]]
             detail_ids = [
@@ -352,57 +350,6 @@ class ValidationTests(unittest.TestCase):
             _exception_text(use_case),
         )
 
-    def test_docx_can_embed_diagram_from_manifest(self):
-        one_pixel_png = base64.b64decode(
-            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
-        )
-        root = ROOT / "tests" / "_tmp_docx_diagram"
-        if root.exists():
-            shutil.rmtree(root)
-        root.mkdir()
-        self.addCleanup(lambda: shutil.rmtree(root, ignore_errors=True))
-        try:
-            diagram_dir = root / "diagrams"
-            output_dir = root / "output"
-            diagram_dir.mkdir()
-            output_dir.mkdir()
-            image_path = diagram_dir / "use-case-overview.png"
-            image_path.write_bytes(one_pixel_png)
-            (diagram_dir / "manifest.json").write_text(
-                json.dumps(
-                    {
-                        "diagrams": [
-                            {
-                                "key": "overview",
-                                "title": "Project Management System Use Case Model",
-                                "files": {"png": image_path.name},
-                            }
-                        ]
-                    }
-                ),
-                encoding="utf-8",
-            )
-
-            generated = _generate_docx(
-                self.project,
-                self.project.use_cases[:1],
-                output_dir,
-                diagram_dir,
-            )
-            document = Document(generated)
-
-            self.assertEqual(1, len(document.inline_shapes))
-            self.assertIn(
-                "II.5.2.1 Use Case Diagram",
-                [paragraph.text for paragraph in document.paragraphs],
-            )
-            self.assertIn(
-                "II.5.2.2 Use Case Descriptions",
-                [paragraph.text for paragraph in document.paragraphs],
-            )
-        finally:
-            shutil.rmtree(root, ignore_errors=True)
-
     def test_business_rule_outputs_include_all_rules(self):
         root = ROOT / "tests" / "_tmp_business_rules"
         if root.exists():
@@ -441,7 +388,6 @@ class ValidationTests(unittest.TestCase):
                 self.project,
                 self.project.use_cases,
                 root,
-                None,
             )
             document = Document(generated)
             summary_table = document.tables[0]

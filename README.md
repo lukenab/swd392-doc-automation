@@ -3,8 +3,7 @@
 **Author:** Nguyễn An Bình
 
 CLI tool dùng YAML làm dữ liệu nguồn để quản lý Use Case của **Project Management
-System**. Công cụ kiểm tra dữ liệu và tự động sinh tài liệu Markdown, Word và
-PlantUML.
+System**. Công cụ kiểm tra dữ liệu và tự động sinh tài liệu Markdown và Word.
 
 > Chỉ chỉnh sửa dữ liệu trong `data/`. Không chỉnh sửa trực tiếp file trong
 > `output/` vì chúng sẽ bị ghi đè khi chạy lại công cụ.
@@ -38,7 +37,6 @@ swd392-doc-automation/
 │   ├── actors.yml          # Danh sách actor
 │   ├── major_features.yml  # Danh sách major feature
 │   ├── business_rules.yml  # Danh sách business rule
-│   ├── diagrams/           # Cấu hình dự kiến cho Use Case Diagram
 │   └── use_cases/          # Use Case được chia theo domain
 │       ├── <domain-folder>/
 │       │   └── UC-<DOMAIN>-<ACTION>.yml
@@ -61,7 +59,6 @@ swd392-doc-automation/
 | `py cli.py build --format markdown` | Chỉ sinh Markdown |
 | `py cli.py build --format docx` | Chỉ sinh Word |
 | `py cli.py build --format business-rules` | Chỉ sinh bảng Business Rule dạng Markdown và Word |
-| `py cli.py build --format plantuml` | Chỉ sinh PlantUML |
 | `py cli.py build --use-case UC-<DOMAIN>-<ACTION>` | Chỉ sinh một Use Case theo semantic key |
 | `.\build-all.ps1` | Validate và sinh Markdown, DOCX |
 
@@ -74,7 +71,6 @@ Kết quả được đặt trong `output/`:
 | `use-case-descriptions.docx` | Bảng Word để đưa vào báo cáo |
 | `business-rule-list.md` | Danh sách Business Rule để review trên GitHub |
 | `business-rules.docx` | Bảng Business Rule để đưa vào báo cáo |
-| `use-case-diagram.puml` | Source Use Case Diagram |
 | `id-mapping.md` | Mapping semantic key với ID được sinh tự động |
 
 Nếu Word đang mở, hãy đóng `use-case-descriptions.docx` trước khi chạy `build`.
@@ -266,9 +262,3 @@ output/
 ├── business-rule-list.md
 └── business-rules.docx
 ```
-
-## Use Case Diagram
-
-Việc sinh và nhúng Use Case Diagram vào DOCX đang được tạm hoãn. Cấu hình
-trong `data/diagrams/` vẫn được giữ để tiếp tục triển khai ở giai đoạn sau,
-nhưng `build-all.ps1` hiện không gọi diagram tool và không chèn hình vào Word.

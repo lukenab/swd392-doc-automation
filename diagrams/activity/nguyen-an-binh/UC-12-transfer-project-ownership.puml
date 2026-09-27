@@ -1,0 +1,52 @@
+@startuml
+
+title UC-12 Transfer Project Ownership Activity Diagram
+
+skinparam defaultFontName "Times New Roman"
+skinparam conditionStyle diamond
+skinparam ConditionEndStyle diamond
+skinparam shadowing false
+skinparam DiagramBorderColor black
+skinparam DiagramBorderThickness 1
+
+|Project Owner|
+start
+:Select Transfer Project Ownership;
+
+|System|
+:Display eligible active
+Project Members;
+
+|Project Owner|
+:Select the new owner
+and confirm the transfer;
+
+|System|
+:Validate the selected membership
+and current ownership state;
+
+while (Selected member active in project?) is ([inactive])
+    :Reject the transfer and refresh
+    the eligible member list;
+
+    |Project Owner|
+    :Select another eligible member
+    and confirm the transfer;
+
+    |System|
+    :Validate the selected membership
+    and current ownership state;
+endwhile ([active])
+
+:Attempt the atomic ownership transfer
+and record the change;
+
+if (Ownership transfer committed?) then ([committed])
+    :Display transfer confirmation;
+else ([ownership changed concurrently])
+    :Display ownership conflict error;
+endif
+
+stop
+
+@enduml

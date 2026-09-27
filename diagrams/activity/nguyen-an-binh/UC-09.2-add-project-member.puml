@@ -1,0 +1,43 @@
+@startuml
+
+title UC-09.2 Add Project Member Activity Diagram
+
+skinparam defaultFontName "Times New Roman"
+skinparam conditionStyle diamond
+skinparam ConditionEndStyle diamond
+skinparam shadowing false
+skinparam DiagramBorderColor black
+skinparam DiagramBorderThickness 1
+
+|Project Owner|
+start
+:Open project membership management;
+:Choose to add a project member;
+
+|System|
+:Request an existing User account;
+
+|Project Owner|
+:Select a User
+and confirm the addition;
+
+|System|
+:Verify the selected User's
+account and membership status;
+
+if (Target User account active?) then ([active])
+    if (Already a project member?) then ([already a member])
+        :Report that no new
+        membership is required;
+    else ([not a member])
+        :Create project membership;
+        :Refresh the project member list;
+    endif
+else ([inactive])
+    :Report that the selected
+    User account is inactive;
+endif
+
+stop
+
+@enduml
