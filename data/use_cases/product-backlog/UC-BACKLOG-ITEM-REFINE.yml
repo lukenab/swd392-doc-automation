@@ -3,7 +3,7 @@ group: PRODUCT_BACKLOG
 order: 400
 name: Refine Backlog Item
 summary: Clarify and decompose a Product Backlog Item so it can be understood and selected for a Sprint.
-created_by: Nguyen Quoc Khanh
+created_by: Nguyễn Quốc Khánh
 date_created: 2026-09-25
 primary_actor: User
 secondary_actors: []

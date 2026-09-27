@@ -3,7 +3,7 @@ group: PROJECT_MEMBERSHIP
 order: 600
 name: Archive Project
 summary: Preserve a completed project and make its contents read-only.
-created_by: Tran Cong Luan
+created_by: Nguyễn An Bình
 date_created: 2026-09-25
 primary_actor: User
 secondary_actors: []

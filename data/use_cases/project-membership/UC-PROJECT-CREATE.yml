@@ -3,7 +3,7 @@ group: PROJECT_MEMBERSHIP
 order: 100
 name: Create Project
 summary: Create a Scrum project and assign the creator as its Project Owner.
-created_by: Tran Cong Luan
+created_by: Nguyễn An Bình
 date_created: 2026-09-25
 primary_actor: User
 secondary_actors: []

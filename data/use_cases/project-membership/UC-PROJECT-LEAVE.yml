@@ -3,7 +3,7 @@ group: PROJECT_MEMBERSHIP
 order: 800
 name: Leave Project
 summary: End the actor's membership in a project when project rules allow it.
-created_by: Tran Cong Luan
+created_by: Nguyễn An Bình
 date_created: 2026-09-25
 primary_actor: User
 secondary_actors: []

@@ -3,7 +3,7 @@ group: SPRINT_WORK
 order: 300
 name: Claim Sprint Task
 summary: Assign an available Sprint task to oneself.
-created_by: Nguyen Tan Trung
+created_by: Nguyễn Tấn Trung
 date_created: 2026-09-25
 primary_actor: User
 secondary_actors: []

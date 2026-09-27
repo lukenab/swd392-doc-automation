@@ -4,7 +4,7 @@ group: SYSTEM_ADMINISTRATION
 order: 140
 name: Delete User Account
 summary: Remove an eligible User account while preserving required audit history.
-created_by: Tran Cong Luan
+created_by: Trần Công Luận
 date_created: 2026-09-26
 primary_actor: System Administrator
 secondary_actors: []

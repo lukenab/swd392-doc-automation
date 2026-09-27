@@ -4,7 +4,7 @@ group: PROJECT_MEMBERSHIP
 order: 430
 name: Remove Project Member
 summary: Remove a non-owner member from an active project after resolving assigned work.
-created_by: Tran Cong Luan
+created_by: Nguyễn An Bình
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []

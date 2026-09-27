@@ -4,7 +4,7 @@ group: SPRINT_WORK
 order: 510
 name: View Subtasks
 summary: Review the subtasks and completion state of a Sprint Task.
-created_by: Nguyen Tan Trung
+created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []

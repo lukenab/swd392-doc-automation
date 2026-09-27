@@ -4,7 +4,7 @@ group: SPRINT_WORK
 order: 260
 name: Add Task Dependency
 summary: Define a valid dependency between two tasks in the same project.
-created_by: Nguyen Tan Trung
+created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []

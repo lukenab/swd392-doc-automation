@@ -4,7 +4,7 @@ order: 500
 name: Manage Personal Profile
 abstract: true
 summary: Group the functions used by an authenticated User to review and maintain their personal profile.
-created_by: Tran Cong Luan
+created_by: Trần Công Luận
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []

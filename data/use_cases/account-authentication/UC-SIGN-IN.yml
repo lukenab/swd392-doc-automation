@@ -3,7 +3,7 @@ group: ACCOUNT_AUTHENTICATION
 order: 200
 name: Log In
 summary: Establish an authenticated session using email and password or Google.
-created_by: Tran Cong Luan
+created_by: Trần Công Luận
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors:

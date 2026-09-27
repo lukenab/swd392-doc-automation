@@ -4,7 +4,7 @@ order: 200
 name: Manage Sprint Tasks
 abstract: true
 summary: Create, edit, assign, prioritize, and remove tasks within an active Sprint.
-created_by: Nguyen Quoc Khanh
+created_by: Nguyễn Tấn Trung
 date_created: 2026-09-25
 primary_actor: User
 secondary_actors: []

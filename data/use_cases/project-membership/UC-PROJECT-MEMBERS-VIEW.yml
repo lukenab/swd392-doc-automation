@@ -4,7 +4,7 @@ group: PROJECT_MEMBERSHIP
 order: 410
 name: View Project Members
 summary: Review active project members and their project-scoped assignments.
-created_by: Tran Cong Luan
+created_by: Nguyễn An Bình
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []
