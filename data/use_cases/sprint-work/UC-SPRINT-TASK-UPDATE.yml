@@ -4,7 +4,7 @@ group: SPRINT_WORK
 order: 230
 name: Update Sprint Task
 summary: Revise the editable work details of an existing Sprint Task.
-created_by: Nguyen Tan Trung
+created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []

@@ -4,7 +4,7 @@ group: SPRINT_WORK
 order: 550
 name: Delete Subtask
 summary: Remove an eligible subtask and recalculate parent-task progress.
-created_by: Nguyen Tan Trung
+created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []

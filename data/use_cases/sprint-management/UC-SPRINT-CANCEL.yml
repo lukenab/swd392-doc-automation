@@ -3,7 +3,7 @@ group: SPRINT_MANAGEMENT
 order: 400
 name: Cancel Sprint
 summary: Cancel an active Sprint when its goal is no longer valid and return its work to the Product Backlog.
-created_by: Nguyen Quoc Khanh
+created_by: Nguyễn Quốc Khánh
 date_created: 2026-09-25
 primary_actor: User
 secondary_actors: []

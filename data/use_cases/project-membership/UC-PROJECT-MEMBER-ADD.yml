@@ -4,7 +4,7 @@ group: PROJECT_MEMBERSHIP
 order: 420
 name: Add Project Member
 summary: Add an existing active User to an active project as a Project Member.
-created_by: Tran Cong Luan
+created_by: Nguyễn An Bình
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []

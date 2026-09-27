@@ -3,7 +3,7 @@ group: PROJECT_MEMBERSHIP
 order: 300
 name: Update Project Information
 summary: Maintain the name, description, and planned dates of an active project.
-created_by: Tran Cong Luan
+created_by: Nguyễn An Bình
 date_created: 2026-09-25
 primary_actor: User
 secondary_actors: []
