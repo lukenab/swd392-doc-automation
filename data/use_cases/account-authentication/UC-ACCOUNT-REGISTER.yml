@@ -29,7 +29,9 @@ normal_flow:
   - actor: System
     action: Validates the information, email uniqueness, and password strength.
   - actor: System
-    action: Creates a pending account and requests an email verification message.
+    action: Creates a pending account.
+  - actor: System
+    action: Requests an email verification message for the account.
   - actor: Email Service
     action: Delivers the verification message to the submitted email address.
   - actor: Guest
@@ -44,10 +46,9 @@ alternative_flows:
       - The Identity Provider authenticates the Guest and returns a verified identity.
       - The system validates email uniqueness and creates an active User account.
   - id: AF-02
-    condition: The submitted email address is already linked to an account.
+    condition: The registration information is invalid.
     steps:
-      - The system does not create a duplicate account.
-      - The system directs the Guest to Log In or use Forgot Password.
+      - The system requests registration information again.
 exceptions:
   - id: EX-01
     description: The Email Service cannot deliver the verification message; the account remains pending and verification can be requested again.
