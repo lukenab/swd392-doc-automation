@@ -4,7 +4,7 @@ group: ACCOUNT_AUTHENTICATION
 order: 510
 name: View Personal Profile
 summary: Display the signed-in User's personal account and profile information.
-created_by: Nguyen An Binh
+created_by: Tran Cong Luan
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []

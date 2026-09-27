@@ -3,7 +3,7 @@ group: SYSTEM_ADMINISTRATION
 order: 200
 name: Review System Audit Log
 summary: Search and review security-relevant and administrative system events.
-created_by: Nguyen Quoc Khanh
+created_by: Tran Cong Luan
 date_created: 2026-09-25
 primary_actor: System Administrator
 secondary_actors: []
