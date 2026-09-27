@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from datetime import date
-import json
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -12,7 +11,6 @@ from docx.enum.table import (
     WD_TABLE_ALIGNMENT,
 )
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.image.image import Image
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
@@ -25,8 +23,6 @@ FONT_SIZE = Pt(12)
 TABLE_CONTENT_FONT_SIZE = Pt(11)
 TABLE_LABEL_FONT_SIZE = Pt(12)
 USE_CASE_HEADING_FONT_SIZE = Pt(13)
-DIAGRAM_MAX_WIDTH = Cm(16.5)
-DIAGRAM_MAX_HEIGHT = Cm(20.5)
 TABLE_HEADER_FILL = "1F4E78"
 TABLE_HEADER_TEXT = RGBColor(255, 255, 255)
 
@@ -358,78 +354,10 @@ def _enforce_document_font(document: Document) -> None:
                         _set_run_font(run, size=None)
 
 
-def _load_diagram_images(diagram_dir: Path | None) -> list[tuple[str, Path]]:
-    if diagram_dir is None:
-        return []
-
-    root = diagram_dir.resolve()
-    if not root.is_dir():
-        raise ValueError(f"Diagram directory does not exist: {root}")
-
-    manifest_path = root / "manifest.json"
-    images: list[tuple[str, Path]] = []
-    if manifest_path.is_file():
-        try:
-            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as error:
-            raise ValueError(f"Cannot read diagram manifest: {manifest_path}: {error}") from error
-
-        for item in manifest.get("diagrams", []):
-            relative_path = item.get("files", {}).get("png")
-            if not relative_path:
-                continue
-            image_path = (root / relative_path).resolve()
-            if root != image_path and root not in image_path.parents:
-                raise ValueError(f"Diagram path escapes its output directory: {relative_path}")
-            if not image_path.is_file():
-                raise ValueError(f"Diagram image listed in manifest does not exist: {image_path}")
-            images.append((str(item.get("title") or item.get("key") or image_path.stem), image_path))
-    else:
-        images = [(path.stem, path) for path in sorted(root.glob("use-case-*.png"))]
-
-    if not images:
-        raise ValueError(f"No PNG use case diagram found in: {root}")
-    return images
-
-
-def _add_diagram_section(document: Document, images: list[tuple[str, Path]]) -> None:
-    document.add_heading("II.5.2.1 Use Case Diagram", level=1)
-    for index, (title, image_path) in enumerate(images, start=1):
-        image = Image.from_file(str(image_path))
-        scale = min(
-            int(DIAGRAM_MAX_WIDTH) / int(image.width),
-            int(DIAGRAM_MAX_HEIGHT) / int(image.height),
-        )
-        width = int(int(image.width) * scale)
-        height = int(int(image.height) * scale)
-
-        picture_paragraph = document.add_paragraph()
-        picture_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        picture_paragraph.paragraph_format.keep_with_next = True
-        shape = picture_paragraph.add_run().add_picture(
-            str(image_path),
-            width=width,
-            height=height,
-        )
-        shape._inline.docPr.set("descr", title)
-
-        caption = document.add_paragraph()
-        caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        caption.paragraph_format.space_before = Pt(4)
-        caption.paragraph_format.space_after = Pt(6)
-        caption_run = caption.add_run(f"Figure II.5.2.1-{index}. {title}")
-        caption_run.italic = True
-        _set_run_font(caption_run)
-
-        if index < len(images):
-            document.add_page_break()
-
-
 def _generate_docx(
     project: ProjectData,
     use_cases: list[dict[str, Any]],
     output_dir: Path,
-    diagram_dir: Path | None = None,
 ) -> Path:
     document = Document()
     section = document.sections[0]
@@ -439,11 +367,6 @@ def _generate_docx(
     section.bottom_margin = Cm(2)
     section.left_margin = Cm(2)
     section.right_margin = Cm(2)
-
-    diagram_images = _load_diagram_images(diagram_dir)
-    if diagram_images:
-        _add_diagram_section(document, diagram_images)
-        document.add_page_break()
 
     document.add_heading("II.5.2.2 Use Case Descriptions", level=1)
 
@@ -592,70 +515,11 @@ def _generate_business_rules_docx(project: ProjectData, output_dir: Path) -> Pat
     return output_path
 
 
-def _plantuml_alias(value: str) -> str:
-    return "".join(character if character.isalnum() else "_" for character in value)
-
-
-def _generate_plantuml(project: ProjectData, use_cases: list[dict[str, Any]], output_dir: Path) -> Path:
-    used_actor_names = {
-        actor
-        for use_case in use_cases
-        for actor in [use_case["primary_actor"], *(use_case.get("secondary_actors") or [])]
-    }
-    lines = [
-        "@startuml",
-        "left to right direction",
-        "skinparam packageStyle rectangle",
-        "skinparam actorStyle awesome",
-        "",
-    ]
-    for actor_name in sorted(used_actor_names):
-        lines.append(f'actor "{actor_name}" as ACT_{_plantuml_alias(actor_name)}')
-    lines.extend(["", 'rectangle "Project Management System" {'])
-    current_group = None
-    for use_case in use_cases:
-        if use_case["group"] != current_group:
-            if current_group is not None:
-                lines.append("  }")
-            current_group = use_case["group"]
-            lines.append(
-                f'  package "{_group_name(project, use_case)}" '
-                f'as DOMAIN_{_plantuml_alias(current_group)} {{'
-            )
-        stereotype = " <<abstract>>" if _is_abstract(use_case) else ""
-        lines.append(
-            f'    usecase "{_use_case_id(use_case)}\\n{use_case["name"]}" '
-            f'as {_plantuml_alias(use_case["key"])}{stereotype}'
-        )
-    if current_group is not None:
-        lines.append("  }")
-    lines.append("}")
-    lines.append("")
-    for use_case in use_cases:
-        if _is_abstract(use_case):
-            continue
-        use_case_alias = _plantuml_alias(use_case["key"])
-        actors = [use_case["primary_actor"], *(use_case.get("secondary_actors") or [])]
-        for actor_name in dict.fromkeys(actors):
-            lines.append(f"ACT_{_plantuml_alias(actor_name)} --> {use_case_alias}")
-        parent = use_case.get("parent")
-        if parent:
-            lines.append(
-                f"{use_case_alias} -|> {_plantuml_alias(str(parent))}"
-            )
-    lines.extend(["", "@enduml", ""])
-
-    output_path = output_dir / "use-case-diagram.puml"
-    output_path.write_text("\n".join(lines), encoding="utf-8")
-    return output_path
-
-
 def build_outputs(
     project: ProjectData,
     use_cases: list[dict[str, Any]],
     output_dir: Path,
     output_format: str,
-    diagram_dir: Path | None = None,
 ) -> list[Path]:
     output_dir = output_dir.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -664,11 +528,9 @@ def build_outputs(
     if output_format in {"all", "markdown"}:
         generated.extend(_generate_markdown(project, use_cases, output_dir))
     if output_format in {"all", "docx"}:
-        generated.append(_generate_docx(project, use_cases, output_dir, diagram_dir))
+        generated.append(_generate_docx(project, use_cases, output_dir))
         generated.append(_generate_business_rules_docx(project, output_dir))
     if output_format == "business-rules":
         generated.append(_generate_business_rules_markdown(project, output_dir))
         generated.append(_generate_business_rules_docx(project, output_dir))
-    if output_format in {"all", "plantuml"}:
-        generated.append(_generate_plantuml(project, use_cases, output_dir))
     return generated

@@ -1,0 +1,47 @@
+@startuml
+
+skinparam defaultFontName "Times New Roman"
+skinparam conditionStyle diamond
+skinparam ConditionEndStyle diamond
+skinparam shadowing false
+
+|User|
+start
+:Start project creation;
+
+|System|
+:Request project name, description,
+and planned dates;
+
+|User|
+:Provide project information
+and confirm creation;
+
+|System|
+:Validate submitted information;
+
+while (Project information valid?) is ([invalid])
+    :Identify invalid or missing information;
+
+    |User|
+    :Correct the information
+    and resubmit it;
+
+    |System|
+    :Validate submitted information;
+endwhile ([valid])
+
+:Persist the project
+and assign ownership;
+
+if (Project data persisted?) then ([persisted])
+    :Initialize the Product Backlog
+    and default Sprint Board;
+    :Display project creation confirmation;
+else ([persistence failed])
+    :Display project creation error;
+endif
+
+stop
+
+@enduml

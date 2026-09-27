@@ -28,10 +28,10 @@ def create_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("validate", help="Kiểm tra tính hợp lệ và đồng bộ của dữ liệu.")
     subparsers.add_parser("list", help="Hiển thị danh sách Use Case.")
 
-    build_parser = subparsers.add_parser("build", help="Sinh Markdown, DOCX và PlantUML.")
+    build_parser = subparsers.add_parser("build", help="Sinh Markdown và DOCX.")
     build_parser.add_argument(
         "--format",
-        choices=["all", "markdown", "docx", "plantuml", "business-rules"],
+        choices=["all", "markdown", "docx", "business-rules"],
         default="all",
         help=(
             "Định dạng cần sinh. Dùng business-rules để chỉ sinh bảng "
@@ -49,14 +49,6 @@ def create_parser() -> argparse.ArgumentParser:
         help=(
             "Chỉ sinh một Use Case theo semantic key hoặc generated ID, "
             "ví dụ UC-TASK-CREATE hoặc UC-04."
-        ),
-    )
-    build_parser.add_argument(
-        "--diagram-dir",
-        type=Path,
-        help=(
-            "Thư mục output của swd392-usecase-diagram-tool. "
-            "Khi sinh DOCX, các PNG trong manifest.json sẽ được chèn vào tài liệu."
         ),
     )
     return parser
@@ -137,7 +129,6 @@ def main() -> int:
             use_cases=selected_use_cases,
             output_dir=args.output_dir,
             output_format=args.format,
-            diagram_dir=args.diagram_dir,
         )
     except PermissionError as error:
         print(
