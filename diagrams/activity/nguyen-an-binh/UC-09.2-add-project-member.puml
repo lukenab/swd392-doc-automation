@@ -1,13 +1,9 @@
 @startuml
 
-title UC-09.2 Add Project Member Activity Diagram
-
 skinparam defaultFontName "Times New Roman"
 skinparam conditionStyle diamond
 skinparam ConditionEndStyle diamond
 skinparam shadowing false
-skinparam DiagramBorderColor black
-skinparam DiagramBorderThickness 1
 
 |Project Owner|
 start
