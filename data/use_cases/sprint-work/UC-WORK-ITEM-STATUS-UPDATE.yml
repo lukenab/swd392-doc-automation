@@ -3,7 +3,7 @@ group: SPRINT_WORK
 order: 400
 name: Update Work Item Status
 summary: Move a Sprint work item to an allowed workflow status.
-created_by: Nguyen Quoc Khanh
+created_by: Nguyen Tan Trung
 date_created: 2026-09-25
 primary_actor: User
 secondary_actors: []
