@@ -4,7 +4,7 @@ group: PRODUCT_BACKLOG
 order: 120
 name: Set Product Goal
 summary: Define the initial Product Goal for a Scrum project.
-created_by: Nguyen An Binh
+created_by: Nguyen Quoc Khanh
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []
