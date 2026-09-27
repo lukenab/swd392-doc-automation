@@ -52,4 +52,4 @@ major_features:
   - key: FE-11
     order: 1100
     name: Account Registration and Authentication
-    description: Register a system-wide account, sign in using email and password or Google, sign out, reset a forgotten password, and maintain the signed-in User's personal profile.
+    description: Register a system-wide account, log in using email and password or Google, log out, use Forgot Password for a forgotten locally managed password, and maintain the logged-in User's personal profile.

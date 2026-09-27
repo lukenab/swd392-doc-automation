@@ -224,10 +224,10 @@ business_rules:
     order: 700
     description: A password-reset request must not reveal whether the submitted email address belongs to an account.
 
-  - key: BR-SIGN-OUT-SESSION
+  - key: BR-LOG-OUT-SESSION
     group: ACCOUNT_AUTHENTICATION
     order: 800
-    description: Signing out invalidates only the current session; other active sessions of the same User remain unaffected.
+    description: Logging out invalidates only the current session; other active sessions of the same User remain unaffected.
 
   - key: BR-PROFILE-SELF-ACCESS
     group: ACCOUNT_AUTHENTICATION

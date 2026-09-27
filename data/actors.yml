@@ -1,7 +1,7 @@
 actors:
-  - key: visitor
-    name: Visitor
-    description: A person who has not signed in and may register a new system-wide account.
+  - key: guest
+    name: Guest
+    description: A person who has not logged in and may register a new system-wide account.
     side: left
 
   - key: system-administrator

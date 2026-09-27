@@ -1,14 +1,14 @@
 key: UC-SIGN-IN
 group: ACCOUNT_AUTHENTICATION
 order: 200
-name: Sign In
+name: Log In
 summary: Establish an authenticated session using email and password or Google.
 created_by: Nguyen An Binh
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors:
   - Identity Provider
-trigger: The User chooses to sign in to the system.
+trigger: The User chooses to log in to the system.
 description: >
   This use case authenticates a registered User with email and password or
   Google and creates a session for accessing authorized system functions.
@@ -20,7 +20,7 @@ postconditions:
   - No project membership or project-scoped responsibility is changed.
 normal_flow:
   - actor: User
-    action: Opens the sign-in page and chooses email and password.
+    action: Opens the log-in page and chooses email and password.
   - actor: System
     action: Requests the registered email address and password.
   - actor: User
@@ -31,7 +31,7 @@ normal_flow:
     action: Creates an authenticated session and displays the User's available projects.
 alternative_flows:
   - id: AF-01
-    condition: The User chooses to sign in with Google.
+    condition: The User chooses to log in with Google.
     steps:
       - The system redirects the User to the Identity Provider.
       - The Identity Provider authenticates the User and returns a verified identity.
@@ -39,12 +39,12 @@ alternative_flows:
   - id: AF-02
     condition: The User has forgotten the locally managed password.
     steps:
-      - The system directs the User to Reset Password.
+      - The system directs the User to Forgot Password.
 exceptions:
   - id: EX-01
     description: The submitted credentials are invalid; no session is created.
   - id: EX-02
-    description: The User account is pending, suspended, or deleted; sign-in is rejected.
+    description: The User account is pending, suspended, or deleted; log-in is rejected.
   - id: EX-03
     description: The Identity Provider is unavailable or rejects authentication; no session is created.
   - id: EX-04
@@ -54,6 +54,6 @@ frequency_of_use: Very Frequent
 business_rules:
   - BR-ACCOUNT-VERIFIED-IDENTITY
   - BR-AUTH-ACTIVE-ACCOUNT
-other_information: Sign-in authenticates the User but does not grant access to projects in which the User is not an active member.
+other_information: Logging in authenticates the User but does not grant access to projects in which the User is not an active member.
 assumptions:
   - Session credentials are issued and validated by the managed authentication provider.

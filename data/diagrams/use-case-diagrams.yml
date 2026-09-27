@@ -11,7 +11,7 @@ defaults:
   domain_diagrams: never
 
 actors:
-  visitor:
+  guest:
     side: left
   system-administrator:
     side: left

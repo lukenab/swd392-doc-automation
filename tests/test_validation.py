@@ -40,7 +40,7 @@ class ValidationTests(unittest.TestCase):
         }
         self.assertEqual(
             {
-                "Visitor",
+                "Guest",
                 "System Administrator",
                 "User",
                 "Email Service",
@@ -109,9 +109,9 @@ class ValidationTests(unittest.TestCase):
         self.assertEqual(
             [
                 "Register Account",
-                "Sign In",
-                "Sign Out",
-                "Reset Password",
+                "Log In",
+                "Log Out",
+                "Forgot Password",
                 "Manage Personal Profile",
                 "View Personal Profile",
                 "Update Personal Profile",
@@ -119,7 +119,7 @@ class ValidationTests(unittest.TestCase):
             ],
             [item["name"] for item in authentication_cases],
         )
-        self.assertEqual("Visitor", authentication_cases[0]["primary_actor"])
+        self.assertEqual("Guest", authentication_cases[0]["primary_actor"])
         self.assertIn("Identity Provider", authentication_cases[0]["secondary_actors"])
         self.assertIn("Email Service", authentication_cases[3]["secondary_actors"])
         self.assertTrue(authentication_cases[4]["abstract"])
