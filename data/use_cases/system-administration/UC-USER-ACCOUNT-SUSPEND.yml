@@ -4,7 +4,7 @@ group: SYSTEM_ADMINISTRATION
 order: 120
 name: Suspend User Account
 summary: Prevent an eligible User account from establishing new authenticated sessions.
-created_by: Nguyen Quoc Khanh
+created_by: Tran Cong Luan
 date_created: 2026-09-26
 primary_actor: System Administrator
 secondary_actors: []

@@ -4,7 +4,7 @@ group: SYSTEM_ADMINISTRATION
 order: 130
 name: Reactivate User Account
 summary: Restore authentication access for an eligible suspended User account.
-created_by: Nguyen Quoc Khanh
+created_by: Tran Cong Luan
 date_created: 2026-09-26
 primary_actor: System Administrator
 secondary_actors: []
