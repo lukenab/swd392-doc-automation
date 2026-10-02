@@ -1,0 +1,73 @@
+@startuml
+
+' UC-24.2 / UC-SPRINT-TASK-CREATE
+' The title is intentionally omitted because the report supplies the caption.
+' The committed SVG/PNG add the complete presentation frame required by the report.
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam ArrowColor #202020
+skinparam ArrowThickness 1.5
+skinparam activity {
+  BackgroundColor #F7F7F7
+  BorderColor #202020
+  BorderThickness 1.25
+  FontColor #111111
+  FontName Arial
+  FontSize 16
+  DiamondBackgroundColor white
+  DiamondBorderColor #202020
+}
+skinparam swimlane {
+  BorderColor #202020
+  BorderThickness 1.5
+  TitleBackgroundColor white
+  TitleFontColor #111111
+  TitleFontName Arial
+  TitleFontSize 18
+  TitleFontStyle bold
+}
+
+|User|
+start
+:Open a Product Backlog Item\nin the active Sprint;
+:Choose **Create Sprint Task**;
+
+|System|
+:Display the Sprint Task form;
+:Request the task title and\ninitial work details;
+
+|User|
+:Enter the task information;
+:Confirm creation;
+
+|System|
+:Validate the submitted information;
+
+while (Information is invalid or missing?) is ([yes])
+  :Identify invalid or missing fields;
+  :Display validation feedback;
+
+  |User|
+  :Correct the task information;
+  :Resubmit the form;
+
+  |System|
+  :Validate the submitted information;
+endwhile ([no])
+
+if (Product Backlog Item still belongs\nto the active Sprint?) then ([yes])
+  :Store the new Sprint Task;
+  :Associate the task with the\nProduct Backlog Item;
+  :Record the creation in\nwork item activity;
+  :Display the created Sprint Task;
+  stop
+else ([no — EX-01])
+  :Display that the Product Backlog Item\nno longer belongs to the active Sprint;
+  :Do not create the Sprint Task;
+  stop
+endif
+
+@enduml
