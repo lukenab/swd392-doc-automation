@@ -1,0 +1,63 @@
+@startuml UC-NOTIFICATIONS-REVIEW
+' UC-30 - Review Notifications | semantic key: UC-NOTIFICATIONS-REVIEW
+' Source: data/use_cases/collaboration-notification/UC-NOTIFICATIONS-REVIEW.yml
+' Business Rules: BR-NOTIFICATION-OWNER-ONLY, BR-PROJECT-MEMBER-ACCESS, BR-NOTIFICATION-EMAIL-PREFERENCE
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+' The User chooses to review one notification or to send another request (AF-01, AF-02);
+' the System then distinguishes the received request.
+!include ../../_shared/activity-style.puml
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1, BR-NOTIFICATION-OWNER-ONLY]
+:Open the notification center;
+|SYS|
+' [NF2, BR-NOTIFICATION-OWNER-ONLY]
+:Display the actor's notifications and
+email delivery preference in reverse
+chronological order;
+|USR|
+if ($question_x("Review a notification?")) then ($guard_left("[review]"))
+  ' [NF3]
+  :Select a notification
+  to review;
+  |SYS|
+  if ($question_x("Related item accessible?")) then ($guard_left("[accessible]"))
+  else ($guard_right("[inaccessible", "— EX-01]"))
+    ' [EX-01, BR-PROJECT-MEMBER-ACCESS, GUIDE-7.3]
+    :Report that the related project item is no longer accessible;
+    stop
+  endif
+  ' [NF4, POST1, POST3]
+  :Mark it as read and display
+  its related project context;
+  stop
+else ($guard_right("[other", "request]"))
+  |SYS|
+  if ($question_x("Requested action?")) then ($guard_left("[mark all — AF-01]"))
+    ' [AF-01.1, POST1, POST3]
+    :Mark all visible
+    notifications as read;
+    stop
+  else ($guard_right("[change email", "delivery — AF-02]"))
+    if ($question("Enabling email delivery?")) then ($guard_left("[enabling]"))
+      ' [AF-02.1, BR-NOTIFICATION-EMAIL-PREFERENCE]
+      :Verify that the actor has a
+      verified email address;
+    else ($guard_right("[disabling]", ""))
+    endif
+    ' [AF-02.2, POST2]
+    :Save the updated email
+    delivery preference;
+    if ($question("Preference saved?")) then ($guard_left("[saved]"))
+    else ($guard_right("[cannot be", "saved — EX-02]"))
+      ' [EX-02, GUIDE-7.3]
+      :Keep the previous preference and report the failure;
+    endif
+    stop
+  endif
+endif
+@enduml
