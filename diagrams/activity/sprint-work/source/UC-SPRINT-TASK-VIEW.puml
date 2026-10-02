@@ -1,0 +1,28 @@
+@startuml UC-SPRINT-TASK-VIEW
+' UC-24.1 - View Sprint Task | semantic key: UC-SPRINT-TASK-VIEW
+' Source: data/use_cases/sprint-work/UC-SPRINT-TASK-VIEW.yml
+' Business Rules: BR-PROJECT-MEMBER-ACCESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1, BR-PROJECT-MEMBER-ACCESS]
+:Select a Sprint Task;
+|SYS|
+' [NF2]
+:Retrieve the task details, assignment,
+dependencies and activity summary;
+if ($question("Task available?")) then ($guard_left("[available]"))
+else ($guard_right("[no longer", "available — EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Report that the selected Sprint Task is no longer available;
+  stop
+endif
+' [NF3, POST1]
+:Display the Sprint Task;
+stop
+@enduml

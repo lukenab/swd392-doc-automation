@@ -1,0 +1,41 @@
+@startuml UC-WORK-ITEM-STATUS-UPDATE
+' UC-26 - Update Work Item Status | semantic key: UC-WORK-ITEM-STATUS-UPDATE
+' Source: data/use_cases/sprint-work/UC-WORK-ITEM-STATUS-UPDATE.yml
+' Business Rules: BR-SPRINT-TASK-DEVELOPER, BR-WORK-ITEM-STATUS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|DEV| $lane_title("Developer")
+|SYS| $lane_title("System")
+
+|DEV|
+start
+' [NF1, OTHER]
+:Select a new status or move the
+card to another workflow column;
+|SYS|
+' [NF2, BR-WORK-ITEM-STATUS, BR-SPRINT-TASK-DEVELOPER]
+:Validate the requested transition
+and actor permission;
+while ($question("Done with missing required information?")) is ($guard_left("[missing — AF-01]"))
+  ' [AF-01.1]
+  :Identify the missing information;
+  |DEV|
+  ' [AF-01.2]
+  :Complete the information or
+  choose another status;
+  |SYS|
+endwhile ($guard("[complete]"))
+if ($question("Status still available?")) then ($guard_left("[available]"))
+else ($guard_right("[no longer", "available — EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the change to the unavailable status;
+  stop
+endif
+' [NF3, POST1]
+:Update the work item status;
+' [NF4, POST2]
+:Refresh the Sprint Board
+and record the change;
+stop
+@enduml
