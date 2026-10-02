@@ -1,0 +1,47 @@
+@startuml UC-BACKLOG-ORDER
+' UC-16 - Order Product Backlog | semantic key: UC-BACKLOG-ORDER
+' Source: data/use_cases/product-backlog/UC-BACKLOG-ORDER.yml
+' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-PROJECT-ARCHIVED-READ-ONLY
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|PRO| $lane_title("Product Owner")
+|SYS| $lane_title("System")
+
+|PRO|
+start
+' [NF1]
+:Open the ordered Product Backlog;
+|SYS|
+' [NF2]
+:Display all available items
+in their current order;
+|PRO|
+' [NF3]
+:Change the relative order
+of one or more items;
+|SYS|
+' [NF4]
+:Validate the new order;
+while ($question_x("Order changed concurrently?")) is ($guard_left("[changed — AF-01]"))
+  ' [AF-01.1]
+  :Refresh the current order of the Product Backlog;
+  |PRO|
+  ' [AF-01.2]
+  :Reapply the intended changes;
+  |SYS|
+endwhile ($guard("[not changed]"))
+if ($question("Complete and unique order?")) then ($guard_left("[complete and unique]"))
+else ($guard_right("[cannot be saved", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the order because it cannot be saved completely and uniquely;
+  stop
+endif
+' [NF4, POST1]
+:Save the new order;
+' [NF5, POST1]
+:Display the updated
+Product Backlog;
+stop
+@enduml

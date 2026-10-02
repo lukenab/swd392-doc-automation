@@ -1,0 +1,46 @@
+@startuml UC-PRODUCT-GOAL-UPDATE
+' UC-14.3 - Update Product Goal | semantic key: UC-PRODUCT-GOAL-UPDATE
+' Source: data/use_cases/product-backlog/UC-PRODUCT-GOAL-UPDATE.yml
+' Business Rules: BR-PRODUCT-ONE-GOAL, BR-PROJECT-ARCHIVED-READ-ONLY
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|PRO| $lane_title("Product Owner")
+|SYS| $lane_title("System")
+
+|PRO|
+start
+' [NF1]
+:Open the current Product Goal
+and choose to edit it;
+|SYS|
+' [NF2]
+:Display the current goal text;
+|PRO|
+if ($question_x("Save the revision?")) then ($guard_left("[save]"))
+  ' [NF3]
+  :Revise the Product Goal
+  and confirm the change;
+  |SYS|
+  ' [NF4]
+  :Validate the revised Product Goal;
+  if ($question_x("Still the Product Owner?")) then ($guard_left("[yes]"))
+  else ($guard_right("[accountability", "lost — EX-01]"))
+    ' [EX-01, BR-PRODUCT-ONE-GOAL, GUIDE-7.3]
+    :Reject the revision from the former Product Owner;
+    stop
+  endif
+  ' [NF4, POST1]
+  :Save the revised Product Goal;
+  ' [POST2]
+  :Record the change in
+  project activity history;
+  stop
+else ($guard_right("[cancel before", "saving — AF-01]"))
+  |SYS|
+  ' [AF-01.1]
+  :Keep the current Product Goal unchanged;
+  stop
+endif
+@enduml

@@ -1,0 +1,55 @@
+@startuml UC-BACKLOG-ITEM-ESTIMATE
+' UC-18 - Estimate Backlog Item | semantic key: UC-BACKLOG-ITEM-ESTIMATE
+' Source: data/use_cases/product-backlog/UC-BACKLOG-ITEM-ESTIMATE.yml
+' Business Rules: BR-DEVELOPER-ESTIMATION, BR-BACKLOG-ITEM-READY, BR-PROJECT-ARCHIVED-READ-ONLY
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|DEV| $lane_title("Developer")
+|SYS| $lane_title("System")
+|PRO| $lane_title("Product Owner")
+
+|DEV|
+start
+' [NF1]
+:Select a refined
+Product Backlog Item;
+|SYS|
+' [NF2]
+:Display the item's details
+and current estimate;
+|PRO|
+if ($question_x("Clarification requested?")) then ($guard_left("[requested]"))
+  ' [NF3]
+  :Clarify the expected outcome;
+else ($guard_right("[not", "requested]"))
+endif
+|DEV|
+if ($question_x("Sufficiently refined?")) then ($guard_left("[sufficient]"))
+  ' [NF4, BR-DEVELOPER-ESTIMATION]
+  :Provide the agreed estimate;
+else ($guard_right("[not refined", "— AF-01]"))
+  |SYS|
+  ' [AF-01.1]
+  :Leave the estimate unset for this item;
+  ' [AF-01.2]
+  :Return the item to the Product Owner for further refinement;
+  stop
+endif
+|SYS|
+' [NF5]
+:Validate the estimate;
+if ($question_x("Item still estimable?")) then ($guard_left("[estimable]"))
+else ($guard_right("[unavailable", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the estimate because the item was removed or is in a completed Sprint;
+  stop
+endif
+' [NF5, POST1]
+:Record the estimate;
+' [POST2]
+:Record the estimate change in
+item activity history;
+stop
+@enduml

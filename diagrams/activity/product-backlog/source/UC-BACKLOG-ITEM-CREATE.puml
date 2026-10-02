@@ -1,0 +1,51 @@
+@startuml UC-BACKLOG-ITEM-CREATE
+' UC-15.2 - Create Product Backlog Item | semantic key: UC-BACKLOG-ITEM-CREATE
+' Source: data/use_cases/product-backlog/UC-BACKLOG-ITEM-CREATE.yml
+' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-PROJECT-ARCHIVED-READ-ONLY
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|PRO| $lane_title("Product Owner")
+|SYS| $lane_title("System")
+
+|PRO|
+start
+' [NF1]
+:Choose to create a
+Product Backlog Item;
+|SYS|
+' [NF2]
+:Request the title, description,
+acceptance criteria, and item type;
+|PRO|
+if ($question_x("Information complete?")) then ($guard_left("[complete]"))
+  ' [NF3]
+  :Provide the required information
+  and confirm creation;
+  |SYS|
+  ' [NF4]
+  :Validate the new item;
+  if ($question_x("Identifying information present?")) then ($guard_left("[present]"))
+  else ($guard_right("[missing", "— EX-01]"))
+    ' [EX-01, GUIDE-7.3]
+    :Reject the item without identifying information;
+    stop
+  endif
+  ' [NF4, POST1]
+  :Store the new item in
+  the Product Backlog;
+else ($guard_right("[incomplete, saved", "as draft — AF-01]"))
+  ' [AF-01]
+  :Save the incomplete information
+  as a draft item;
+  |SYS|
+  ' [AF-01.1, POST1]
+  :Store the item without marking it
+  ready for Sprint planning;
+endif
+' [POST2]
+:Record the creation in
+item activity history;
+stop
+@enduml
