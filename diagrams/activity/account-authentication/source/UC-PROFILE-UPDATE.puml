@@ -1,0 +1,45 @@
+@startuml UC-PROFILE-UPDATE
+' UC-05.2 - Update Personal Profile | semantic key: UC-PROFILE-UPDATE
+' Source: data/use_cases/account-authentication/UC-PROFILE-UPDATE.yml
+' Business Rules: BR-AUTH-ACTIVE-ACCOUNT, BR-PROFILE-SELF-ACCESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1]
+:Open profile editing;
+|SYS|
+' [NF2]
+:Display the current
+editable profile values;
+|USR|
+if ($question_x("Save the changes?")) then ($guard_left("[submit]"))
+  ' [NF3]
+  :Change the desired values
+  and submit the profile;
+  |SYS|
+  ' [NF4]
+  :Validate the profile changes;
+  if ($question_x("Values valid?")) then ($guard_left("[valid]"))
+  else ($guard_right("[invalid values", "— EX-01]"))
+    ' [EX-01, GUIDE-7.3]
+    :Reject the profile changes and keep the stored profile;
+    stop
+  endif
+  ' [NF4, POST1]
+  :Save the profile changes;
+  ' [NF5]
+  :Display the updated profile;
+  stop
+else ($guard_right("[cancel before", "saving — AF-01]"))
+  |SYS|
+  ' [AF-01.1]
+  :Discard the unsaved changes;
+  stop
+endif
+@enduml
