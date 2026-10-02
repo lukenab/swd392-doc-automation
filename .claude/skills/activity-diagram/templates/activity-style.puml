@@ -1,0 +1,95 @@
+' =============================================================================
+' Shared visual style for every SWD392 Activity Diagram.
+'
+' Include from a UC source located in diagrams/activity/<domain>/source/ with:
+'     !include ../../_shared/activity-style.puml
+'
+' Keep business behaviour, titles and captions OUT of this file.
+' The presentation frame, the white background rectangle and the open
+' (UML-style) arrowheads are added deterministically by
+' scripts/activity_diagrams.py render.  Verified with PlantUML 1.2024.7.
+' =============================================================================
+
+!pragma useVerticalIf on
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 16
+skinparam defaultTextAlignment left
+skinparam roundCorner 18
+
+' --- Control flows and guard labels -------------------------------------------
+skinparam ArrowColor #202020
+skinparam ArrowThickness 1.4
+skinparam ArrowFontName "Times New Roman"
+skinparam ArrowFontSize 14
+skinparam ArrowFontColor #111111
+
+' --- Decision / merge nodes: true UML diamonds, question written beside them --
+skinparam conditionStyle diamond
+skinparam ConditionEndStyle diamond
+
+skinparam activity {
+  BackgroundColor #F7F7F7
+  BorderColor #202020
+  BorderThickness 1.2
+  FontColor #111111
+  FontName "Times New Roman"
+  FontSize 16
+  StartColor #111111
+  EndColor #111111
+  BarColor #111111
+  DiamondBackgroundColor #FFFFFF
+  DiamondBorderColor #202020
+  DiamondFontName "Times New Roman"
+  DiamondFontSize 15
+  DiamondFontColor #111111
+}
+
+skinparam swimlane {
+  BorderColor #202020
+  BorderThickness 1.4
+  TitleBackgroundColor #FFFFFF
+  TitleFontColor #111111
+  TitleFontName "Times New Roman"
+  TitleFontSize 18
+  TitleFontStyle bold
+}
+
+' --- Swimlane title helper -----------------------------------------------------
+' Adds a small invisible line under a lane title so the title band leaves room
+' for the header separator drawn by the renderer. Declare every lane once, with
+' an alias, before `start`:
+'     |DEV| $lane_title("Developer")
+'     |SYS| $lane_title("System")
+' and refer to the alias afterwards (|DEV|, |SYS|).
+!function $lane_title($title)
+!return $title + "\n<size:7><U+00A0></size>"
+!endfunction
+
+' --- Label spacing helpers ----------------------------------------------------
+' PlantUML places guard labels flush against the diamond and the flow line and
+' writes the decision question where it can collide with the right-hand guard.
+' These helpers add only invisible padding (non-breaking spaces and a small
+' blank line); they never change the visible wording.
+'   if ($question("Question?")) then ($guard_left("[guard]"))
+'   else ($guard_right("[first line", "second line]"))
+!function $question($text)
+!return $text + "\n<U+00A0>\n<U+00A0>"
+!endfunction
+' $question_x(...) lifts the question further; use it when the flow enters the
+' decision horizontally from another partition, so the incoming flow line
+' passes above the question instead of through it.
+!function $question_x($text)
+!return $text + "\n<U+00A0>\n<U+00A0>\n<U+00A0>\n<U+00A0>"
+!endfunction
+!function $guard_left($text)
+!return $text + "<U+00A0><U+00A0>\n<size:6><U+00A0></size>"
+!endfunction
+!function $guard_right($line1, $line2)
+!return "<U+00A0><U+00A0>" + $line1 + "\n<U+00A0><U+00A0>" + $line2 + "\n<size:6><U+00A0></size>"
+!endfunction
+!function $guard($text)
+!return "<U+00A0><U+00A0>" + $text + "<U+00A0><U+00A0>\n<size:6><U+00A0></size>"
+!endfunction
