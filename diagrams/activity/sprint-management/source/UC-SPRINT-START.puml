@@ -1,0 +1,53 @@
+@startuml UC-SPRINT-START
+' UC-20 - Start Sprint | semantic key: UC-SPRINT-START
+' Source: data/use_cases/sprint-management/UC-SPRINT-START.yml
+' Business Rules: BR-SPRINT-ONE-ACTIVE, BR-SPRINT-GOAL-REQUIRED, BR-SPRINT-DATE-RANGE
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|PRO| $lane_title("Product Owner")
+|SYS| $lane_title("System")
+|DEV| $lane_title("Developer")
+
+|PRO|
+start
+' [NF1]
+:Request to start
+the Draft Sprint;
+|SYS|
+' [NF2, BR-SPRINT-GOAL-REQUIRED, BR-SPRINT-DATE-RANGE]
+:Validate the Sprint Goal, dates,
+selected work and active-Sprint constraint;
+if ($question("Another Sprint active?")) then ($guard_left("[none active]"))
+else ($guard_right("[already active", "— EX-01]"))
+  ' [EX-01, BR-SPRINT-ONE-ACTIVE, GUIDE-7.3]
+  :Reject the start because another Sprint is already active;
+  stop
+endif
+|DEV|
+' [NF3]
+:Confirm that the selected work
+is understood and executable;
+|PRO|
+while ($question_x("Change the selection?")) is ($guard_left("[change — AF-01]"))
+  ' [AF-01.1]
+  :Update the selected
+  backlog items;
+  |SYS|
+  ' [AF-01.2]
+  :Revalidate the Sprint
+  before activation;
+  |PRO|
+endwhile ($guard("[no change]"))
+' [NF4]
+:Confirm Sprint activation;
+|SYS|
+' [NF5, POST1, POST2]
+:Mark the Sprint active and
+open its Sprint Board;
+' [OTHER]
+:Record the Sprint start time
+in the activity history;
+stop
+@enduml
