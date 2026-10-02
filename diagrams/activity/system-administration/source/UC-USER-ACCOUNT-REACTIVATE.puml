@@ -1,0 +1,41 @@
+@startuml UC-USER-ACCOUNT-REACTIVATE
+' UC-32.3 - Reactivate User Account | semantic key: UC-USER-ACCOUNT-REACTIVATE
+' Source: data/use_cases/system-administration/UC-USER-ACCOUNT-REACTIVATE.yml
+' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-AUDIT-EVENT-COMPLETENESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|ADM| $lane_title("System Administrator")
+|SYS| $lane_title("System")
+
+|ADM|
+start
+' [NF1, BR-SYSADMIN-USER-ACCOUNT]
+:Select a suspended User account
+and request reactivation;
+|SYS|
+if ($question_x("Account deleted?")) then ($guard_left("[not deleted]"))
+else ($guard_right("[deleted", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the reactivation of the deleted account;
+  stop
+endif
+' [NF2]
+:Display the account status
+and request confirmation;
+|ADM|
+if ($question_x("Confirm reactivation?")) then ($guard_left("[confirm]"))
+  ' [NF3]
+  :Confirm reactivation;
+  |SYS|
+  ' [NF4, POST1, POST2, BR-AUDIT-EVENT-COMPLETENESS, OTHER]
+  :Reactivate the account and
+  record the audit event;
+  stop
+else ($guard_right("[cancel", "— AF-01]"))
+  |SYS|
+  ' [AF-01.1]
+  :Leave the account suspended;
+  stop
+endif
+@enduml

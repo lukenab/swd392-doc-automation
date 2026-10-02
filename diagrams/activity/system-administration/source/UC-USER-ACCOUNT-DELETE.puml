@@ -1,0 +1,48 @@
+@startuml UC-USER-ACCOUNT-DELETE
+' UC-32.4 - Delete User Account | semantic key: UC-USER-ACCOUNT-DELETE
+' Source: data/use_cases/system-administration/UC-USER-ACCOUNT-DELETE.yml
+' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-OWNER-ACCOUNT-DELETION-GUARD, BR-LAST-ADMINISTRATOR-PROTECTION, BR-AUDIT-EVENT-COMPLETENESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|ADM| $lane_title("System Administrator")
+|SYS| $lane_title("System")
+
+|ADM|
+start
+' [NF1, BR-SYSADMIN-USER-ACCOUNT]
+:Select a User account
+and request deletion;
+|SYS|
+if ($question_x("Project Owner of an active project?")) then ($guard_left("[not an owner]"))
+else ($guard_right("[current owner", "— EX-01]"))
+  ' [EX-01, BR-OWNER-ACCOUNT-DELETION-GUARD, GUIDE-7.3]
+  :Reject the deletion of the current Project Owner;
+  stop
+endif
+if ($question("Last active System Administrator?")) then ($guard_left("[not the last]"))
+else ($guard_right("[last administrator", "— EX-02]"))
+  ' [EX-02, BR-LAST-ADMINISTRATOR-PROTECTION, GUIDE-7.3]
+  :Reject the deletion of the last active System Administrator;
+  stop
+endif
+' [NF2]
+:Display ownership, membership
+and administrative impact;
+|ADM|
+if ($question_x("Confirm deletion?")) then ($guard_left("[confirm]"))
+  ' [NF3]
+  :Provide a reason and
+  confirm deletion;
+  |SYS|
+  ' [NF4, POST1, POST2, BR-AUDIT-EVENT-COMPLETENESS, OTHER]
+  :Delete the account and
+  record the audit event;
+  stop
+else ($guard_right("[cancel", "— AF-01]"))
+  |SYS|
+  ' [AF-01.1]
+  :Leave the account unchanged;
+  stop
+endif
+@enduml

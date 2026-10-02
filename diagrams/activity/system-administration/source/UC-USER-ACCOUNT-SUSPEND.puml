@@ -1,0 +1,48 @@
+@startuml UC-USER-ACCOUNT-SUSPEND
+' UC-32.2 - Suspend User Account | semantic key: UC-USER-ACCOUNT-SUSPEND
+' Source: data/use_cases/system-administration/UC-USER-ACCOUNT-SUSPEND.yml
+' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-OWNER-ACCOUNT-DELETION-GUARD, BR-LAST-ADMINISTRATOR-PROTECTION, BR-AUDIT-EVENT-COMPLETENESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|ADM| $lane_title("System Administrator")
+|SYS| $lane_title("System")
+
+|ADM|
+start
+' [NF1, BR-SYSADMIN-USER-ACCOUNT]
+:Select an active User account
+and request suspension;
+|SYS|
+if ($question_x("Project Owner of an active project?")) then ($guard_left("[not an owner]"))
+else ($guard_right("[current owner", "— EX-01]"))
+  ' [EX-01, BR-OWNER-ACCOUNT-DELETION-GUARD, GUIDE-7.3]
+  :Reject the suspension of the current Project Owner;
+  stop
+endif
+if ($question("Last active System Administrator?")) then ($guard_left("[not the last]"))
+else ($guard_right("[last administrator", "— EX-02]"))
+  ' [EX-02, BR-LAST-ADMINISTRATOR-PROTECTION, GUIDE-7.3]
+  :Reject the suspension of the last active System Administrator;
+  stop
+endif
+' [NF2]
+:Display the impact and request
+a reason and confirmation;
+|ADM|
+if ($question_x("Confirm suspension?")) then ($guard_left("[confirm]"))
+  ' [NF3]
+  :Provide a reason and
+  confirm suspension;
+  |SYS|
+  ' [NF4, POST1, POST2, BR-AUDIT-EVENT-COMPLETENESS]
+  :Suspend the account and
+  record the audit event;
+  stop
+else ($guard_right("[cancel", "— AF-01]"))
+  |SYS|
+  ' [AF-01.1]
+  :Leave the account active;
+  stop
+endif
+@enduml
