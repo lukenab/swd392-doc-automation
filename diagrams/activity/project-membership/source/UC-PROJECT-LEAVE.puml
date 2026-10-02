@@ -1,0 +1,51 @@
+@startuml UC-PROJECT-LEAVE
+' UC-13 - Leave Project | semantic key: UC-PROJECT-LEAVE
+' Source: data/use_cases/project-membership/UC-PROJECT-LEAVE.yml
+' Business Rules: BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, BR-PROJECT-MEMBER-ACCESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1]
+:Request to leave the project;
+|SYS|
+' [NF2]
+:Check ownership and
+unfinished work constraints;
+if ($question("Current Project Owner?")) then ($guard_left("[not the owner]"))
+else ($guard_right("[current owner", "— EX-01]"))
+  ' [EX-01, BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, GUIDE-7.3]
+  :Reject the request until ownership is transferred;
+  stop
+endif
+if ($question_x("Unfinished Sprint Tasks?")) then ($guard_left("[none]"))
+  ' [NF3]
+  :Explain the effects of leaving
+  and request confirmation;
+  |USR|
+  ' [NF4]
+  :Confirm leaving the project;
+else ($guard_right("[owns tasks", "— AF-01]"))
+  |SYS|
+  ' [AF-01.1]
+  :Warn that unfinished work
+  will become unclaimed;
+  |USR|
+  if ($question_x("Leave anyway?")) then ($guard_left("[confirm — AF-01]"))
+  else ($guard_right("[cancel", "— AF-01]"))
+    ' [AF-01.2]
+    :Cancel the leave request;
+    stop
+  endif
+endif
+|SYS|
+' [NF5, POST1, POST2, POST3]
+:Remove active membership and
+project-scoped permissions;
+stop
+@enduml

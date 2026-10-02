@@ -1,0 +1,50 @@
+@startuml UC-PROJECT-UPDATE
+' UC-08 - Update Project Information | semantic key: UC-PROJECT-UPDATE
+' Source: data/use_cases/project-membership/UC-PROJECT-UPDATE.yml
+' Business Rules: BR-PROJECT-OWNER-ADMINISTRATION, BR-PROJECT-ARCHIVED-READ-ONLY
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|OWN| $lane_title("Project Owner")
+|SYS| $lane_title("System")
+
+|OWN|
+start
+' [NF1]
+:Request to update
+project information;
+|SYS|
+' [NF2]
+:Present the current
+project information;
+|OWN|
+' [NF3]
+:Change the permitted values
+and submit the update;
+|SYS|
+' [NF4]
+:Validate the updated information;
+while ($question("Submitted values invalid?")) is ($guard_left("[invalid — AF-01]"))
+  ' [AF-01.1]
+  :Reject the update and identify the invalid values;
+  |OWN|
+  ' [AF-01.2]
+  :Correct and resubmit the information;
+  |SYS|
+endwhile ($guard("[valid]"))
+if ($question("Ownership unchanged?")) then ($guard_left("[unchanged]"))
+else ($guard_right("[ownership changed", "— EX-01]"))
+  ' [EX-01]
+  :Reject the update because ownership changed;
+  stop
+endif
+' [NF4, POST1]
+:Save the updated information;
+' [POST2]
+:Record the change in
+project activity history;
+' [NF5]
+:Confirm the successful update;
+stop
+@enduml

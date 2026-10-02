@@ -1,0 +1,35 @@
+@startuml UC-PROJECT-MEMBERS-VIEW
+' UC-09.1 - View Project Members | semantic key: UC-PROJECT-MEMBERS-VIEW
+' Source: data/use_cases/project-membership/UC-PROJECT-MEMBERS-VIEW.yml
+' Business Rules: BR-PROJECT-MEMBER-ACCESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1]
+:Open the project member list;
+|SYS|
+' [NF2]
+:Retrieve active members and their
+project-scoped assignments;
+if ($question("Membership information available?")) then ($guard_left("[available]"))
+else ($guard_right("[unavailable", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Report that membership information is temporarily unavailable;
+  stop
+endif
+if ($question_x("Other members?")) then ($guard_left("[other members]"))
+  ' [NF3, POST1]
+  :Display the member list;
+else ($guard_right("[Project Owner", "only — AF-01]"))
+  ' [AF-01.1]
+  :Display only the
+  Project Owner;
+endif
+stop
+@enduml
