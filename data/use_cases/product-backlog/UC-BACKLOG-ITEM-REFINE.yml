@@ -39,7 +39,7 @@ alternative_flows:
       - The system preserves traceability to the original item.
 exceptions:
   - id: EX-01
-    description: The item is selected into an active Sprint and can no longer be substantially decomposed.
+    description: The item is selected into an active Sprint and can no longer be substantially decomposed; the system rejects the decomposition and refinement continues without splitting the item.
 priority: Must Have
 frequency_of_use: Frequent
 business_rules:

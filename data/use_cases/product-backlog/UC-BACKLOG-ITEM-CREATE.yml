@@ -32,7 +32,7 @@ alternative_flows:
       - The system stores the item but does not mark it ready for Sprint planning.
 exceptions:
   - id: EX-01
-    description: Required identifying information is missing.
+    description: Required identifying information, at least the title, is missing; this applies to complete items and to drafts.
 priority: Must Have
 frequency_of_use: Frequent
 business_rules:
