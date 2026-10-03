@@ -41,6 +41,8 @@ exceptions:
     description: The related project item is no longer accessible to the actor.
   - id: EX-02
     description: The email delivery preference cannot be saved; the previous preference remains unchanged.
+  - id: EX-03
+    description: Email delivery is enabled but the actor has no verified email address; the change is rejected and the previous preference remains unchanged.
 priority: Should Have
 frequency_of_use: Frequent
 business_rules:
