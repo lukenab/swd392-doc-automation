@@ -28,10 +28,10 @@ and acceptance criteria;
 :Add implementation-relevant
 clarification and propose
 decomposition when needed;
-|SYS|
-if ($question_x("Too large for one Sprint?")) then ($guard_left("[fits one Sprint]"))
+if ($question("Too large for one Sprint?")) then ($guard_left("[fits one Sprint]"))
 else ($guard_right("[too large", "— AF-01]"))
-  if ($question("Selected into an active Sprint?")) then ($guard_left("[not selected]"))
+  |SYS|
+  if ($question_x("Selected into an active Sprint?")) then ($guard_left("[not selected]"))
   else ($guard_right("[selected", "— EX-01]"))
     ' [EX-01, GUIDE-7.3]
     :Reject the decomposition of the item in the active Sprint;

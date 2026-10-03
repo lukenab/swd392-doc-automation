@@ -34,7 +34,7 @@ else ($guard_right("[not refined", "— AF-01]"))
   ' [AF-01.1]
   :Leave the estimate unset for this item;
   ' [AF-01.2]
-  :Return the item to the Product Owner for further refinement;
+  :Return the item for further refinement;
   stop
 endif
 |SYS|

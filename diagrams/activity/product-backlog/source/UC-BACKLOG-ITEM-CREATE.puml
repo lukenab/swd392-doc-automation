@@ -21,28 +21,33 @@ acceptance criteria, and item type;
 |PRO|
 if ($question_x("Information complete?")) then ($guard_left("[complete]"))
   ' [NF3]
-  :Provide the required information
-  and confirm creation;
+  :Provide the required
+  information and
+  confirm creation;
   |SYS|
   ' [NF4]
   :Validate the new item;
   if ($question_x("Identifying information present?")) then ($guard_left("[present]"))
   else ($guard_right("[missing", "— EX-01]"))
     ' [EX-01, GUIDE-7.3]
-    :Reject the item without identifying information;
+    :Reject the item without
+    identifying information;
     stop
   endif
   ' [NF4, POST1]
   :Store the new item in
   the Product Backlog;
 else ($guard_right("[incomplete, saved", "as draft — AF-01]"))
+  |PRO|
   ' [AF-01]
-  :Save the incomplete information
-  as a draft item;
+  :Save the incomplete
+  information
+  as a draft;
   |SYS|
   ' [AF-01.1, POST1]
-  :Store the item without marking it
-  ready for Sprint planning;
+  :Store the item without
+  marking it ready for
+  Sprint planning;
 endif
 ' [POST2]
 :Record the creation in
