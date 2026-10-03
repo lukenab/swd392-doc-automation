@@ -26,7 +26,12 @@ normal_flow:
     action: Provides the task information and confirms creation.
   - actor: System
     action: Validates and stores the Sprint Task.
-alternative_flows: []
+alternative_flows:
+  - id: AF-01
+    condition: Required task information is missing or invalid.
+    steps:
+      - The system identifies the missing or invalid information.
+      - The Developer corrects the information and submits it again.
 exceptions:
   - id: EX-01
     description: The related Product Backlog Item no longer belongs to the active Sprint.

@@ -13,7 +13,6 @@ description: >
   project members can understand current progress and ownership.
 preconditions:
   - The actor is an active member of the project.
-  - The project has an active Sprint.
 postconditions:
   - The actor sees the current Sprint Board without changing project data.
 normal_flow:
