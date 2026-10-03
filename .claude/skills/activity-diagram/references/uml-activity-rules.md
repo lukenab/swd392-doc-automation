@@ -3,8 +3,9 @@
 ## UML semantics (UML 2.5.1, clause 15)
 
 - **Initial node**: exactly one per diagram in this project (`start`).
-- **Activity final**: ends the whole activity when reached. Several are allowed; use one per distinct outcome
-  and merge paths that share a postcondition. A **flow final** ends one flow only; use it only when another flow
+- **Activity final**: ends the whole activity when reached. Several are allowed (UML); the team convention is
+  one per distinct outcome: merge paths with the same outcome, and use one shared final when different
+  outcomes are interleaved on nested branches. A **flow final** ends one flow only; use it only when another flow
   continues.
 - **Decision node**: one incoming edge, guarded outgoing edges. Guards are in `[ ]`, mutually exclusive and
   complete. A combined merge/decision is allowed.
@@ -18,7 +19,7 @@
 - Normal flow top to bottom; one action per YAML step (split a step only when two actors are involved).
 - Alternative flow (R-AF-REJOIN): resume after the step where it was raised, or return to the step it
   re-performs; cancellation and terminal AFs end.
-- Exception (R-EX): one System reject/report action, then its own final.
+- Exception (R-EX): one System reject/report action; it then joins the final of its outcome (merge).
 - A precondition contradicted by an EX/AF the System can detect → defensive System check + observation.
   An AF that needs the actor to start from a state the preconditions exclude → `BLOCKED — REQUIREMENT CONFLICT`.
 
@@ -26,7 +27,8 @@
 
 | Need | Pattern | Avoid |
 |---|---|---|
-| Exception in the same partition | empty `then`, `else` with reject + `stop` | long guard text on the bypass side |
+| Exception in the same partition | empty `then`, `else` with reject + `stop` (only when no other path has the same outcome) | long guard text on the bypass side |
+| Several paths with the same outcome | nest the remaining flow in `then`; put each reject in `else`; one `stop` after the outer `endif` | a `stop` in every branch |
 | Two outcomes in different partitions | both branches non-empty; the cross-partition branch in `else` | a `then` branch whose first node is in another partition (its label is crossed) |
 | Loop | `while (q) is ([loop guard]) ... endwhile ([exit guard])` | `repeat while` (guards dropped), `backward`, `goto` |
 | Three-way choice | nested binary `if` | `elseif` (hexagons), `switch` |

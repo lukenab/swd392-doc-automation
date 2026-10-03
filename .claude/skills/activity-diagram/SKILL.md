@@ -47,8 +47,10 @@ Never add behaviour, validations, actors or exceptions that these sources do not
 
 - Authentication is a precondition. Log In appears only in `UC-SIGN-IN`.
 - English, Times New Roman, portrait, top to bottom, white background, no title inside the diagram.
-- One `start`. Merge paths that share a postcondition into one final; separate finals only for different
-  outcomes. Never claim UML requires exactly one final node.
+- One `start`. Paths with the same outcome share one final (merge); separate finals only for different
+  outcomes, each explained in the header comment. Never claim UML requires exactly one final node.
+- Every action must trace to a YAML step, condition, exception, postcondition or other_information; never add
+  generic steps (validate, check permission, notify, log, refresh, confirm) without that source.
 - Every decision has a question and a guard on every outgoing edge; AF/EX identifiers appear in guards.
 - Each exception: one System reject/report action (trace `GUIDE-7.3` when the YAML gives no outcome), then a final.
 - Undescribed validation failures are not drawn; they become manifest `observations`.
