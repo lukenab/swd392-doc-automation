@@ -4,6 +4,9 @@
 ' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-OWNER-ACCOUNT-DELETION-GUARD, BR-LAST-ADMINISTRATOR-PROTECTION, BR-AUDIT-EVENT-COMPLETENESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = account deleted (postconditions met); F2 = account unchanged (EX-01, EX-02, AF-01).
+' EX-01 and EX-02 share one decision: precondition 3 names both protections and both exceptions
+' end with the same rejection.
 !include ../../_shared/activity-style.puml
 |ADM| $lane_title("System Administrator")
 |SYS| $lane_title("System")
@@ -14,35 +17,31 @@ start
 :Select a User account
 and request deletion;
 |SYS|
-if ($question_x("Project Owner of an active project?")) then ($guard_left("[not an owner]"))
-else ($guard_right("[current owner", "— EX-01]"))
-  ' [EX-01, BR-OWNER-ACCOUNT-DELETION-GUARD, GUIDE-7.3]
-  :Reject the deletion of the current Project Owner;
-  stop
+if ($question_x("Account protected?")) then ($guard_left("[not protected]"))
+  ' [NF2]
+  :Display ownership, membership
+  and administrative impact;
+  |ADM|
+  if ($question_x("Confirm deletion?")) then ($guard_left("[confirm]"))
+    ' [NF3]
+    :Provide a reason and
+    confirm deletion;
+    |SYS|
+    ' [NF4, POST1, POST2, BR-AUDIT-EVENT-COMPLETENESS, OTHER]
+    :Delete the account and
+    record the audit event;
+    stop
+  else ($guard_right("[cancel", "— AF-01]"))
+    |SYS|
+    ' [AF-01.1]
+    :Leave the account unchanged;
+  endif
+else ($guard_right("[current owner — EX-01 or", "last administrator — EX-02]"))
+  ' [EX-01, EX-02, BR-OWNER-ACCOUNT-DELETION-GUARD, BR-LAST-ADMINISTRATOR-PROTECTION, GUIDE-7.3]
+  :Reject the deletion
+  of the protected
+  account;
 endif
-if ($question("Last active System Administrator?")) then ($guard_left("[not the last]"))
-else ($guard_right("[last administrator", "— EX-02]"))
-  ' [EX-02, BR-LAST-ADMINISTRATOR-PROTECTION, GUIDE-7.3]
-  :Reject the deletion of the last active System Administrator;
-  stop
-endif
-' [NF2]
-:Display ownership, membership
-and administrative impact;
-|ADM|
-if ($question_x("Confirm deletion?")) then ($guard_left("[confirm]"))
-  ' [NF3]
-  :Provide a reason and
-  confirm deletion;
-  |SYS|
-  ' [NF4, POST1, POST2, BR-AUDIT-EVENT-COMPLETENESS, OTHER]
-  :Delete the account and
-  record the audit event;
-  stop
-else ($guard_right("[cancel", "— AF-01]"))
-  |SYS|
-  ' [AF-01.1]
-  :Leave the account unchanged;
-  stop
-endif
+|SYS|
+stop
 @enduml
