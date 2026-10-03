@@ -14,7 +14,6 @@ description: >
 preconditions:
   - The Sprint is in Draft status.
   - The Sprint has a goal, valid dates, and at least one selected item.
-  - No other Sprint is active in the project.
 postconditions:
   - The Sprint is active.
   - Its selected items are visible on the Sprint Board.
@@ -35,6 +34,11 @@ alternative_flows:
     steps:
       - The Product Owner updates the selected backlog items.
       - The system revalidates the Sprint before activation.
+  - id: AF-02
+    condition: The revalidation in AF-01 fails.
+    steps:
+      - The system reports the violated constraint and the Sprint remains in Draft status.
+      - The Product Owner updates the selected backlog items again.
 exceptions:
   - id: EX-01
     description: Another Sprint is already active in the project.

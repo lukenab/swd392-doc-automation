@@ -36,7 +36,7 @@ alternative_flows:
       - The system leaves the Sprint unchanged.
 exceptions:
   - id: EX-01
-    description: The Sprint has already been completed or cancelled.
+    description: The Sprint is completed or cancelled before the cancellation is confirmed.
 priority: Should Have
 frequency_of_use: Rare
 business_rules:
