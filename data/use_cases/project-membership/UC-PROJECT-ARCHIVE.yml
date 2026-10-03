@@ -14,7 +14,6 @@ description: >
 preconditions:
   - The actor is the current Project Owner.
   - The project is active.
-  - The project has no active Sprint.
 postconditions:
   - The project is archived.
   - Project information remains available in read-only mode.

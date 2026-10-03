@@ -37,7 +37,7 @@ business_rules:
   - key: BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE
     group: PROJECT_MEMBERSHIP
     order: 800
-    description: A project has at most one active Product Owner accountability at a time; assigning a new Product Owner automatically replaces the previous one.
+    description: A project has at most one active Product Owner accountability at a time; assigning a new Product Owner replaces the previous one once the Project Owner confirms the replacement.
 
   - key: BR-PRODUCT-ONE-GOAL
     group: PRODUCT_BACKLOG

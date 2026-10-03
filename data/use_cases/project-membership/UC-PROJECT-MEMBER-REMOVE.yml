@@ -13,7 +13,7 @@ description: This use case allows the Project Owner to revoke a member's access 
 preconditions:
   - The actor is the current Project Owner.
   - The project is active.
-  - The target User is an active Project Member and is not the Project Owner.
+  - The target User is an active Project Member.
 postconditions:
   - The target User no longer has access through project membership.
   - The removal is recorded in project activity history.
