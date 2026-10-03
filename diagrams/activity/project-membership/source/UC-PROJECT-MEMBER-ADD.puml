@@ -4,8 +4,8 @@
 ' Business Rules: BR-ACTIVE-USER-REQUIRED, BR-PROJECT-OWNER-ADMINISTRATION
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = membership created (postconditions met); F2 = no membership change (AF-01, EX-01).
 !include ../../_shared/activity-style.puml
-
 |OWN| $lane_title("Project Owner")
 |SYS| $lane_title("System")
 
@@ -26,22 +26,24 @@ confirm the addition;
 :Verify that the User is active
 and is not already a member;
 if ($question("Already a member?")) then ($guard_left("[not a member]"))
+  if ($question("Account still active?")) then ($guard_left("[active]"))
+    ' [NF5, POST1]
+    :Create the membership and
+    refresh the member list;
+    ' [POST2]
+    :Record the membership change
+    in project activity history;
+    stop
+  else ($guard_right("[became inactive", "— EX-01]"))
+    ' [EX-01, GUIDE-7.3]
+    :Reject the addition
+    of the inactive
+    account;
+  endif
 else ($guard_right("[already a member", "— AF-01]"))
   ' [AF-01.1]
-  :Report that no new membership is required;
-  stop
+  :Report that no new
+  membership is required;
 endif
-if ($question_x("Account still active?")) then ($guard_left("[active]"))
-else ($guard_right("[became inactive", "— EX-01]"))
-  ' [EX-01, GUIDE-7.3]
-  :Reject the addition of the inactive account;
-  stop
-endif
-' [NF5, POST1]
-:Create the membership and
-refresh the member list;
-' [POST2]
-:Record the membership change
-in project activity history;
 stop
 @enduml

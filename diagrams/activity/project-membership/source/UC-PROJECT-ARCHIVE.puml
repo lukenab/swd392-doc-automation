@@ -4,8 +4,8 @@
 ' Business Rules: BR-PROJECT-OWNER-ADMINISTRATION, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = project archived (postconditions met); F2 = project unchanged (EX-01, AF-01).
 !include ../../_shared/activity-style.puml
-
 |OWN| $lane_title("Project Owner")
 |SYS| $lane_title("System")
 
@@ -18,28 +18,30 @@ start
 :Check that the project
 has no active Sprint;
 if ($question("Active Sprint?")) then ($guard_left("[none]"))
+  ' [NF3]
+  :Summarize the effects of archival
+  and request confirmation;
+  |OWN|
+  if ($question_x("Confirm archival?")) then ($guard_left("[confirm]"))
+    ' [NF4]
+    :Confirm archival;
+    |SYS|
+    ' [NF5, POST1, POST2, BR-PROJECT-ARCHIVED-READ-ONLY]
+    :Mark the project and its
+    contained work as read-only;
+    stop
+  else ($guard_right("[cancel", "— AF-01]"))
+    |SYS|
+    ' [AF-01.1]
+    :Leave the project active
+    and unchanged;
+  endif
 else ($guard_right("[active Sprint", "— EX-01]"))
   ' [EX-01, GUIDE-7.3]
-  :Reject the archival because the project has an active Sprint;
-  stop
+  :Reject the archival
+  because the project has
+  an active Sprint;
 endif
-' [NF3]
-:Summarize the effects of archival
-and request confirmation;
-|OWN|
-if ($question_x("Confirm archival?")) then ($guard_left("[confirm]"))
-  ' [NF4]
-  :Confirm archival;
-  |SYS|
-  ' [NF5, POST1, POST2, BR-PROJECT-ARCHIVED-READ-ONLY]
-  :Mark the project and its
-  contained work as read-only;
-  stop
-else ($guard_right("[cancel", "— AF-01]"))
-  |SYS|
-  ' [AF-01.1]
-  :Leave the project active
-  and unchanged;
-  stop
-endif
+|SYS|
+stop
 @enduml
