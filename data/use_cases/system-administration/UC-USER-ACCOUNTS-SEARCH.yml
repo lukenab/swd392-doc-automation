@@ -28,6 +28,7 @@ alternative_flows:
     condition: No account matches the search criteria.
     steps:
       - The system reports that no matching account was found.
+      - The System Administrator may change the search criteria and search again.
 exceptions:
   - id: EX-01
     description: Account administration data is temporarily unavailable.

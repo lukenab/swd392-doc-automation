@@ -32,7 +32,7 @@ alternative_flows:
       - The system leaves the account suspended.
 exceptions:
   - id: EX-01
-    description: The account has been deleted and cannot be reactivated.
+    description: The account is deleted before the reactivation is confirmed and cannot be reactivated.
 priority: Should Have
 frequency_of_use: Rare
 business_rules:

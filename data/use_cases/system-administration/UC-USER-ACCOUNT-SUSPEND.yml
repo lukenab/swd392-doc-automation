@@ -13,7 +13,6 @@ description: This use case allows an authorized administrator to suspend an elig
 preconditions:
   - The System Administrator is authenticated and authorized.
   - The target User account is active.
-  - The target account is not protected by ownership or last-administrator constraints.
 postconditions:
   - The target account is suspended.
   - The suspension reason and actor are recorded in the system audit log.

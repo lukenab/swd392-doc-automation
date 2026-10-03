@@ -13,7 +13,6 @@ description: This use case allows an authorized administrator to delete a User a
 preconditions:
   - The System Administrator is authenticated and authorized.
   - The target User account exists.
-  - The target account is not a current Project Owner and is not the last active System Administrator.
 postconditions:
   - The User account can no longer authenticate.
   - Required audit and historical attribution data are preserved.
