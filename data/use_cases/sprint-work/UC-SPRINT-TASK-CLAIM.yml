@@ -26,11 +26,7 @@ normal_flow:
     action: Assigns the task to the Developer.
   - actor: System
     action: Updates the Sprint Board and records the assignment.
-alternative_flows:
-  - id: AF-01
-    condition: The Developer withdraws before confirmation.
-    steps:
-      - The system leaves the task unassigned.
+alternative_flows: []
 exceptions:
   - id: EX-01
     description: Another Developer claims the task first.

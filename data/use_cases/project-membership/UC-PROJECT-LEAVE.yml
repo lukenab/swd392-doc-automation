@@ -13,7 +13,6 @@ description: >
   manual removal by the Project Owner.
 preconditions:
   - The actor is an active member of the project.
-  - The actor is not the current Project Owner.
   - The project is active.
 postconditions:
   - The actor is no longer a member of the project.

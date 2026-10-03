@@ -13,7 +13,7 @@ description: This use case allows the Product Owner to remove an item that is no
 preconditions:
   - The actor holds Product Owner accountability in the project.
   - The project is active.
-  - The Product Backlog Item exists and is not selected for the active Sprint.
+  - The Product Backlog Item exists.
 postconditions:
   - The item is removed from the active Product Backlog.
   - The removal is recorded in activity history.

@@ -56,6 +56,8 @@ exceptions:
     description: The Identity Provider does not return a valid verified identity; registration is cancelled.
   - id: EX-03
     description: Account data cannot be persisted, so no User account is created.
+  - id: EX-04
+    description: The Identity Provider returns an email address that already belongs to an existing account; no new account is created and the Guest is directed to Log In.
 priority: Must Have
 frequency_of_use: Rare
 business_rules:

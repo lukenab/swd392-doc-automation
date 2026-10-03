@@ -32,6 +32,7 @@ alternative_flows:
     steps:
       - The system identifies the missing information.
       - The Developer completes the information or chooses another status.
+      - The system validates the requested transition again.
 exceptions:
   - id: EX-01
     description: The selected status is no longer available.

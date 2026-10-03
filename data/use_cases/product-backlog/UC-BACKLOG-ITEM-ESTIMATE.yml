@@ -34,7 +34,7 @@ alternative_flows:
     condition: Developers determine that the item is not sufficiently refined.
     steps:
       - The system leaves the estimate unset.
-      - The item is returned for further refinement.
+      - The system marks the item as requiring further refinement.
 exceptions:
   - id: EX-01
     description: The item was removed or selected into a completed Sprint before the estimate was saved.

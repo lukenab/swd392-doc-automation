@@ -3,20 +3,19 @@ parent: UC-SUBTASKS-MANAGE
 group: SPRINT_WORK
 order: 540
 name: Complete Subtask
-summary: Mark a subtask complete and refresh parent-task progress.
+summary: Mark a subtask complete, or restore it to incomplete, and refresh parent-task progress.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
 primary_actor: User
 secondary_actors: []
 trigger: A Developer finishes the work represented by a subtask.
-description: This use case records subtask completion and updates the progress shown for its parent task.
+description: This use case records subtask completion, or the restoration of a completed subtask, and updates the progress shown for its parent task.
 preconditions:
   - The User holds Developer accountability in the project.
   - The subtask belongs to a task in the active Sprint.
-  - The subtask is not already complete.
 postconditions:
-  - The subtask is marked complete.
-  - Parent-task progress reflects the completed subtask.
+  - The subtask has the requested completion status.
+  - Parent-task progress reflects the subtask status.
 normal_flow:
   - actor: User
     action: Selects an incomplete subtask and marks it complete.
@@ -28,6 +27,7 @@ alternative_flows:
   - id: AF-01
     condition: The User restores a completed subtask to an incomplete state.
     steps:
+      - The system validates the requested status change.
       - The system records the new status and recalculates parent-task progress.
 exceptions:
   - id: EX-01

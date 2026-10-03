@@ -35,6 +35,10 @@ alternative_flows:
     steps:
       - The system requests confirmation of the replacement.
       - The system transfers Product Owner accountability after confirmation.
+  - id: AF-02
+    condition: The Project Owner does not confirm the Product Owner replacement.
+    steps:
+      - The system keeps the current Scrum accountabilities unchanged.
 exceptions:
   - id: EX-01
     description: The target member leaves or is removed before the assignment is saved.
