@@ -1,0 +1,30 @@
+@startuml UC-PROFILE-VIEW
+' UC-05.1 - View Personal Profile | semantic key: UC-PROFILE-VIEW
+' Source: data/use_cases/account-authentication/UC-PROFILE-VIEW.yml
+' Business Rules: BR-AUTH-ACTIVE-ACCOUNT, BR-PROFILE-SELF-ACCESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1]
+:Open the personal profile page;
+|SYS|
+' [NF2, BR-PROFILE-SELF-ACCESS]
+:Retrieve the profile belonging
+to the authenticated User;
+if ($question("Profile available?")) then ($guard_left("[available]"))
+else ($guard_right("[unavailable", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Report that the profile information is temporarily unavailable;
+  stop
+endif
+' [NF3, POST1]
+:Display the User's profile and
+non-sensitive account information;
+stop
+@enduml

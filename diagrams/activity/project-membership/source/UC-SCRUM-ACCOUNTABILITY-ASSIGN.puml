@@ -1,0 +1,51 @@
+@startuml UC-SCRUM-ACCOUNTABILITY-ASSIGN
+' UC-10 - Assign Scrum Accountability | semantic key: UC-SCRUM-ACCOUNTABILITY-ASSIGN
+' Source: data/use_cases/project-membership/UC-SCRUM-ACCOUNTABILITY-ASSIGN.yml
+' Business Rules: BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED, BR-PROJECT-OWNER-ADMINISTRATION, BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|OWN| $lane_title("Project Owner")
+|SYS| $lane_title("System")
+
+|OWN|
+start
+' [NF1]
+:Select an active project member;
+|SYS|
+' [NF2]
+:Display the member's current
+Scrum accountability;
+|OWN|
+' [NF3]
+:Select Product Owner or Developer;
+|SYS|
+' [NF4, BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED]
+:Validate the assignment
+against project constraints;
+if ($question("Conflicting Product Owner?")) then ($guard_left("[no conflict]"))
+else ($guard_right("[conflicting", "assignment — AF-01]"))
+  ' [AF-01.1]
+  :Request confirmation of the replacement;
+  |OWN|
+  ' [AF-01.2]
+  :Confirm the replacement;
+  |SYS|
+  ' [AF-01.2, BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE]
+  :Transfer the Product Owner accountability;
+endif
+if ($question_x("Member still in the project?")) then ($guard_left("[still a member]"))
+else ($guard_right("[left or removed", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the assignment for the departed member;
+  stop
+endif
+' [NF5, POST1]
+:Save and confirm the
+project-scoped accountability;
+' [POST2]
+:Record the accountability change
+in activity history;
+stop
+@enduml

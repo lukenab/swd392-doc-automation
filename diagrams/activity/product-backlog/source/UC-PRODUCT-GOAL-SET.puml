@@ -1,0 +1,39 @@
+@startuml UC-PRODUCT-GOAL-SET
+' UC-14.2 - Set Product Goal | semantic key: UC-PRODUCT-GOAL-SET
+' Source: data/use_cases/product-backlog/UC-PRODUCT-GOAL-SET.yml
+' Business Rules: BR-PRODUCT-ONE-GOAL, BR-PROJECT-ARCHIVED-READ-ONLY
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|PRO| $lane_title("Product Owner")
+|SYS| $lane_title("System")
+
+|PRO|
+start
+' [NF1]
+:Choose to define the Product Goal;
+|SYS|
+' [NF2]
+:Request the desired
+future product outcome;
+|PRO|
+' [NF3]
+:Enter the Product Goal
+and confirm it;
+|SYS|
+' [NF4]
+:Validate the Product Goal;
+if ($question("Product Goal empty?")) then ($guard_left("[not empty]"))
+else ($guard_right("[empty", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the empty Product Goal;
+  stop
+endif
+' [NF4, POST1, BR-PRODUCT-ONE-GOAL]
+:Store the Product Goal;
+' [POST2]
+:Record the creation in
+project activity history;
+stop
+@enduml

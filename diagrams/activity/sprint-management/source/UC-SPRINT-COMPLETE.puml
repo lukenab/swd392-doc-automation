@@ -1,0 +1,57 @@
+@startuml UC-SPRINT-COMPLETE
+' UC-21 - Complete Sprint | semantic key: UC-SPRINT-COMPLETE
+' Source: data/use_cases/sprint-management/UC-SPRINT-COMPLETE.yml
+' Business Rules: BR-SPRINT-INCOMPLETE-RETURN-BACKLOG, BR-WORK-ITEM-STATUS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+' AF-01 re-performs NF1: the loop repeats the display (NF2) and the review (NF3).
+!include ../../_shared/activity-style.puml
+
+|PRO| $lane_title("Product Owner")
+|SYS| $lane_title("System")
+|DEV| $lane_title("Developer")
+
+|PRO|
+start
+' [NF1]
+:Request to complete
+the active Sprint;
+|SYS|
+' [NF2]
+:Display completed and
+incomplete Sprint work;
+|DEV|
+' [NF3, BR-WORK-ITEM-STATUS]
+:Review the final work status and confirm that task data is current;
+while ($question("Statuses require correction?")) is ($guard_left("[correction required — AF-01]"))
+  ' [AF-01.1, BR-WORK-ITEM-STATUS]
+  :Update the affected items;
+  |PRO|
+  ' [AF-01.2]
+  :Repeat the completion request;
+  |SYS|
+  ' [NF2]
+  :Display completed and
+  incomplete Sprint work;
+  |DEV|
+  ' [NF3, BR-WORK-ITEM-STATUS]
+  :Review the final work status and confirm that task data is current;
+endwhile ($guard("[statuses current]"))
+|PRO|
+' [NF4]
+:Confirm Sprint completion;
+|SYS|
+if ($question_x("Sprint state unchanged?")) then ($guard_left("[unchanged]"))
+else ($guard_right("[state changed", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the completion because the Sprint state has changed;
+  stop
+endif
+' [NF5, POST1, POST2, POST3, BR-SPRINT-INCOMPLETE-RETURN-BACKLOG]
+:Complete the Sprint and return incomplete
+items to the Product Backlog;
+' [NF6]
+:Record the Sprint result
+for reporting;
+stop
+@enduml

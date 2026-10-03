@@ -1,0 +1,28 @@
+@startuml UC-SUBTASKS-VIEW
+' UC-27.1 - View Subtasks | semantic key: UC-SUBTASKS-VIEW
+' Source: data/use_cases/sprint-work/UC-SUBTASKS-VIEW.yml
+' Business Rules: BR-PROJECT-MEMBER-ACCESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1, BR-PROJECT-MEMBER-ACCESS]
+:Open a Sprint Task's
+subtask section;
+|SYS|
+' [NF2]
+:Retrieve the existing subtasks;
+if ($question("Subtasks exist?")) then ($guard_left("[subtasks exist]"))
+  ' [NF2, POST1]
+  :Display the existing subtasks;
+else ($guard_right("[no subtasks", "— AF-01]"))
+  ' [AF-01.1, POST1]
+  :Display an empty
+  subtask list;
+endif
+stop
+@enduml

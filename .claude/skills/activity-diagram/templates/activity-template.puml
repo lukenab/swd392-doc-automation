@@ -1,0 +1,42 @@
+@startuml UC-SEMANTIC-KEY
+' UC-00 - Use Case Name | semantic key: UC-SEMANTIC-KEY
+' Source: data/use_cases/<domain>/UC-SEMANTIC-KEY.yml
+' Business Rules: BR-...
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+' Declare every partition once, with an alias, before start.
+|DEV| $lane_title("Developer")
+|SYS| $lane_title("System")
+
+|DEV|
+start
+' [NF1]
+:Verb the object;
+|SYS|
+' [NF2]
+:Validate the request;
+' Loop for an alternative flow that re-performs a step (both guards labelled).
+while ($question("Information invalid?")) is ($guard_left("[invalid — AF-01]"))
+  ' [AF-01.1]
+  :Identify the invalid information;
+  |DEV|
+  ' [AF-01.2]
+  :Correct the information;
+  |SYS|
+endwhile ($guard("[valid]"))
+' Exception: empty then-branch continues, else-branch rejects and ends.
+if ($question("Item still available?")) then ($guard_left("[available]"))
+else ($guard_right("[no longer", "available — EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the request because the item is no longer available;
+  stop
+endif
+' [NF3, POST1]
+:Store the result;
+' [POST2]
+:Record the change in
+activity history;
+stop
+@enduml

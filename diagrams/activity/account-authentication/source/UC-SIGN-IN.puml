@@ -1,0 +1,86 @@
+@startuml UC-SIGN-IN
+' UC-02 - Log In | semantic key: UC-SIGN-IN
+' Source: data/use_cases/account-authentication/UC-SIGN-IN.yml
+' Business Rules: BR-ACCOUNT-VERIFIED-IDENTITY, BR-AUTH-ACTIVE-ACCOUNT
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+|IDP| $lane_title("Identity Provider")
+
+|USR|
+start
+' [NF1]
+:Open the log-in page and
+choose a log-in option;
+|SYS|
+if ($question_x("Password forgotten?")) then ($guard_left("[not forgotten]"))
+else ($guard_right("[forgotten", "— AF-02]"))
+  ' [AF-02.1]
+  :Direct the User to Forgot Password;
+  stop
+endif
+if ($question("Log-in option?")) then ($guard_left("[email and password]"))
+  ' [NF2]
+  :Request the registered
+  email address and password;
+  |USR|
+  ' [NF3]
+  :Submit the credentials;
+  |SYS|
+  ' [NF4]
+  :Validate the credentials and
+  confirm that the account is active;
+  if ($question("Credentials valid?")) then ($guard_left("[valid]"))
+  else ($guard_right("[invalid", "— EX-01]"))
+    ' [EX-01]
+    :Reject the log-in without creating a session;
+    stop
+  endif
+  if ($question("Account active?")) then ($guard_left("[active]"))
+  else ($guard_right("[pending, suspended", "or deleted — EX-02]"))
+    ' [EX-02]
+    :Reject the log-in for the inactive account;
+    stop
+  endif
+  ' [NF5, POST1]
+  :Create an authenticated session and
+  display the User's available projects;
+else ($guard_right("[Google", "— AF-01]"))
+  ' [AF-01.1]
+  :Redirect the User to
+  the Identity Provider;
+  |IDP|
+  ' [AF-01.2]
+  :Authenticate the User and
+  return a verified identity;
+  |SYS|
+  if ($question_x("Identity verified?")) then ($guard_left("[verified]"))
+  else ($guard_right("[unavailable or", "rejected — EX-03]"))
+    ' [EX-03]
+    :End the log-in without creating a session;
+    stop
+  endif
+  ' [AF-01.3]
+  :Match the identity to
+  an existing User account;
+  if ($question("Matching account found?")) then ($guard_left("[found]"))
+  else ($guard_right("[no matching", "account — EX-04]"))
+    ' [EX-04]
+    :Direct the person to Register Account
+    without creating a session;
+    stop
+  endif
+  if ($question("Account active?")) then ($guard_left("[active]"))
+  else ($guard_right("[not active", "— EX-02]"))
+    ' [EX-02]
+    :Reject the log-in for the inactive account;
+    stop
+  endif
+  ' [AF-01.3, POST1]
+  :Create an authenticated session;
+endif
+stop
+@enduml

@@ -1,0 +1,30 @@
+@startuml UC-BACKLOG-ITEM-VIEW
+' UC-15.1 - View Product Backlog Item | semantic key: UC-BACKLOG-ITEM-VIEW
+' Source: data/use_cases/product-backlog/UC-BACKLOG-ITEM-VIEW.yml
+' Business Rules: BR-PROJECT-MEMBER-ACCESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1]
+:Select a Product Backlog Item;
+|SYS|
+' [NF2]
+:Retrieve the item's
+current information;
+if ($question("Item available?")) then ($guard_left("[available]"))
+else ($guard_right("[no longer", "available — EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Report that the selected item is no longer available;
+  stop
+endif
+' [NF3, POST1]
+:Display the item details and
+related Sprint information;
+stop
+@enduml

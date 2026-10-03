@@ -1,0 +1,42 @@
+@startuml UC-TASK-DEPENDENCY-ADD
+' UC-24.6 - Add Task Dependency | semantic key: UC-TASK-DEPENDENCY-ADD
+' Source: data/use_cases/sprint-work/UC-TASK-DEPENDENCY-ADD.yml
+' Business Rules: BR-SPRINT-TASK-DEVELOPER, BR-TASK-DEPENDENCY-ACYCLIC, BR-TASK-NO-SELF-DEPENDENCY, BR-TASK-DEPENDENCY-SAME-PROJECT
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|DEV| $lane_title("Developer")
+|SYS| $lane_title("System")
+
+|DEV|
+start
+' [NF1, BR-SPRINT-TASK-DEVELOPER]
+:Open a Sprint Task and
+choose to add a dependency;
+|SYS|
+' [NF2, BR-TASK-DEPENDENCY-SAME-PROJECT]
+:Display eligible tasks
+in the same project;
+|DEV|
+' [NF3]
+:Select the dependency target
+and confirm the relationship;
+|SYS|
+' [NF4]
+:Validate the dependency;
+if ($question("Same task selected?")) then ($guard_left("[different task]"))
+else ($guard_right("[same task", "— EX-02]"))
+  ' [EX-02, BR-TASK-NO-SELF-DEPENDENCY, GUIDE-7.3]
+  :Reject the dependency of the task on itself;
+  stop
+endif
+if ($question("Would it create a cycle?")) then ($guard_left("[no cycle]"))
+else ($guard_right("[direct or indirect", "cycle — EX-01]"))
+  ' [EX-01, BR-TASK-DEPENDENCY-ACYCLIC, GUIDE-7.3]
+  :Reject the dependency that would create a cycle;
+  stop
+endif
+' [NF4, POST1]
+:Store the dependency;
+stop
+@enduml

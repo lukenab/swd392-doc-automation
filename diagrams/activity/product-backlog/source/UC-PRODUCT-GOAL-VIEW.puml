@@ -1,0 +1,29 @@
+@startuml UC-PRODUCT-GOAL-VIEW
+' UC-14.1 - View Product Goal | semantic key: UC-PRODUCT-GOAL-VIEW
+' Source: data/use_cases/product-backlog/UC-PRODUCT-GOAL-VIEW.yml
+' Business Rules: BR-PROJECT-MEMBER-ACCESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1]
+:Open the Product Goal view;
+|SYS|
+' [NF2]
+:Retrieve the current Product Goal;
+if ($question("Product Goal defined?")) then ($guard_left("[defined]"))
+  ' [NF2, POST1]
+  :Display the current
+  Product Goal;
+else ($guard_right("[not defined", "— AF-01]"))
+  ' [AF-01.1]
+  :Display that the Product Goal
+  is not yet available;
+endif
+stop
+@enduml

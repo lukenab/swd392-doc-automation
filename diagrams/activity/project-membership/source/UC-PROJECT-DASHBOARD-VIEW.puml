@@ -1,0 +1,38 @@
+@startuml UC-PROJECT-DASHBOARD-VIEW
+' UC-07 - View Project Dashboard | semantic key: UC-PROJECT-DASHBOARD-VIEW
+' Source: data/use_cases/project-membership/UC-PROJECT-DASHBOARD-VIEW.yml
+' Business Rules: BR-PROJECT-MEMBER-ACCESS, BR-PROJECT-ARCHIVED-READ-ONLY
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1]
+:Select a project;
+|SYS|
+' [NF2, BR-PROJECT-MEMBER-ACCESS]
+:Verify the actor's active
+project membership;
+if ($question("Project and membership exist?")) then ($guard_left("[exist]"))
+else ($guard_right("[project or membership", "removed — EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Deny access to the project dashboard for this actor;
+  stop
+endif
+' [NF3]
+:Retrieve project information, member
+count, and current Sprint summary;
+if ($question_x("Project archived?")) then ($guard_left("[active]"))
+  ' [NF4, POST1]
+  :Display the project dashboard;
+else ($guard_right("[archived", "— AF-01]"))
+  ' [AF-01.1, BR-PROJECT-ARCHIVED-READ-ONLY]
+  :Display the dashboard
+  in read-only mode;
+endif
+stop
+@enduml

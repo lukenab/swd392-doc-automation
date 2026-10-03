@@ -1,0 +1,41 @@
+@startuml UC-SPRINT-TASK-CREATE
+' UC-24.2 - Create Sprint Task | semantic key: UC-SPRINT-TASK-CREATE
+' Source: data/use_cases/sprint-work/UC-SPRINT-TASK-CREATE.yml
+' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|DEV| $lane_title("Developer")
+|SYS| $lane_title("System")
+
+|DEV|
+start
+' [NF1]
+:Choose to create a task
+for a Sprint Backlog Item;
+|SYS|
+' [NF2]
+:Request the task title and
+initial work details;
+|DEV|
+' [NF3]
+:Provide the task information
+and confirm creation;
+|SYS|
+' [NF4]
+:Validate the Sprint Task;
+if ($question("Does the related Product\nBacklog Item still belong\nto the active Sprint?")) then ($guard_left("[belongs to the active Sprint]"))
+  ' [NF4, POST1]
+  :Store the Sprint Task for the
+  selected Product Backlog Item;
+  ' [POST2]
+  :Record the creation in
+  work item activity;
+  stop
+else ($guard_right("[no longer belongs to", "the active Sprint — EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the task creation;
+  stop
+endif
+@enduml

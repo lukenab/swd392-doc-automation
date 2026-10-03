@@ -1,0 +1,42 @@
+@startuml UC-SYSTEM-AUDIT-LOG-REVIEW
+' UC-33 - Review System Audit Log | semantic key: UC-SYSTEM-AUDIT-LOG-REVIEW
+' Source: data/use_cases/system-administration/UC-SYSTEM-AUDIT-LOG-REVIEW.yml
+' Business Rules: BR-AUDIT-IMMUTABLE, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS, BR-AUDIT-EVENT-COMPLETENESS, BR-AUDIT-VIEW-SYSADMIN-ONLY
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|ADM| $lane_title("System Administrator")
+|SYS| $lane_title("System")
+
+|ADM|
+start
+' [NF1, BR-AUDIT-VIEW-SYSADMIN-ONLY]
+:Open the system audit log;
+|SYS|
+if ($question_x("Audit store available?")) then ($guard_left("[available]"))
+else ($guard_right("[unavailable", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Report that the audit store is temporarily unavailable;
+  stop
+endif
+' [NF2, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS]
+:Display recent audit events;
+|ADM|
+' [NF3]
+:Filter events by time, actor,
+event type or target;
+|SYS|
+if ($question_x("Matching events found?")) then ($guard_left("[found]"))
+else ($guard_right("[no match", "— AF-01]"))
+  ' [AF-01.1]
+  :Report that no matching events were found;
+  stop
+endif
+' [NF4, BR-AUDIT-IMMUTABLE, BR-AUDIT-EVENT-COMPLETENESS]
+:Display matching events and
+their recorded details;
+|ADM|
+' [NF5, POST1]
+:Review the results;
+stop
+@enduml

@@ -1,0 +1,45 @@
+@startuml UC-BACKLOG-ITEM-UPDATE
+' UC-15.3 - Update Product Backlog Item | semantic key: UC-BACKLOG-ITEM-UPDATE
+' Source: data/use_cases/product-backlog/UC-BACKLOG-ITEM-UPDATE.yml
+' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-PROJECT-ARCHIVED-READ-ONLY
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|PRO| $lane_title("Product Owner")
+|SYS| $lane_title("System")
+
+|PRO|
+start
+' [NF1]
+:Open an existing Product
+Backlog Item for editing;
+|SYS|
+' [NF2]
+:Display the editable item values;
+if ($question("Item in the active Sprint?")) then ($guard_left("[not in the active Sprint]"))
+else ($guard_right("[in the active", "Sprint — AF-01]"))
+  ' [AF-01.1]
+  :Limit changes that would invalidate
+  active Sprint planning;
+endif
+|PRO|
+' [NF3]
+:Revise the desired values
+and submit the item;
+|SYS|
+' [NF4]
+:Validate the changes;
+if ($question_x("Changed by another User?")) then ($guard_left("[not changed]"))
+else ($guard_right("[changed by another", "User — EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the update because the item was changed concurrently;
+  stop
+endif
+' [NF4, POST1]
+:Save the changes;
+' [POST2]
+:Record the update in
+item activity history;
+stop
+@enduml

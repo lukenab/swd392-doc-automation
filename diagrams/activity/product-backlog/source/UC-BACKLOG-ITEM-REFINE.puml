@@ -1,0 +1,58 @@
+@startuml UC-BACKLOG-ITEM-REFINE
+' UC-17 - Refine Backlog Item | semantic key: UC-BACKLOG-ITEM-REFINE
+' Source: data/use_cases/product-backlog/UC-BACKLOG-ITEM-REFINE.yml
+' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-BACKLOG-ITEM-READY, BR-PROJECT-ARCHIVED-READ-ONLY
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|PRO| $lane_title("Product Owner")
+|SYS| $lane_title("System")
+|DEV| $lane_title("Developer")
+
+|PRO|
+start
+' [NF1]
+:Select an item that
+requires refinement;
+|SYS|
+' [NF2]
+:Display the item's current
+details and estimate;
+|PRO|
+' [NF3]
+:Clarify the expected outcome
+and acceptance criteria;
+|DEV|
+' [NF4]
+:Add implementation-relevant
+clarification and propose
+decomposition when needed;
+|SYS|
+if ($question_x("Too large for one Sprint?")) then ($guard_left("[fits one Sprint]"))
+else ($guard_right("[too large", "— AF-01]"))
+  if ($question("Selected into an active Sprint?")) then ($guard_left("[not selected]"))
+  else ($guard_right("[selected", "— EX-01]"))
+    ' [EX-01, GUIDE-7.3]
+    :Reject the decomposition of the item in the active Sprint;
+    stop
+  endif
+  |PRO|
+  ' [AF-01.1, BR-PRODUCT-OWNER-BACKLOG]
+  :Define smaller independent
+  backlog items with the Developer;
+  |SYS|
+  ' [AF-01.2]
+  :Preserve traceability
+  to the original item;
+endif
+|PRO|
+' [NF5]
+:Confirm the refined
+scope and description;
+|SYS|
+' [NF6, POST1, POST2]
+:Save the refined item and
+record the participants;
+stop
+@enduml

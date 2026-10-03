@@ -1,0 +1,39 @@
+@startuml UC-WORK-ITEM-ACTIVITY-REVIEW
+' UC-29 - Review Work Item Activity | semantic key: UC-WORK-ITEM-ACTIVITY-REVIEW
+' Source: data/use_cases/collaboration-notification/UC-WORK-ITEM-ACTIVITY-REVIEW.yml
+' Business Rules: BR-PROJECT-MEMBER-ACCESS, BR-ACTIVITY-IMMUTABLE
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|USR| $lane_title("User")
+|SYS| $lane_title("System")
+
+|USR|
+start
+' [NF1, BR-PROJECT-MEMBER-ACCESS]
+:Request the activity history
+for a work item;
+|SYS|
+' [NF2]
+:Retrieve the activity entries in
+reverse chronological order;
+if ($question("Activity data retrieved?")) then ($guard_left("[retrieved]"))
+else ($guard_right("[cannot be", "retrieved — EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Report that the activity history cannot be retrieved;
+  stop
+endif
+if ($question("Activity beyond creation?")) then ($guard_left("[further activity]"))
+  ' [NF3]
+  :Display each event with its actor,
+  time and change summary;
+else ($guard_right("[creation only", "— AF-01]"))
+  ' [AF-01.1]
+  :Display only the
+  creation event;
+endif
+|USR|
+' [NF4, POST1, BR-ACTIVITY-IMMUTABLE]
+:Review the displayed history;
+stop
+@enduml

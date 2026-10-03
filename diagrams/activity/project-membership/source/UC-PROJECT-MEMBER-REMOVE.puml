@@ -1,0 +1,44 @@
+@startuml UC-PROJECT-MEMBER-REMOVE
+' UC-09.3 - Remove Project Member | semantic key: UC-PROJECT-MEMBER-REMOVE
+' Source: data/use_cases/project-membership/UC-PROJECT-MEMBER-REMOVE.yml
+' Business Rules: BR-PROJECT-ONE-OWNER, BR-PROJECT-OWNER-ADMINISTRATION
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|OWN| $lane_title("Project Owner")
+|SYS| $lane_title("System")
+
+|OWN|
+start
+' [NF1]
+:Select a project member
+and request removal;
+|SYS|
+if ($question_x("Own membership selected?")) then ($guard_left("[another member]"))
+else ($guard_right("[own membership", "— EX-01]"))
+  ' [EX-01, BR-PROJECT-ONE-OWNER, GUIDE-7.3]
+  :Reject the removal of the Project Owner's own membership;
+  stop
+endif
+' [NF2]
+:Display the member's active assignments
+and ask for confirmation;
+if ($question("Unfinished Sprint work?")) then ($guard_left("[none]"))
+else ($guard_right("[owns unfinished", "work — AF-01]"))
+  ' [AF-01.1]
+  :Require the work to be reassigned before removal;
+  stop
+endif
+|OWN|
+' [NF3]
+:Confirm the removal;
+|SYS|
+' [NF4, POST1]
+:Remove Scrum accountabilities
+and project membership;
+' [NF5, POST2]
+:Record the removal and
+refresh the member list;
+stop
+@enduml

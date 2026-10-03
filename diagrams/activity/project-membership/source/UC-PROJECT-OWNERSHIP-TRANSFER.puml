@@ -1,0 +1,46 @@
+@startuml UC-PROJECT-OWNERSHIP-TRANSFER
+' UC-12 - Transfer Project Ownership | semantic key: UC-PROJECT-OWNERSHIP-TRANSFER
+' Source: data/use_cases/project-membership/UC-PROJECT-OWNERSHIP-TRANSFER.yml
+' Business Rules: BR-PROJECT-ONE-OWNER, BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, BR-PROJECT-OWNER-ADMINISTRATION, BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+
+|OWN| $lane_title("Project Owner")
+|SYS| $lane_title("System")
+
+|OWN|
+start
+' [NF1]
+:Select Transfer Project Ownership;
+|SYS|
+' [NF2]
+:Display eligible active
+Project Members;
+|OWN|
+' [NF3]
+:Select the new owner and
+confirm the transfer;
+|SYS|
+' [NF4]
+:Validate both memberships and
+the current ownership state;
+while ($question("Selected member inactive?")) is ($guard_left("[inactive — AF-01]"))
+  ' [AF-01.1]
+  :Reject the transfer to the inactive member;
+  |OWN|
+  ' [AF-01.2]
+  :Select another eligible member;
+  |SYS|
+endwhile ($guard("[active]"))
+if ($question("Ownership unchanged?")) then ($guard_left("[unchanged]"))
+else ($guard_right("[changed concurrently", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the transfer because ownership changed concurrently;
+  stop
+endif
+' [NF5, POST1, POST3, BR-PROJECT-ONE-OWNER]
+:Transfer ownership atomically
+and record the change;
+stop
+@enduml

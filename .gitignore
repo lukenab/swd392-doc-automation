@@ -4,3 +4,6 @@ __pycache__/
 output/*
 !output/.gitkeep
 
+
+# Local PlantUML jar used by scripts/activity_diagrams.py (not committed)
+tools/*.jar

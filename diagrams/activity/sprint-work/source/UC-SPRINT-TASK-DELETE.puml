@@ -1,0 +1,40 @@
+@startuml UC-SPRINT-TASK-DELETE
+' UC-24.5 - Delete Sprint Task | semantic key: UC-SPRINT-TASK-DELETE
+' Source: data/use_cases/sprint-work/UC-SPRINT-TASK-DELETE.yml
+' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|DEV| $lane_title("Developer")
+|SYS| $lane_title("System")
+
+|DEV|
+start
+' [NF1, BR-SPRINT-TASK-DEVELOPER]
+:Select a Sprint Task
+and request deletion;
+|SYS|
+if ($question_x("Task already in execution?")) then ($guard_left("[not started]"))
+else ($guard_right("[in execution", "— EX-01]"))
+  ' [EX-01, BR-SPRINT-TASK-ACTIVE-SPRINT, GUIDE-7.3]
+  :Reject the deletion of the started task;
+  stop
+endif
+if ($question("Other tasks depend on it?")) then ($guard_left("[no dependent tasks]"))
+else ($guard_right("[dependent tasks", "— AF-01]"))
+  ' [AF-01.1]
+  :Require the dependencies to be removed before deletion;
+  stop
+endif
+' [NF2]
+:Display the dependency impact
+and ask for confirmation;
+|DEV|
+' [NF3]
+:Confirm deletion;
+|SYS|
+' [NF4, POST1, POST2, OTHER]
+:Delete the task and
+record the action;
+stop
+@enduml

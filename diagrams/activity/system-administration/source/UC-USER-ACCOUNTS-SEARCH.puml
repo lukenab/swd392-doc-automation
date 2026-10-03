@@ -1,0 +1,39 @@
+@startuml UC-USER-ACCOUNTS-SEARCH
+' UC-32.1 - Search and View User Accounts | semantic key: UC-USER-ACCOUNTS-SEARCH
+' Source: data/use_cases/system-administration/UC-USER-ACCOUNTS-SEARCH.yml
+' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+!include ../../_shared/activity-style.puml
+|ADM| $lane_title("System Administrator")
+|SYS| $lane_title("System")
+
+|ADM|
+start
+' [NF1, BR-SYSADMIN-USER-ACCOUNT]
+:Open user account administration
+and enter search criteria;
+|SYS|
+if ($question_x("Administration data available?")) then ($guard_left("[available]"))
+else ($guard_right("[unavailable", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Report that account administration data is temporarily unavailable;
+  stop
+endif
+if ($question("Matching accounts found?")) then ($guard_left("[found]"))
+else ($guard_right("[no match", "— AF-01]"))
+  ' [AF-01.1]
+  :Report that no matching account was found;
+  stop
+endif
+' [NF2]
+:Display matching User accounts;
+|ADM|
+' [NF3]
+:Select an account;
+|SYS|
+' [NF4, POST1, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS, OTHER]
+:Display its administrative status
+and relevant account metadata;
+stop
+@enduml
