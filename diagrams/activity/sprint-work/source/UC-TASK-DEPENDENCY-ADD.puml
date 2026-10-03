@@ -4,6 +4,7 @@
 ' Business Rules: BR-SPRINT-TASK-DEVELOPER, BR-TASK-DEPENDENCY-ACYCLIC, BR-TASK-NO-SELF-DEPENDENCY, BR-TASK-DEPENDENCY-SAME-PROJECT
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = dependency stored (postconditions met); F2 = no dependency stored (EX-02, EX-01).
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -25,18 +26,20 @@ and confirm the relationship;
 ' [NF4]
 :Validate the dependency;
 if ($question("Same task selected?")) then ($guard_left("[different task]"))
+  if ($question("Would it create a cycle?")) then ($guard_left("[no cycle]"))
+    ' [NF4, POST1]
+    :Store the dependency;
+    stop
+  else ($guard_right("[direct or indirect", "cycle — EX-01]"))
+    ' [EX-01, BR-TASK-DEPENDENCY-ACYCLIC, GUIDE-7.3]
+    :Reject the dependency
+    that would create
+    a cycle;
+  endif
 else ($guard_right("[same task", "— EX-02]"))
   ' [EX-02, BR-TASK-NO-SELF-DEPENDENCY, GUIDE-7.3]
-  :Reject the dependency of the task on itself;
-  stop
+  :Reject the dependency
+  of the task on itself;
 endif
-if ($question("Would it create a cycle?")) then ($guard_left("[no cycle]"))
-else ($guard_right("[direct or indirect", "cycle — EX-01]"))
-  ' [EX-01, BR-TASK-DEPENDENCY-ACYCLIC, GUIDE-7.3]
-  :Reject the dependency that would create a cycle;
-  stop
-endif
-' [NF4, POST1]
-:Store the dependency;
 stop
 @enduml

@@ -4,6 +4,7 @@
 ' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER, BR-SUBTASK-SINGLE-LEVEL
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = changes saved (postconditions met); F2 = subtask unchanged (EX-01, AF-01).
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -25,24 +26,26 @@ if ($question_x("Submit the changes?")) then ($guard_left("[submit]"))
   ' [NF4]
   :Validate the changes;
   if ($question_x("Parent still in the active Sprint?")) then ($guard_left("[in the active Sprint]"))
+    ' [NF4, POST1]
+    :Save the changes;
+    if ($question("Parent progress affected?")) then ($guard_left("[affected]"))
+      ' [POST2]
+      :Recalculate parent-task progress;
+    else ($guard_right("[not", "affected]"))
+    endif
+    stop
   else ($guard_right("[no longer in the", "active Sprint — EX-01]"))
     ' [EX-01, BR-SPRINT-TASK-ACTIVE-SPRINT, GUIDE-7.3]
-    :Reject the update because the parent task left the active Sprint;
-    stop
+    :Reject the update
+    because the parent task
+    left the active Sprint;
   endif
-  ' [NF4, POST1]
-  :Save the changes;
-  if ($question("Parent progress affected?")) then ($guard_left("[affected]"))
-    ' [POST2]
-    :Recalculate parent-task progress;
-  else ($guard_right("[not", "affected]"))
-  endif
-  stop
 else ($guard_right("[cancel", "editing — AF-01]"))
   |SYS|
   ' [AF-01.1]
   :Keep the subtask
   unchanged;
-  stop
 endif
+|DEV|
+stop
 @enduml

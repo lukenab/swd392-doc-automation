@@ -4,6 +4,8 @@
 ' Business Rules: BR-SPRINT-TASK-DEVELOPER, BR-TASK-DEPENDENCY-SAME-PROJECT
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = dependency removed (postconditions met); F2 = no removal by this use case
+' (EX-01, AF-01).
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -26,20 +28,22 @@ if ($question_x("Confirm removal?")) then ($guard_left("[confirm]"))
   :Confirm removal;
   |SYS|
   if ($question_x("Dependency still exists?")) then ($guard_left("[exists]"))
+    ' [NF5, POST1, POST2]
+    :Remove the relationship
+    and record the change;
+    stop
   else ($guard_right("[already", "removed — EX-01]"))
     ' [EX-01, GUIDE-7.3]
-    :Report that the dependency was already removed;
-    stop
+    :Report that the
+    dependency was
+    already removed;
   endif
-  ' [NF5, POST1, POST2]
-  :Remove the relationship
-  and record the change;
-  stop
 else ($guard_right("[cancel", "— AF-01]"))
   |SYS|
   ' [AF-01.1]
   :Leave the dependency
   unchanged;
-  stop
 endif
+|DEV|
+stop
 @enduml
