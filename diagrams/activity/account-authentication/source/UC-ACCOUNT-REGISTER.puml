@@ -1,12 +1,13 @@
 @startuml UC-ACCOUNT-REGISTER
 ' UC-01 - Register Account | semantic key: UC-ACCOUNT-REGISTER
 ' Source: data/use_cases/account-authentication/UC-ACCOUNT-REGISTER.yml
-' Business Rules: BR-ACCOUNT-EMAIL-UNIQUE, BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP,
-'                 BR-ACCOUNT-VERIFIED-IDENTITY, BR-PASSWORD-STRENGTH
+' Business Rules: BR-ACCOUNT-EMAIL-UNIQUE, BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP, BR-ACCOUNT-VERIFIED-IDENTITY, BR-PASSWORD-STRENGTH
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: one Activity Final. The active-account paths (NF9, AF-01.3), the pending path
+' (EX-01) and the no-account paths (EX-02, EX-03) sit on nested branches; separate finals per
+' outcome would duplicate a final, so the last action on each path states its outcome.
 !include ../../_shared/activity-style.puml
-
 |GST| $lane_title("Guest")
 |SYS| $lane_title("System")
 |EML| $lane_title("Email Service")
@@ -18,7 +19,7 @@ start
 :Open account registration and
 choose a registration method;
 |SYS|
-if ($question("Registration method?")) then ($guard_left("[email and password]"))
+if ($question_x("Registration method?")) then ($guard_left("[email and password]"))
   ' [NF2]
   :Request the display name,
   email address, and password;
@@ -27,7 +28,7 @@ if ($question("Registration method?")) then ($guard_left("[email and password]")
   :Provide the required
   registration information;
   |SYS|
-  ' [NF4]
+  ' [NF4, BR-ACCOUNT-EMAIL-UNIQUE, BR-PASSWORD-STRENGTH]
   :Validate the information,
   email uniqueness, and
   password strength;
@@ -43,55 +44,63 @@ if ($question("Registration method?")) then ($guard_left("[email and password]")
   ' [NF5]
   :Create a pending account;
   if ($question("Account data persisted?")) then ($guard_left("[persisted]"))
+    ' [NF6]
+    :Request an email verification
+    message for the account;
+    |EML|
+    ' [NF7]
+    :Deliver the verification
+    message to the submitted
+    email address;
+    |SYS|
+    if ($question_x("Message delivered?")) then ($guard_left("[delivered]"))
+      |GST|
+      ' [NF8]
+      :Open the valid
+      verification link;
+      |SYS|
+      ' [NF9, POST1]
+      :Activate the User account
+      and confirm registration;
+    else ($guard_right("[not delivered", "— EX-01]"))
+      ' [EX-01]
+      :Keep the account pending
+      so that verification can
+      be requested again;
+    endif
   else ($guard_right("[not persisted", "— EX-03]"))
-    ' [EX-03, GUIDE-7.3]
-    :Reject the registration so that no account is created;
-    stop
+    ' [EX-03]
+    :Reject the registration
+    so that no account
+    is created;
   endif
-  ' [NF6]
-  :Request an email verification
-  message for the account;
-  |EML|
-  ' [NF7]
-  :Deliver the verification
-  message to the submitted
-  email address;
-  |SYS|
-  if ($question_x("Message delivered?")) then ($guard_left("[delivered]"))
-  else ($guard_right("[not delivered", "— EX-01]"))
-    ' [EX-01]
-    :Keep the account pending so that
-    verification can be requested again;
-    stop
-  endif
-  |GST|
-  ' [NF8]
-  :Open the valid
-  verification link;
-  |SYS|
-  ' [NF9, POST1]
-  :Activate the User account
-  and confirm registration;
 else ($guard_right("[Google", "— AF-01]"))
   ' [AF-01.1]
   :Redirect the Guest to
   the Identity Provider;
   |IDP|
-  ' [AF-01.2]
+  ' [AF-01.2, BR-ACCOUNT-VERIFIED-IDENTITY]
   :Authenticate the Guest and
   return a verified identity;
   |SYS|
   if ($question_x("Valid verified identity?")) then ($guard_left("[valid]"))
+    ' [AF-01.3, BR-ACCOUNT-EMAIL-UNIQUE]
+    :Validate email uniqueness
+    and create an active
+    User account;
+    if ($question("Account data persisted?")) then ($guard_left("[persisted]"))
+    else ($guard_right("[not persisted", "— EX-03]"))
+      ' [EX-03]
+      :Reject the registration
+      so that no account
+      is created;
+    endif
   else ($guard_right("[not returned", "— EX-02]"))
     ' [EX-02]
-    :Cancel the registration because no
-    valid verified identity was returned;
-    stop
+    :Cancel the registration
+    because no valid verified
+    identity was returned;
   endif
-  ' [AF-01.3, POST1]
-  :Validate email uniqueness
-  and create an active
-  User account;
 endif
 stop
 @enduml

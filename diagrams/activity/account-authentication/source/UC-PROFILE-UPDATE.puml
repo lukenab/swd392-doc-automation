@@ -4,8 +4,9 @@
 ' Business Rules: BR-AUTH-ACTIVE-ACCOUNT, BR-PROFILE-SELF-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = profile changes saved (postconditions met); F2 = stored profile unchanged
+' (EX-01 and AF-01 merge here).
 !include ../../_shared/activity-style.puml
-
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
 
@@ -26,20 +27,23 @@ if ($question_x("Save the changes?")) then ($guard_left("[submit]"))
   ' [NF4]
   :Validate the profile changes;
   if ($question_x("Values valid?")) then ($guard_left("[valid]"))
+    ' [NF4, POST1]
+    :Save the profile changes;
+    ' [NF5]
+    :Display the updated profile;
+    stop
   else ($guard_right("[invalid values", "— EX-01]"))
     ' [EX-01, GUIDE-7.3]
-    :Reject the profile changes and keep the stored profile;
-    stop
+    :Reject the profile
+    changes and keep the
+    stored profile;
   endif
-  ' [NF4, POST1]
-  :Save the profile changes;
-  ' [NF5]
-  :Display the updated profile;
-  stop
 else ($guard_right("[cancel before", "saving — AF-01]"))
   |SYS|
   ' [AF-01.1]
-  :Discard the unsaved changes;
-  stop
+  :Discard the
+  unsaved changes;
 endif
+|USR|
+stop
 @enduml
