@@ -9,63 +9,66 @@ inspected for clipping, overlap, borders, guard legibility, arrow direction, fon
 `ready-for-peer-review` means all automated and AI review gates passed; peer review and team-leader
 acceptance are still required by the Definition of Done in `docs/activity-diagram-guideline.md`.
 
-| ID | Semantic key | Traceability | UML | Visual | Final status | Notes / blocked reason |
-|---|---|---|---|---|---|---|
-| UC-01 | `UC-ACCOUNT-REGISTER` | pass | pass | needs-manual-review | needs-manual-review | Dense on A4: guard text is about 4.4 pt when the diagram is fitted to a 16.5 x 20.5 cm text area. Decide during peer review: give it a full page, accept, or ask the BA to split the use case. |
-| UC-02 | `UC-SIGN-IN` | pass | pass | needs-manual-review | needs-manual-review | Dense on A4: guard text is about 4.6 pt when the diagram is fitted to a 16.5 x 20.5 cm text area. Decide during peer review: give it a full page, accept, or ask the BA to split the use case. |
-| UC-03 | `UC-SIGN-OUT` | pass | pass | pass | ready-for-peer-review |  |
-| UC-04 | `UC-PASSWORD-RESET` | pass | pass | needs-manual-review | needs-manual-review | Dense on A4: guard text is about 4.3 pt when the diagram is fitted to a 16.5 x 20.5 cm text area. Decide during peer review: give it a full page, accept, or ask the BA to split the use case. |
-| UC-05.1 | `UC-PROFILE-VIEW` | pass | pass | pass | ready-for-peer-review |  |
-| UC-05.2 | `UC-PROFILE-UPDATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-05.3 | `UC-PASSWORD-CHANGE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-06 | `UC-PROJECT-CREATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-07 | `UC-PROJECT-DASHBOARD-VIEW` | pass | pass | pass | ready-for-peer-review |  |
-| UC-08 | `UC-PROJECT-UPDATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-09.1 | `UC-PROJECT-MEMBERS-VIEW` | pass | pass | pass | ready-for-peer-review |  |
-| UC-09.2 | `UC-PROJECT-MEMBER-ADD` | pass | pass | pass | ready-for-peer-review |  |
-| UC-09.3 | `UC-PROJECT-MEMBER-REMOVE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-10 | `UC-SCRUM-ACCOUNTABILITY-ASSIGN` | pass | pass | pass | ready-for-peer-review |  |
-| UC-11 | `UC-PROJECT-ARCHIVE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-12 | `UC-PROJECT-OWNERSHIP-TRANSFER` | pass | pass | pass | ready-for-peer-review |  |
-| UC-13 | `UC-PROJECT-LEAVE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-14.1 | `UC-PRODUCT-GOAL-VIEW` | pass | pass | pass | ready-for-peer-review |  |
-| UC-14.2 | `UC-PRODUCT-GOAL-SET` | pass | pass | pass | ready-for-peer-review |  |
-| UC-14.3 | `UC-PRODUCT-GOAL-UPDATE` | pass | pass | needs-manual-review | needs-manual-review | Dense on A4: guard text is about 5.8 pt when the diagram is fitted to a 16.5 x 20.5 cm text area. Decide during peer review: give it a full page, accept, or ask the BA to split the use case. |
-| UC-15.1 | `UC-BACKLOG-ITEM-VIEW` | pass | pass | pass | ready-for-peer-review |  |
-| UC-15.2 | `UC-BACKLOG-ITEM-CREATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-15.3 | `UC-BACKLOG-ITEM-UPDATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-15.4 | `UC-BACKLOG-ITEM-REMOVE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-16 | `UC-BACKLOG-ORDER` | pass | pass | pass | ready-for-peer-review |  |
-| UC-17 | `UC-BACKLOG-ITEM-REFINE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-18 | `UC-BACKLOG-ITEM-ESTIMATE` | pass | pass | needs-manual-review | needs-manual-review | Dense on A4: guard text is about 4.9 pt when the diagram is fitted to a 16.5 x 20.5 cm text area. Decide during peer review: give it a full page, accept, or ask the BA to split the use case. |
-| UC-19 | `UC-SPRINT-PLAN` | pass | pass | pass | ready-for-peer-review |  |
-| UC-20 | `UC-SPRINT-START` | pass | pass | pass | ready-for-peer-review |  |
-| UC-21 | `UC-SPRINT-COMPLETE` | pass | pass | needs-manual-review | needs-manual-review | Dense on A4: guard text is about 5.5 pt when the diagram is fitted to a 16.5 x 20.5 cm text area. Decide during peer review: give it a full page, accept, or ask the BA to split the use case. |
-| UC-22 | `UC-SPRINT-CANCEL` | pass | pass | pass | ready-for-peer-review |  |
-| UC-23 | `UC-SPRINT-BOARD-REVIEW` | pass | pass | pass | ready-for-peer-review |  |
-| UC-24.1 | `UC-SPRINT-TASK-VIEW` | pass | pass | pass | ready-for-peer-review |  |
-| UC-24.2 | `UC-SPRINT-TASK-CREATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-24.3 | `UC-SPRINT-TASK-UPDATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-24.4 | `UC-SPRINT-TASK-ASSIGN` | pass | pass | pass | ready-for-peer-review |  |
-| UC-24.5 | `UC-SPRINT-TASK-DELETE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-24.6 | `UC-TASK-DEPENDENCY-ADD` | pass | pass | pass | ready-for-peer-review |  |
-| UC-24.7 | `UC-TASK-DEPENDENCY-REMOVE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-25 | `UC-SPRINT-TASK-CLAIM` | blocked | not-run | not-run | BLOCKED — INSUFFICIENT SPECIFICATION | AF-01 'The Developer withdraws before confirmation' refers to a confirmation step that the normal flow does not contain (NF1 opens and claims the task; NF2-NF4 are System steps). The point at which AF-01 can occur, and what the Developer confirms, are not specified. |
-| UC-26 | `UC-WORK-ITEM-STATUS-UPDATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-27.1 | `UC-SUBTASKS-VIEW` | pass | pass | pass | ready-for-peer-review |  |
-| UC-27.2 | `UC-SUBTASK-CREATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-27.3 | `UC-SUBTASK-UPDATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-27.4 | `UC-SUBTASK-COMPLETE` | blocked | not-run | not-run | BLOCKED — REQUIREMENT CONFLICT | AF-01 'The User restores a completed subtask to an incomplete state' conflicts with precondition 3 'The subtask is not already complete' and with NF1 'Selects an incomplete subtask'. AF-01 is an actor-initiated action that can only start from a state the preconditions exclude, so it cannot be drawn without violating the Use Case Description. |
-| UC-27.5 | `UC-SUBTASK-DELETE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-28 | `UC-WORK-ITEM-COMMENT` | pass | pass | needs-manual-review | needs-manual-review | Dense on A4: guard text is about 5.3 pt when the diagram is fitted to a 16.5 x 20.5 cm text area. Decide during peer review: give it a full page, accept, or ask the BA to split the use case. |
-| UC-29 | `UC-WORK-ITEM-ACTIVITY-REVIEW` | pass | pass | pass | ready-for-peer-review |  |
-| UC-30 | `UC-NOTIFICATIONS-REVIEW` | pass | pass | needs-manual-review | needs-manual-review | Dense on A4: guard text is about 4.5 pt when the diagram is fitted to a 16.5 x 20.5 cm text area. Decide during peer review: give it a full page, accept, or ask the BA to split the use case. |
-| UC-31 | `UC-SPRINT-PROGRESS-MONITOR` | pass | pass | pass | ready-for-peer-review |  |
-| UC-32.1 | `UC-USER-ACCOUNTS-SEARCH` | pass | pass | pass | ready-for-peer-review |  |
-| UC-32.2 | `UC-USER-ACCOUNT-SUSPEND` | pass | pass | pass | ready-for-peer-review |  |
-| UC-32.3 | `UC-USER-ACCOUNT-REACTIVATE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-32.4 | `UC-USER-ACCOUNT-DELETE` | pass | pass | pass | ready-for-peer-review |  |
-| UC-33 | `UC-SYSTEM-AUDIT-LOG-REVIEW` | pass | pass | pass | ready-for-peer-review |  |
+The Audit column is the result of the element-by-element audit in
+`docs/activity-diagram-audit-report.md` (APPROVED, REQUEST CHANGES or BLOCKED).
+
+| ID | Semantic key | Traceability | UML | Visual | Audit | Final status | Notes / blocked reason |
+|---|---|---|---|---|---|---|---|
+| UC-01 | `UC-ACCOUNT-REGISTER` | pass | pass | needs-manual-review | REQUEST CHANGES | needs-manual-review | Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 3.3 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page, accept it, or ask the BA to split the use case. |
+| UC-02 | `UC-SIGN-IN` | pass | pass | needs-manual-review | REQUEST CHANGES | needs-manual-review | Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 3.7 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page, accept it, or ask the BA to split the use case. |
+| UC-03 | `UC-SIGN-OUT` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-04 | `UC-PASSWORD-RESET` | pass | pass | needs-manual-review | REQUEST CHANGES | needs-manual-review | Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 3.5 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page, accept it, or ask the BA to split the use case. |
+| UC-05.1 | `UC-PROFILE-VIEW` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-05.2 | `UC-PROFILE-UPDATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-05.3 | `UC-PASSWORD-CHANGE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-06 | `UC-PROJECT-CREATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-07 | `UC-PROJECT-DASHBOARD-VIEW` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-08 | `UC-PROJECT-UPDATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-09.1 | `UC-PROJECT-MEMBERS-VIEW` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-09.2 | `UC-PROJECT-MEMBER-ADD` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-09.3 | `UC-PROJECT-MEMBER-REMOVE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-10 | `UC-SCRUM-ACCOUNTABILITY-ASSIGN` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-11 | `UC-PROJECT-ARCHIVE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-12 | `UC-PROJECT-OWNERSHIP-TRANSFER` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-13 | `UC-PROJECT-LEAVE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-14.1 | `UC-PRODUCT-GOAL-VIEW` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-14.2 | `UC-PRODUCT-GOAL-SET` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-14.3 | `UC-PRODUCT-GOAL-UPDATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-15.1 | `UC-BACKLOG-ITEM-VIEW` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-15.2 | `UC-BACKLOG-ITEM-CREATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-15.3 | `UC-BACKLOG-ITEM-UPDATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-15.4 | `UC-BACKLOG-ITEM-REMOVE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-16 | `UC-BACKLOG-ORDER` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-17 | `UC-BACKLOG-ITEM-REFINE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-18 | `UC-BACKLOG-ITEM-ESTIMATE` | pass | pass | needs-manual-review | REQUEST CHANGES | needs-manual-review | Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 5.4 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page, accept it, or ask the BA to split the use case. |
+| UC-19 | `UC-SPRINT-PLAN` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-20 | `UC-SPRINT-START` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-21 | `UC-SPRINT-COMPLETE` | pass | pass | needs-manual-review | REQUEST CHANGES | needs-manual-review | Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 5.5 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page, accept it, or ask the BA to split the use case. |
+| UC-22 | `UC-SPRINT-CANCEL` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-23 | `UC-SPRINT-BOARD-REVIEW` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-24.1 | `UC-SPRINT-TASK-VIEW` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-24.2 | `UC-SPRINT-TASK-CREATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-24.3 | `UC-SPRINT-TASK-UPDATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-24.4 | `UC-SPRINT-TASK-ASSIGN` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-24.5 | `UC-SPRINT-TASK-DELETE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-24.6 | `UC-TASK-DEPENDENCY-ADD` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-24.7 | `UC-TASK-DEPENDENCY-REMOVE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-25 | `UC-SPRINT-TASK-CLAIM` | blocked | not-run | not-run | BLOCKED | BLOCKED — INSUFFICIENT SPECIFICATION | AF-01 'The Developer withdraws before confirmation' refers to a confirmation step that the normal flow does not contain (NF1 opens and claims the task; NF2-NF4 are System steps). The point at which AF-01 can occur, and what the Developer confirms, are not specified. |
+| UC-26 | `UC-WORK-ITEM-STATUS-UPDATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-27.1 | `UC-SUBTASKS-VIEW` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-27.2 | `UC-SUBTASK-CREATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-27.3 | `UC-SUBTASK-UPDATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-27.4 | `UC-SUBTASK-COMPLETE` | blocked | not-run | not-run | BLOCKED | BLOCKED — REQUIREMENT CONFLICT | AF-01 'The User restores a completed subtask to an incomplete state' conflicts with precondition 3 'The subtask is not already complete' and with NF1 'Selects an incomplete subtask'. AF-01 is an actor-initiated action that can only start from a state the preconditions exclude, so it cannot be drawn without violating the Use Case Description. |
+| UC-27.5 | `UC-SUBTASK-DELETE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-28 | `UC-WORK-ITEM-COMMENT` | pass | pass | needs-manual-review | REQUEST CHANGES | needs-manual-review | Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 5.3 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page, accept it, or ask the BA to split the use case. |
+| UC-29 | `UC-WORK-ITEM-ACTIVITY-REVIEW` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-30 | `UC-NOTIFICATIONS-REVIEW` | pass | pass | needs-manual-review | REQUEST CHANGES | needs-manual-review | Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 4.6 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page, accept it, or ask the BA to split the use case. |
+| UC-31 | `UC-SPRINT-PROGRESS-MONITOR` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-32.1 | `UC-USER-ACCOUNTS-SEARCH` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-32.2 | `UC-USER-ACCOUNT-SUSPEND` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-32.3 | `UC-USER-ACCOUNT-REACTIVATE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-32.4 | `UC-USER-ACCOUNT-DELETE` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
+| UC-33 | `UC-SYSTEM-AUDIT-LOG-REVIEW` | pass | pass | pass | APPROVED | ready-for-peer-review |  |
 
 ## Blocked use cases — questions for BA/PO
 
@@ -89,11 +92,14 @@ acceptance are still required by the Definition of Done in `docs/activity-diagra
 - UC-05.3 `UC-PASSWORD-CHANGE`: AF-01 (account managed only by an external Identity Provider) contradicts a precondition; modelled as a defensive System check that rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
 - UC-09.3 `UC-PROJECT-MEMBER-REMOVE`: EX-01 (the Project Owner removes their own membership) contradicts a precondition; modelled as a defensive System check that rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
 - UC-10 `UC-SCRUM-ACCOUNTABILITY-ASSIGN`: AF-01 says the transfer happens 'after confirmation' but does not say what happens when the Project Owner does not confirm the replacement; only the confirmed path is modelled.
+- UC-10 `UC-SCRUM-ACCOUNTABILITY-ASSIGN`: Possible conflict with BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE ('assigning a new Product Owner automatically replaces the previous one'): AF-01 requires a confirmation before the replacement. The diagram follows the Use Case; confirm which source applies.
 - UC-11 `UC-PROJECT-ARCHIVE`: EX-01 (the project has an active Sprint) contradicts a precondition; modelled as a defensive System check that rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
 - UC-13 `UC-PROJECT-LEAVE`: EX-01 (the current Project Owner attempts to leave) contradicts a precondition; modelled as a defensive System check that rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
 - UC-15.2 `UC-BACKLOG-ITEM-CREATE`: The YAML does not say whether EX-01 (required identifying information missing) also applies to a draft saved through AF-01; the diagram applies EX-01 to the complete-item path only.
 - UC-15.4 `UC-BACKLOG-ITEM-REMOVE`: EX-01 (the item is locked in the active Sprint) contradicts a precondition; modelled as a defensive System check that rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
+- UC-17 `UC-BACKLOG-ITEM-REFINE`: EX-01 only says the item 'can no longer be substantially decomposed'; the YAML does not say whether refinement then continues with NF5-NF6. The diagram ends the use case after the rejection.
 - UC-18 `UC-BACKLOG-ITEM-ESTIMATE`: NF3 (the Product Owner clarifies 'when requested') is drawn as a decision; the decision node sits in the Product Owner partition because PlantUML cannot route the branch label cleanly otherwise.
+- UC-18 `UC-BACKLOG-ITEM-ESTIMATE`: AF-01.2 'The item is returned for further refinement' does not name who returns the item; the action is drawn in the System partition.
 - UC-20 `UC-SPRINT-START`: EX-01 (another Sprint is already active) contradicts a precondition; modelled as a defensive System check that rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
 - UC-20 `UC-SPRINT-START`: AF-01.2 does not say what happens when the revalidation fails; only the successful revalidation is modelled.
 - UC-21 `UC-SPRINT-COMPLETE`: AF-01.2 re-performs NF1, so the loop repeats NF2 and NF3; these two actions appear twice because PlantUML cannot label the back edge of a bottom-tested loop.
@@ -120,11 +126,22 @@ acceptance are still required by the Definition of Done in `docs/activity-diagra
 - Every action carries a trace comment (`' [NF2, POST1, BR-..., AF-01.1, EX-01]`) that the validator checks
   against the Use Case YAML. GUIDE-7.3 marks a System reject/report action added because the YAML names an
   exception but not its outcome.
-- Each exception ends with one System reject/report action and its own Activity Final, because its
-  postcondition differs from the normal outcome. Paths with the same postcondition merge into one final.
+- Each exception ends with one System reject/report action. Paths with the same outcome share one
+  Activity Final (see "End-node policy" below).
 - An alternative flow resumes after the step where it was raised, or returns to the step it re-performs;
   cancelling and terminal alternative flows end the activity.
 - Validation failures that the YAML does not describe are not drawn; they are listed as observations.
+
+## End-node policy (audit 2026-10-03)
+
+UML 2.5.1 allows several ActivityFinalNodes; the first one reached ends the whole activity. The team
+convention applied after the audit: (1) paths with the same outcome share one Activity Final, through merge
+nodes; (2) separate Activity Finals are kept only for different outcomes, and each one is explained in the
+header comment of the source; (3) when different outcomes occur on several nested branches (UC-01, UC-02,
+UC-30), one shared Activity Final is used, because separate finals would need duplicate finals for the same
+outcome; the last action on each path states the outcome; (4) UC-13 keeps two finals for the same outcome,
+because merging them would require drawing NF5 twice. No Flow Final is used. Details per end node:
+`docs/activity-diagram-audit-report.md`.
 
 ## Preconditions contradicted by an alternative flow or exception
 

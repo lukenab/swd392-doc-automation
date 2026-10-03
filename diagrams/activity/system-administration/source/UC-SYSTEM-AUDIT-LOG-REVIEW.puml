@@ -4,6 +4,8 @@
 ' Business Rules: BR-AUDIT-IMMUTABLE, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS, BR-AUDIT-EVENT-COMPLETENESS, BR-AUDIT-VIEW-SYSADMIN-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = audit store unavailable (EX-01); F2 = review completed, with matching
+' events (NF4, NF5) or with the report that none match (AF-01).
 !include ../../_shared/activity-style.puml
 |ADM| $lane_title("System Administrator")
 |SYS| $lane_title("System")
@@ -19,7 +21,7 @@ else ($guard_right("[unavailable", "— EX-01]"))
   :Report that the audit store is temporarily unavailable;
   stop
 endif
-' [NF2, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS]
+' [NF2]
 :Display recent audit events;
 |ADM|
 ' [NF3]
@@ -27,16 +29,17 @@ endif
 event type or target;
 |SYS|
 if ($question_x("Matching events found?")) then ($guard_left("[found]"))
+  ' [NF4, BR-AUDIT-IMMUTABLE, BR-AUDIT-EVENT-COMPLETENESS]
+  :Display matching events and
+  their recorded details;
+  |ADM|
+  ' [NF5, POST1]
+  :Review the results;
 else ($guard_right("[no match", "— AF-01]"))
+  |SYS|
   ' [AF-01.1]
-  :Report that no matching events were found;
-  stop
+  :Report that no matching
+  events were found;
 endif
-' [NF4, BR-AUDIT-IMMUTABLE, BR-AUDIT-EVENT-COMPLETENESS]
-:Display matching events and
-their recorded details;
-|ADM|
-' [NF5, POST1]
-:Review the results;
 stop
 @enduml

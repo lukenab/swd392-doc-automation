@@ -684,12 +684,14 @@ def cmd_report(args) -> int:
            "inspected for clipping, overlap, borders, guard legibility, arrow direction, font and title).", "",
            "`ready-for-peer-review` means all automated and AI review gates passed; peer review and team-leader",
            "acceptance are still required by the Definition of Done in `docs/activity-diagram-guideline.md`.", "",
-           "| ID | Semantic key | Traceability | UML | Visual | Final status | Notes / blocked reason |",
-           "|---|---|---|---|---|---|---|"]
+           "The Audit column is the result of the element-by-element audit in",
+           "`docs/activity-diagram-audit-report.md` (APPROVED, REQUEST CHANGES or BLOCKED).", "",
+           "| ID | Semantic key | Traceability | UML | Visual | Audit | Final status | Notes / blocked reason |",
+           "|---|---|---|---|---|---|---|---|"]
     for e in entries:
         notes = e.get("blocked_reason") or e.get("review_notes") or ""
         rev.append(f"| {e['display_id']} | `{e['key']}` | {e['traceability_status']} | {e['uml_review_status']} | "
-                   f"{e['visual_review_status']} | {e['final_status']} | {_md_escape(notes)} |")
+                   f"{e['visual_review_status']} | {e.get('audit_status', '')} | {e['final_status']} | {_md_escape(notes)} |")
     blocked = [e for e in entries if e["final_status"] in STATUS_BLOCKED]
     if blocked:
         rev += ["", "## Blocked use cases — questions for BA/PO", ""]

@@ -58,7 +58,15 @@ Each Activity Diagram must contain:
 - Guard conditions on every outgoing branch of a decision.
 - Swimlanes for responsibility separation.
 
-UML allows several Activity Final Nodes; reaching any of them ends the whole activity. Merge paths into one Activity Final Node when they share the same postcondition, and use separate Activity Final Nodes only for semantically different outcomes (success, cancellation, exception). Use a Flow Final Node only when other flows of the same activity continue. An exception branch must display or record its outcome before ending; it must not terminate silently immediately after a decision.
+UML 2.5.1 allows several Activity Final Nodes; reaching any of them ends the whole activity (UML rule). The team convention is stricter:
+
+- Paths with the **same outcome** share one Activity Final Node through merge nodes. A cancellation, a rejection and an unavailable-data path all count as the same outcome when the use case ends without its postconditions and without a persistent change.
+- Separate Activity Final Nodes are kept only for **different outcomes** (for example postconditions met, account left pending, task left unassigned), and the source header comment explains each one.
+- When different outcomes occur on several nested branches, so that separate finals would need duplicate finals for the same outcome, use **one shared Activity Final**; the last action on each path states its outcome.
+- Use a Flow Final Node only when other flows of the same activity continue. None of the current use cases needs one.
+- An exception branch must display or record its outcome before ending; it must not terminate silently immediately after a decision.
+
+The audit of 2026-10-03 (`docs/activity-diagram-audit-report.md`) lists every end node and its outcome.
 
 ## 6. Swimlane Rules
 

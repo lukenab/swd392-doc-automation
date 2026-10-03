@@ -4,8 +4,8 @@
 ' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = item removed (postconditions met); F2 = item unchanged (EX-01, AF-01).
 !include ../../_shared/activity-style.puml
-
 |PRO| $lane_title("Product Owner")
 |SYS| $lane_title("System")
 
@@ -16,28 +16,29 @@ start
 and request removal;
 |SYS|
 if ($question_x("Item in the active Sprint?")) then ($guard_left("[not in the active Sprint]"))
+  ' [NF2]
+  :Display the impact and
+  request confirmation;
+  |PRO|
+  if ($question_x("Confirm removal?")) then ($guard_left("[confirm]"))
+    ' [NF3]
+    :Confirm removal;
+    |SYS|
+    ' [NF4, POST1, POST2]
+    :Remove the item and
+    record the action;
+    stop
+  else ($guard_right("[cancel", "— AF-01]"))
+    |SYS|
+    ' [AF-01.1]
+    :Leave the Product Backlog
+    Item unchanged;
+  endif
 else ($guard_right("[locked in the active", "Sprint — EX-01]"))
   ' [EX-01, GUIDE-7.3]
-  :Reject the removal of the locked item;
-  stop
+  :Reject the removal
+  of the locked item;
 endif
-' [NF2]
-:Display the impact and
-request confirmation;
-|PRO|
-if ($question_x("Confirm removal?")) then ($guard_left("[confirm]"))
-  ' [NF3]
-  :Confirm removal;
-  |SYS|
-  ' [NF4, POST1, POST2]
-  :Remove the item and
-  record the action;
-  stop
-else ($guard_right("[cancel", "— AF-01]"))
-  |SYS|
-  ' [AF-01.1]
-  :Leave the Product Backlog
-  Item unchanged;
-  stop
-endif
+|SYS|
+stop
 @enduml

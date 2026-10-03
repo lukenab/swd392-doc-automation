@@ -4,8 +4,12 @@
 ' Business Rules: BR-ACCOUNT-VERIFIED-IDENTITY, BR-AUTH-ACTIVE-ACCOUNT
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' EX-01 and EX-02 share one decision on the email path: NF4 checks both in one step and both
+' exceptions end without a session.
+' Final nodes: one Activity Final. The success paths (NF5, AF-01.3) and the no-session paths
+' (AF-02, EX-01..EX-04) sit on nested branches, so separate finals per outcome would duplicate
+' a final for the same outcome; the last action on each path states its outcome.
 !include ../../_shared/activity-style.puml
-
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
 |IDP| $lane_title("Identity Provider")
@@ -16,71 +20,71 @@ start
 :Open the log-in page and
 choose a log-in option;
 |SYS|
-if ($question_x("Password forgotten?")) then ($guard_left("[not forgotten]"))
-else ($guard_right("[forgotten", "— AF-02]"))
+if ($question_x("Forgot Password chosen?")) then ($guard_left("[not chosen]"))
+  if ($question("Log-in option?")) then ($guard_left("[email and password]"))
+    ' [NF2]
+    :Request the registered
+    email address and password;
+    |USR|
+    ' [NF3]
+    :Submit the credentials;
+    |SYS|
+    ' [NF4]
+    :Validate the credentials and
+    confirm that the account is active;
+    if ($question("Credentials valid and\naccount active?")) then ($guard_left("[yes]"))
+      ' [NF5, POST1]
+      :Create an authenticated
+      session and display the
+      User's available projects;
+    else ($guard_right("[invalid — EX-01 or", "inactive — EX-02]"))
+      ' [EX-01, EX-02]
+      :Reject the log-in
+      without creating
+      a session;
+    endif
+  else ($guard_right("[Google", "— AF-01]"))
+    ' [AF-01.1]
+    :Redirect the User to
+    the Identity Provider;
+    |IDP|
+    ' [AF-01.2]
+    :Authenticate the User and
+    return a verified identity;
+    |SYS|
+    if ($question_x("Identity verified?")) then ($guard_left("[verified]"))
+      ' [AF-01.3]
+      :Match the identity to
+      an existing User account;
+      if ($question("Matching account found?")) then ($guard_left("[found]"))
+        if ($question("Account active?")) then ($guard_left("[active]"))
+          ' [AF-01.3, POST1]
+          :Create an authenticated
+          session;
+        else ($guard_right("[not active", "— EX-02]"))
+          ' [EX-02]
+          :Reject the log-in
+          for the inactive
+          account;
+        endif
+      else ($guard_right("[no matching", "account — EX-04]"))
+        ' [EX-04]
+        :Direct the person to
+        Register Account without
+        creating a session;
+      endif
+    else ($guard_right("[unavailable or", "rejected — EX-03]"))
+      ' [EX-03]
+      :End the log-in
+      without creating
+      a session;
+    endif
+  endif
+else ($guard_right("[password forgotten", "— AF-02]"))
   ' [AF-02.1]
-  :Direct the User to Forgot Password;
-  stop
+  :Direct the User to
+  Forgot Password;
 endif
-if ($question("Log-in option?")) then ($guard_left("[email and password]"))
-  ' [NF2]
-  :Request the registered
-  email address and password;
-  |USR|
-  ' [NF3]
-  :Submit the credentials;
-  |SYS|
-  ' [NF4]
-  :Validate the credentials and
-  confirm that the account is active;
-  if ($question("Credentials valid?")) then ($guard_left("[valid]"))
-  else ($guard_right("[invalid", "— EX-01]"))
-    ' [EX-01]
-    :Reject the log-in without creating a session;
-    stop
-  endif
-  if ($question("Account active?")) then ($guard_left("[active]"))
-  else ($guard_right("[pending, suspended", "or deleted — EX-02]"))
-    ' [EX-02]
-    :Reject the log-in for the inactive account;
-    stop
-  endif
-  ' [NF5, POST1]
-  :Create an authenticated session and
-  display the User's available projects;
-else ($guard_right("[Google", "— AF-01]"))
-  ' [AF-01.1]
-  :Redirect the User to
-  the Identity Provider;
-  |IDP|
-  ' [AF-01.2]
-  :Authenticate the User and
-  return a verified identity;
-  |SYS|
-  if ($question_x("Identity verified?")) then ($guard_left("[verified]"))
-  else ($guard_right("[unavailable or", "rejected — EX-03]"))
-    ' [EX-03]
-    :End the log-in without creating a session;
-    stop
-  endif
-  ' [AF-01.3]
-  :Match the identity to
-  an existing User account;
-  if ($question("Matching account found?")) then ($guard_left("[found]"))
-  else ($guard_right("[no matching", "account — EX-04]"))
-    ' [EX-04]
-    :Direct the person to Register Account
-    without creating a session;
-    stop
-  endif
-  if ($question("Account active?")) then ($guard_left("[active]"))
-  else ($guard_right("[not active", "— EX-02]"))
-    ' [EX-02]
-    :Reject the log-in for the inactive account;
-    stop
-  endif
-  ' [AF-01.3, POST1]
-  :Create an authenticated session;
-endif
+|SYS|
 stop
 @enduml

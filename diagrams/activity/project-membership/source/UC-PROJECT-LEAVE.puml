@@ -4,6 +4,9 @@
 ' Business Rules: BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, BR-PROJECT-MEMBER-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = request rejected (EX-01) and F2 = request cancelled (AF-01.2) both leave the
+' membership unchanged, but they stay separate: the cancel path must bypass NF5, which the
+' confirm path (AF-01.2) shares with the normal flow, so merging them would require drawing NF5 twice.
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")

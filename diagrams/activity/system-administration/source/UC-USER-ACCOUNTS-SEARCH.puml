@@ -4,6 +4,8 @@
 ' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = administration data unavailable (EX-01); F2 = search completed, with the
+' selected account displayed (NF4) or with the report that none match (AF-01).
 !include ../../_shared/activity-style.puml
 |ADM| $lane_title("System Administrator")
 |SYS| $lane_title("System")
@@ -21,19 +23,19 @@ else ($guard_right("[unavailable", "— EX-01]"))
   stop
 endif
 if ($question("Matching accounts found?")) then ($guard_left("[found]"))
+  ' [NF2]
+  :Display matching User accounts;
+  |ADM|
+  ' [NF3]
+  :Select an account;
+  |SYS|
+  ' [NF4, POST1, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS, OTHER]
+  :Display its administrative status
+  and relevant account metadata;
 else ($guard_right("[no match", "— AF-01]"))
   ' [AF-01.1]
-  :Report that no matching account was found;
-  stop
+  :Report that no matching
+  account was found;
 endif
-' [NF2]
-:Display matching User accounts;
-|ADM|
-' [NF3]
-:Select an account;
-|SYS|
-' [NF4, POST1, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS, OTHER]
-:Display its administrative status
-and relevant account metadata;
 stop
 @enduml

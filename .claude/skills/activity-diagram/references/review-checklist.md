@@ -9,7 +9,7 @@
 
 ## UML
 
-- [ ] One initial node; finals merged when the postcondition is the same.
+- [ ] One initial node; finals merged when the outcome is the same; each remaining final explained in the header.
 - [ ] Every decision has a question and a guard on each outgoing edge; guards are exclusive and complete.
 - [ ] Alternative flows rejoin after the step that raised them, or end when terminal.
 - [ ] Each exception ends with a System reject/report action before its final.

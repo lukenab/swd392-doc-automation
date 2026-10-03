@@ -6,6 +6,9 @@
 ' No title: the Word caption supplies it.
 ' The User chooses to review one notification or to send another request (AF-01, AF-02);
 ' the System then distinguishes the received request.
+' Final nodes: one Activity Final. The completed paths (NF4, AF-01, AF-02 saved) and the
+' unchanged paths (EX-01, EX-02) sit on nested branches; separate finals per outcome would
+' duplicate a final, so the last action on each path states its outcome.
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
@@ -26,22 +29,21 @@ if ($question_x("Review a notification?")) then ($guard_left("[review]"))
   to review;
   |SYS|
   if ($question_x("Related item accessible?")) then ($guard_left("[accessible]"))
+    ' [NF4, POST1, POST3]
+    :Mark it as read and display
+    its related project context;
   else ($guard_right("[inaccessible", "— EX-01]"))
     ' [EX-01, BR-PROJECT-MEMBER-ACCESS, GUIDE-7.3]
-    :Report that the related project item is no longer accessible;
-    stop
+    :Report that the related
+    project item is no
+    longer accessible;
   endif
-  ' [NF4, POST1, POST3]
-  :Mark it as read and display
-  its related project context;
-  stop
 else ($guard_right("[other", "request]"))
   |SYS|
   if ($question_x("Requested action?")) then ($guard_left("[mark all — AF-01]"))
     ' [AF-01.1, POST1, POST3]
     :Mark all visible
     notifications as read;
-    stop
   else ($guard_right("[change email", "delivery — AF-02]"))
     if ($question("Enabling email delivery?")) then ($guard_left("[enabling]"))
       ' [AF-02.1, BR-NOTIFICATION-EMAIL-PREFERENCE]
@@ -57,7 +59,8 @@ else ($guard_right("[other", "request]"))
       ' [EX-02, GUIDE-7.3]
       :Keep the previous preference and report the failure;
     endif
-    stop
   endif
 endif
+|SYS|
+stop
 @enduml
