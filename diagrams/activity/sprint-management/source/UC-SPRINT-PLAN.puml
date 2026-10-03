@@ -44,7 +44,7 @@ items with the Developer;
 |SYS|
 if ($question_x("Date range conflicts?")) then ($guard_left("[no conflict]"))
 else ($guard_right("[conflict", "— EX-01]"))
-  ' [EX-01, BR-SPRINT-DATE-RANGE, GUIDE-7.3]
+  ' [EX-01, GUIDE-7.3]
   :Reject saving the Sprint because its date range conflicts with another Sprint;
   stop
 endif
