@@ -4,6 +4,11 @@
 ' Business Rules: BR-COMMENT-PROJECT-MEMBER, BR-ACTIVITY-IMMUTABLE, BR-NOTIFICATION-EMAIL-PREFERENCE, BR-NOTIFICATION-DELIVERY-INDEPENDENT
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = comment saved (postconditions met; an email delivery failure (EX-02) does not
+' change this outcome, BR-NOTIFICATION-DELIVERY-INDEPENDENT); F2 = comment rejected because the work
+' item was removed (EX-01).
+' NF5 requests email delivery only for eligible members (BR-NOTIFICATION-EMAIL-PREFERENCE); the YAML
+' does not describe the case where no member is eligible, so no separate branch is drawn for it.
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
@@ -31,20 +36,15 @@ endwhile ($guard("[content present]"))
 :Submit the comment;
 |SYS|
 if ($question_x("Work item still exists?")) then ($guard_left("[exists]"))
-else ($guard_right("[removed", "— EX-01]"))
-  ' [EX-01, GUIDE-7.3]
-  :Reject the comment because the work item was removed;
-  stop
-endif
-' [NF4, POST1, BR-ACTIVITY-IMMUTABLE]
-:Save the comment and record
-it in activity history;
-' [NF5, POST2]
-:Create in-app notifications
-for relevant members;
-if ($question("Eligible email deliveries?")) then ($guard_left("[eligible]"))
+  ' [NF4, POST1, BR-ACTIVITY-IMMUTABLE]
+  :Save the comment and record
+  it in activity history;
+  ' [NF5, POST2]
+  :Create in-app notifications
+  for relevant members;
   ' [NF5, POST2, BR-NOTIFICATION-EMAIL-PREFERENCE]
-  :Request email delivery;
+  :Request email delivery
+  for eligible members;
   |EML|
   ' [NF6]
   :Return the email
@@ -53,9 +53,15 @@ if ($question("Eligible email deliveries?")) then ($guard_left("[eligible]"))
   if ($question_x("Email delivered?")) then ($guard_left("[delivered]"))
   else ($guard_right("[not delivered", "— EX-02]"))
     ' [EX-02, BR-NOTIFICATION-DELIVERY-INDEPENDENT]
-    :Record the failed delivery and keep the saved comment;
+    :Record the failed delivery
+    and keep the saved comment;
   endif
-else ($guard_right("[none", "eligible]"))
+  stop
+else ($guard_right("[removed", "— EX-01]"))
+  ' [EX-01, GUIDE-7.3]
+  :Reject the comment
+  because the work
+  item was removed;
+  stop
 endif
-stop
 @enduml
