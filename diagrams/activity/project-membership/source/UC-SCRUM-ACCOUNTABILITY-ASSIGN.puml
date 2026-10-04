@@ -18,48 +18,45 @@ start
 :Select an active project member;
 |SYS|
 ' [NF2]
-:Display the member's current
+:Display current
 Scrum accountability;
 |OWN|
 ' [NF3]
 :Select Product Owner or Developer;
 |SYS|
 ' [NF4, BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED]
-:Validate the assignment
+:Validate assignment
 against project constraints;
 if ($question("Conflicting Product Owner?")) then ($guard_left("[no conflict]"))
 else ($guard_right("[conflicting", "assignment — AF-01]"))
   ' [AF-01.1]
-  :Request confirmation
-  of the replacement;
+  :Request replacement confirmation;
   |OWN|
-  if ($question_x("Confirm the replacement?")) then ($guard_left("[confirm — AF-01]"))
+  if ($question_x("Confirm replacement?")) then ($guard_left("[confirm — AF-01]"))
     ' [AF-01]
-    :Confirm the replacement;
+    :Confirm replacement;
     |SYS|
     ' [AF-01.2, BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE]
-    :Transfer the Product Owner
-    accountability;
+    :Transfer Product
+    Owner accountability;
   else ($guard_right("[not confirmed", "— AF-02]"))
     |SYS|
     ' [AF-02.1, BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE]
-    :Keep the current Scrum
+    :Keep current
     accountabilities unchanged;
     stop
   endif
 endif
 if ($question("Member still in the project?")) then ($guard_left("[still a member]"))
   ' [NF5, POST1]
-  :Save and confirm the
-  project-scoped accountability;
+  :Save and confirm accountability;
   ' [POST2]
-  :Record the accountability
-  change in activity history;
+  :Record change in
+  activity history;
   stop
 else ($guard_right("[left or removed", "— EX-01]"))
   ' [EX-01, GUIDE-7.3]
-  :Reject the assignment
-  for the departed member;
+  :Reject accountability assignment;
   stop
 endif
 @enduml

@@ -12,38 +12,34 @@
 |OWN|
 start
 ' [NF1]
-:Open project membership management
-and choose to add a member;
+:Choose to add a project member;
 |SYS|
 ' [NF2]
-:Request an existing User account;
+:Request existing User account;
 |OWN|
 ' [NF3]
-:Select the User and
-confirm the addition;
+:Select User and confirm addition;
 |SYS|
 ' [NF4, BR-ACTIVE-USER-REQUIRED]
-:Verify that the User is active
-and is not already a member;
+:Verify account
+status and membership;
 if ($question("Already a member?")) then ($guard_left("[not a member]"))
   if ($question("Account still active?")) then ($guard_left("[active]"))
     ' [NF5, POST1]
-    :Create the membership and
-    refresh the member list;
+    :Create membership
+    and refresh list;
     ' [POST2]
-    :Record the membership change
-    in project activity history;
+    :Record change in
+    activity history;
     stop
   else ($guard_right("[became inactive", "— EX-01]"))
     ' [EX-01, GUIDE-7.3]
-    :Reject the addition
-    of the inactive
-    account;
+    :Reject member addition;
   endif
 else ($guard_right("[already a member", "— AF-01]"))
   ' [AF-01.1]
-  :Report that no new
-  membership is required;
+  :Report no new
+  membership required;
 endif
 stop
 @enduml

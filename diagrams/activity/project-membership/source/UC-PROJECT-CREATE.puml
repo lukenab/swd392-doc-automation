@@ -4,8 +4,9 @@
 ' Business Rules: BR-ACTIVE-USER-REQUIRED, BR-PROJECT-ONE-OWNER
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = creation rejected, no project created (EX-01); F2 = project created and
-' initialized (postconditions met).
+' Final nodes: F1 = project created and initialized (postconditions met); F2 = project not created
+' (EX-01). POST1-POST2 are traced on the [persisted] path only. The System response to EX-01 is not
+' specified (Needs clarification); "Reject project creation" follows guideline section 7.3.
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -17,34 +18,35 @@ start
 :Start project creation;
 |SYS|
 ' [NF2]
-:Request the project name,
-description, and planned dates;
+:Request name, description
+and planned dates;
 |USR|
 ' [NF3]
-:Provide the required project
-information and confirm creation;
+:Enter project
+information and confirm;
 |SYS|
 ' [NF4]
-:Validate the submitted information;
+:Validate project information;
 while ($question("Information missing or invalid?")) is ($guard_left("[invalid — AF-01]"))
   ' [AF-01.1]
-  :Identify the invalid information;
+  :Identify invalid information;
   |USR|
   ' [AF-01.2]
-  :Correct the information and submit it again;
+  :Correct and resubmit information;
   |SYS|
 endwhile ($guard("[valid]"))
-' [NF5, POST1, POST2, BR-PROJECT-ONE-OWNER]
-:Create the project and assign
-ownership to the User;
+' [NF5, BR-PROJECT-ONE-OWNER]
+:Create project
+with User as owner;
 if ($question("Project data persisted?")) then ($guard_left("[persisted]"))
-else ($guard_right("[not persisted", "— EX-01]"))
+  ' [NF6, POST1, POST2, POST3]
+  :Initialize Product Backlog
+  and default Sprint Board;
+  stop
+else ($guard_right("[persistence", "failed — EX-01]"))
+  |SYS|
   ' [EX-01, GUIDE-7.3]
-  :Reject the project creation because the data cannot be persisted;
+  :Reject project creation;
   stop
 endif
-' [NF6, POST3]
-:Initialize the Product Backlog
-and default Sprint Board;
-stop
 @enduml
