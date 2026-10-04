@@ -4,6 +4,8 @@
 ' Business Rules: BR-PROJECT-OWNER-ADMINISTRATION, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = update rejected, project information unchanged (EX-01); F2 = project
+' information updated and recorded (postconditions met).
 !include ../../_shared/activity-style.puml
 
 |OWN| $lane_title("Project Owner")

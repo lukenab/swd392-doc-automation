@@ -4,6 +4,8 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = membership information unavailable, nothing displayed (EX-01); F2 = member
+' list displayed (NF3 or AF-01; postconditions met).
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")

@@ -4,6 +4,8 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS, BR-ACTIVITY-IMMUTABLE
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = history cannot be retrieved, nothing displayed (EX-01); F2 = activity history
+' reviewed (NF3/AF-01 then NF4; postconditions met).
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")

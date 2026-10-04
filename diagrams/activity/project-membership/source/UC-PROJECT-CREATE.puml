@@ -4,6 +4,8 @@
 ' Business Rules: BR-ACTIVE-USER-REQUIRED, BR-PROJECT-ONE-OWNER
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = creation rejected, no project created (EX-01); F2 = project created and
+' initialized (postconditions met).
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")

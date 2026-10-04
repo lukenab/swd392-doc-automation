@@ -4,6 +4,8 @@
 ' Business Rules: BR-PROJECT-ONE-OWNER, BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, BR-PROJECT-OWNER-ADMINISTRATION, BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = transfer rejected, ownership unchanged (EX-01); F2 = ownership transferred
+' and recorded (postconditions met).
 !include ../../_shared/activity-style.puml
 
 |OWN| $lane_title("Project Owner")

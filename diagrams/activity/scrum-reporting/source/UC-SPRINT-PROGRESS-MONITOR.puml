@@ -4,6 +4,8 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS, BR-PROGRESS-ACTIVE-SPRINT
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = no active Sprint, no progress calculated (EX-01, BR-PROGRESS-ACTIVE-SPRINT);
+' F2 = Sprint indicators displayed (NF4, also after AF-01; postconditions met).
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
