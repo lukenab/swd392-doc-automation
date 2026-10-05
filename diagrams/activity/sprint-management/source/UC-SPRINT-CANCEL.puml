@@ -4,7 +4,12 @@
 ' Business Rules: BR-SPRINT-CANCEL-PO-ONLY, BR-SPRINT-INCOMPLETE-RETURN-BACKLOG
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = Sprint cancelled (postconditions met); F2 = Sprint unchanged (EX-01, AF-01).
+' Final nodes: F1 = Sprint cancelled, items returned, reason and timestamp recorded
+' (postconditions met); F2 = Sprint unchanged (EX-01 rejection and AF-01 continuation merged).
+' AF-01.1 (the Product Owner cancels the confirmation) is the [continue Sprint — AF-01] outcome
+' of the Product Owner's confirmation decision.
+' EX-01 occurs "before the cancellation is confirmed", so the System checks the Sprint state
+' after the confirmation (NF3) and before cancelling (NF4).
 !include ../../_shared/activity-style.puml
 |PRO| $lane_title("Product Owner")
 |SYS| $lane_title("System")
@@ -13,41 +18,35 @@
 start
 ' [NF1, BR-SPRINT-CANCEL-PO-ONLY]
 :Request Sprint cancellation
-and provide a reason;
+and provide reason;
 |SYS|
-if ($question_x("Sprint still active?")) then ($guard_left("[active]"))
-  ' [NF2]
-  :Display the impact on selected
-  and completed work;
-  |PRO|
-  if ($question_x("Confirm the cancellation?")) then ($guard_left("[confirm]"))
-    ' [NF3]
-    :Confirm the cancellation;
-    |SYS|
-    ' [NF4, POST1, POST2, BR-SPRINT-INCOMPLETE-RETURN-BACKLOG]
-    :Cancel the Sprint and return
-    incomplete items to the
-    Product Backlog;
+' [NF2]
+:Display impact on selected
+and completed work;
+|PRO|
+if ($question_x("Confirm cancellation?")) then ($guard_left("[confirm]"))
+  ' [NF3]
+  :Confirm cancellation;
+  |SYS|
+  if ($question_x("Sprint still active?")) then ($guard_left("[active]"))
+    ' [NF4, POST1]
+    :Cancel active Sprint;
+    ' [NF4, POST2, BR-SPRINT-INCOMPLETE-RETURN-BACKLOG]
+    :Return incomplete items
+    to Product Backlog;
     ' [NF5]
-    :Record the cancellation
+    :Record cancellation
     reason and timestamp;
     stop
-  else ($guard_right("[continue the", "Sprint — AF-01]"))
-    |PRO|
-    ' [AF-01.1]
-    :Cancel the
-    confirmation;
-    |SYS|
-    ' [AF-01.2]
-    :Leave the Sprint
-    unchanged;
+  else ($guard_right("[completed or", "cancelled — EX-01]"))
+    ' [EX-01, GUIDE-7.3]
+    :Reject Sprint cancellation;
   endif
-else ($guard_right("[already completed", "or cancelled — EX-01]"))
-  ' [EX-01, GUIDE-7.3]
-  :Reject the cancellation
-  because the Sprint is
-  no longer active;
+else ($guard_right("[continue", "Sprint — AF-01]"))
+  |SYS|
+  ' [AF-01.2]
+  :Leave Sprint unchanged;
 endif
-|SYS|
+|PRO|
 stop
 @enduml

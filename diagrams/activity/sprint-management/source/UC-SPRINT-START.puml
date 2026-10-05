@@ -4,6 +4,10 @@
 ' Business Rules: BR-SPRINT-ONE-ACTIVE, BR-SPRINT-GOAL-REQUIRED, BR-SPRINT-DATE-RANGE
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = start rejected, Sprint stays in Draft status (EX-01); F2 = Sprint active,
+' Sprint Board open, start time recorded (postconditions met).
+' AF-02: after the violated constraint is reported the Sprint remains in Draft status; the
+' Product Owner updates the selection again and the loop returns to the revalidation result.
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -13,41 +17,46 @@
 |PRO|
 start
 ' [NF1]
-:Request to start
-the Draft Sprint;
+:Request to start Draft Sprint;
 |SYS|
-' [NF2, BR-SPRINT-GOAL-REQUIRED, BR-SPRINT-DATE-RANGE]
-:Validate the Sprint Goal, dates,
-selected work and active-Sprint constraint;
+' [NF2, BR-SPRINT-GOAL-REQUIRED, BR-SPRINT-DATE-RANGE, BR-SPRINT-ONE-ACTIVE]
+:Validate Sprint Goal, dates, selected
+work and active-Sprint constraint;
 if ($question("Another Sprint active?")) then ($guard_left("[none active]"))
 else ($guard_right("[already active", "— EX-01]"))
   ' [EX-01, BR-SPRINT-ONE-ACTIVE, GUIDE-7.3]
-  :Reject the start because another Sprint is already active;
+  :Reject Sprint start;
   stop
 endif
 |DEV|
 ' [NF3]
-:Confirm that the selected work
-is understood and executable;
+:Confirm selected work is
+understood and executable;
 |PRO|
 while ($question_x("Change the selection?")) is ($guard_left("[change — AF-01]"))
   ' [AF-01.1]
-  :Update the selected
-  backlog items;
+  :Update selected backlog items;
   |SYS|
-  ' [AF-01.2]
-  :Revalidate the Sprint
-  before activation;
+  ' [AF-01.2, BR-SPRINT-GOAL-REQUIRED, BR-SPRINT-DATE-RANGE]
+  :Revalidate Sprint before activation;
+  while ($question("Revalidation failed?")) is ($guard_left("[fails — AF-02]"))
+    ' [AF-02.1]
+    :Report violated constraint;
+    |PRO|
+    ' [AF-02.2]
+    :Update selected backlog items again;
+    |SYS|
+  endwhile ($guard("[passes]"))
   |PRO|
 endwhile ($guard("[no change]"))
 ' [NF4]
 :Confirm Sprint activation;
 |SYS|
 ' [NF5, POST1, POST2]
-:Mark the Sprint active and
+:Mark Sprint active and
 open its Sprint Board;
 ' [OTHER]
-:Record the Sprint start time
-in the activity history;
+:Record Sprint start time
+in activity history;
 stop
 @enduml
