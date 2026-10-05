@@ -416,7 +416,7 @@ Kích thước 523×472 px · 10.5 pt ở A4 · layout issues: none.
 | NF3 / POST1 | Display the item details and related Sprint information | article / extra words removed (label rule 1) | Display item details and related Sprint information | yes | EDITORIAL |
 | structure | main flow after endif | layout pattern | main flow in then, EX-01 sideways to final | yes | EDITORIAL |
 
-Final nodes: F1 = item details displayed (POST1); F2 = item no longer available, nothing displayed (EX-01, no response in UC).
+Final nodes (cập nhật 2026-10-05, theo quyết định của nhóm): một Activity Final chung, hai nhánh nhập ở merge node. Sau NF3 item được hiển thị (POST1); sau EX-01 không hiển thị gì và POST1 không đạt (UC không mô tả phản hồi). UML 2.5.1 cho phép cả một lẫn nhiều Activity Final; đây là lựa chọn trình bày.
 
 NEEDS CLARIFICATION — EX-01: What does the User see when the selected item is no longer available? Đề xuất cho spec: "EX-01: The selected item is no longer available; the system informs the User that the item is no longer available."
 
