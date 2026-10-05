@@ -1,0 +1,42 @@
+@startuml UC-SUBTASK-COMPLETE
+' UC-27.4 - Complete Subtask | semantic key: UC-SUBTASK-COMPLETE
+' Source: data/use_cases/sprint-work/UC-SUBTASK-COMPLETE.yml
+' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER, BR-WORK-ITEM-STATUS
+' Trace comments ' [ref] name the YAML element behind the next action.
+' No title: the Word caption supplies it.
+' The Developer requests one of two status changes: mark an incomplete subtask complete (NF1) or
+' restore a completed subtask to incomplete (AF-01). Both paths share the validation (NF2 = AF-01.1),
+' the EX-01 check and the final update (NF3 = AF-01.2: record the requested status and recalculate
+' parent-task progress), so they merge after the Developer's action.
+' Final nodes: F1 = subtask has the requested completion status and parent progress is recalculated
+' (postconditions met); F2 = status change rejected, subtask unchanged (EX-01).
+!include ../../_shared/activity-style.puml
+|DEV| $lane_title("Developer")
+|SYS| $lane_title("System")
+
+|DEV|
+start
+if ($question("Requested status change?")) then ($guard_left("[mark complete]"))
+  ' [NF1, TRIGGER, BR-SPRINT-TASK-DEVELOPER]
+  :Select incomplete subtask
+  and mark it complete;
+else ($guard_right("[restore to incomplete", "— AF-01]"))
+  ' [AF-01, BR-SPRINT-TASK-DEVELOPER]
+  :Restore completed subtask
+  to incomplete;
+endif
+|SYS|
+' [NF2, AF-01.1, BR-WORK-ITEM-STATUS]
+:Validate requested
+status change;
+if ($question("Sprint still active?")) then ($guard_left("[active]"))
+  ' [NF3, AF-01.2, POST1, POST2]
+  :Record requested status and
+  recalculate parent-task progress;
+  stop
+else ($guard_right("[Sprint completed", "— EX-01]"))
+  ' [EX-01, BR-SPRINT-TASK-ACTIVE-SPRINT, GUIDE-7.3]
+  :Reject subtask status change;
+  stop
+endif
+@enduml

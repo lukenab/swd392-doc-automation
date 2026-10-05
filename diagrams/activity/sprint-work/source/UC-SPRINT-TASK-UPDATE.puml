@@ -4,7 +4,8 @@
 ' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = changes saved (postconditions met); F2 = task unchanged (EX-01, AF-01).
+' Final nodes: F1 = changes saved and recorded (postconditions met); F2 = task unchanged: update
+' rejected (EX-01) or unsaved changes discarded (AF-01).
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -12,38 +13,36 @@
 |DEV|
 start
 ' [NF1, BR-SPRINT-TASK-DEVELOPER]
-:Open a Sprint Task for editing;
+:Open Sprint Task for editing;
 |SYS|
 ' [NF2]
-:Display the editable
+:Display editable
 task information;
 |DEV|
-if ($question_x("Submit the changes?")) then ($guard_left("[submit]"))
+if ($question_x("Submit changes?")) then ($guard_left("[submit]"))
   ' [NF3]
-  :Update the desired values
-  and submit the task;
+  :Update desired values
+  and submit task;
   |SYS|
   ' [NF4]
-  :Validate the changes;
-  if ($question_x("Task still in the active Sprint?")) then ($guard_left("[in the active Sprint]"))
+  :Validate task changes;
+  if ($question("Task still in active Sprint?")) then ($guard_left("[in active Sprint]"))
     ' [NF4, POST1]
-    :Save the changes;
+    :Save task changes;
     ' [POST2]
-    :Record the update in
+    :Record update in
     work item activity;
     stop
-  else ($guard_right("[no longer in the", "active Sprint — EX-01]"))
+  else ($guard_right("[no longer in", "active Sprint — EX-01]"))
     ' [EX-01, BR-SPRINT-TASK-ACTIVE-SPRINT, GUIDE-7.3]
-    :Reject the update
-    because the task is no
-    longer in the active Sprint;
+    :Reject Sprint Task update;
   endif
 else ($guard_right("[cancel before", "saving — AF-01]"))
   |SYS|
   ' [AF-01.1]
-  :Discard the unsaved
+  :Discard unsaved
   task changes;
 endif
-|DEV|
+|SYS|
 stop
 @enduml
