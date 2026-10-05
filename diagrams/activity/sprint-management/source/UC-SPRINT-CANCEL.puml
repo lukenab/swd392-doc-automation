@@ -4,8 +4,9 @@
 ' Business Rules: BR-SPRINT-CANCEL-PO-ONLY, BR-SPRINT-INCOMPLETE-RETURN-BACKLOG
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = Sprint cancelled, items returned, reason and timestamp recorded
-' (postconditions met); F2 = Sprint unchanged (EX-01 rejection and AF-01 continuation merged).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the Sprint is cancelled, items returned and reason and timestamp recorded
+' (postconditions met) or with the Sprint unchanged (EX-01 rejection, AF-01 continuation).
 ' AF-01.1 (the Product Owner cancels the confirmation) is the [continue Sprint — AF-01] outcome
 ' of the Product Owner's confirmation decision.
 ' EX-01 occurs "before the cancellation is confirmed", so the System checks the Sprint state
@@ -37,7 +38,6 @@ if ($question_x("Confirm cancellation?")) then ($guard_left("[confirm]"))
     ' [NF5]
     :Record cancellation
     reason and timestamp;
-    stop
   else ($guard_right("[completed or", "cancelled — EX-01]"))
     ' [EX-01, GUIDE-7.3]
     :Reject Sprint cancellation;
@@ -47,6 +47,6 @@ else ($guard_right("[continue", "Sprint — AF-01]"))
   ' [AF-01.2]
   :Leave Sprint unchanged;
 endif
-|PRO|
+|SYS|
 stop
 @enduml

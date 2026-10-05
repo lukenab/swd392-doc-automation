@@ -4,8 +4,10 @@
 ' Business Rules: BR-SPRINT-INCOMPLETE-RETURN-BACKLOG, BR-WORK-ITEM-STATUS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = completion rejected, Sprint unchanged (EX-01); F2 = Sprint completed,
-' incomplete items returned, result recorded (postconditions met).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the Sprint is completed, incomplete items returned and the result recorded
+' (postconditions met) or after EX-01 (completion rejected, Sprint unchanged). The rest of the flow
+' is drawn inside the [unchanged] branch so that EX-01 can rejoin it.
 ' AF-01 re-performs NF1: the loop repeats the display (NF2) and the review (NF3), so these two
 ' actions are drawn again inside the loop body.
 !include ../../_shared/activity-style.puml
@@ -46,16 +48,16 @@ endwhile ($guard("[statuses current]"))
 :Confirm Sprint completion;
 |SYS|
 if ($question_x("Sprint state unchanged?")) then ($guard_left("[unchanged]"))
+  ' [NF5, POST1, POST2, POST3, BR-SPRINT-INCOMPLETE-RETURN-BACKLOG]
+  :Complete Sprint and return incomplete
+  items to Product Backlog;
+  ' [NF6]
+  :Record Sprint result
+  for reporting;
 else ($guard_right("[state changed", "— EX-01]"))
   ' [EX-01, GUIDE-7.3]
   :Reject Sprint completion;
-  stop
 endif
-' [NF5, POST1, POST2, POST3, BR-SPRINT-INCOMPLETE-RETURN-BACKLOG]
-:Complete Sprint and return incomplete
-items to Product Backlog;
-' [NF6]
-:Record Sprint result
-for reporting;
+|SYS|
 stop
 @enduml

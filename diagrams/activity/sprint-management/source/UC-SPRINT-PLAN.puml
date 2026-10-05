@@ -4,8 +4,9 @@
 ' Business Rules: BR-SPRINT-GOAL-REQUIRED, BR-SPRINT-DATE-RANGE, BR-BACKLOG-ITEM-READY, BR-SPRINT-ONE-DRAFT
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = Draft Sprint and initial Sprint Backlog created (postconditions met); F2 = Sprint
-' not saved because its date range conflicts with another Sprint (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the Draft Sprint and initial Sprint Backlog are created (postconditions met) or
+' after EX-01 (Sprint not saved, date range conflicts with another Sprint).
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -48,11 +49,11 @@ if ($question_x("Date range conflicts?")) then ($guard_left("[no conflict]"))
   ' [NF6, POST1, POST2, BR-SPRINT-ONE-DRAFT]
   :Create Draft Sprint and
   initial Sprint Backlog;
-  stop
 else ($guard_right("[conflicts with another", "Sprint — EX-01]"))
   |SYS|
   ' [EX-01, GUIDE-7.3]
   :Reject Draft Sprint creation;
-  stop
 endif
+|SYS|
+stop
 @enduml
