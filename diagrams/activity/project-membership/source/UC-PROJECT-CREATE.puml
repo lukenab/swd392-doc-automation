@@ -4,9 +4,11 @@
 ' Business Rules: BR-ACTIVE-USER-REQUIRED, BR-PROJECT-ONE-OWNER
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = project created and initialized (postconditions met); F2 = project not created
-' (EX-01). POST1-POST2 are traced on the [persisted] path only. The System response to EX-01 is not
-' specified (Needs clarification); "Reject project creation" follows guideline section 7.3.
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the project is created and initialized (postconditions met) or after EX-01
+' (project not created). POST1-POST2 are traced on the [persisted] path only. The System response to
+' EX-01 is not specified (Needs clarification); "Reject project creation" follows guideline section
+' 7.3.
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -42,11 +44,11 @@ if ($question("Project data persisted?")) then ($guard_left("[persisted]"))
   ' [NF6, POST1, POST2, POST3]
   :Initialize Product Backlog
   and default Sprint Board;
-  stop
 else ($guard_right("[persistence", "failed — EX-01]"))
   |SYS|
   ' [EX-01, GUIDE-7.3]
   :Reject project creation;
-  stop
 endif
+|SYS|
+stop
 @enduml

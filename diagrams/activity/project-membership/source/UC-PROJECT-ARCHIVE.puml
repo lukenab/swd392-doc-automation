@@ -4,7 +4,9 @@
 ' Business Rules: BR-PROJECT-OWNER-ADMINISTRATION, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = project archived (postconditions met); F2 = project unchanged (EX-01, AF-01).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the project is archived (postconditions met) or with the project unchanged
+' (EX-01, AF-01).
 !include ../../_shared/activity-style.puml
 |OWN| $lane_title("Project Owner")
 |SYS| $lane_title("System")
@@ -27,7 +29,6 @@ if ($question("Active Sprint?")) then ($guard_left("[none]"))
     |SYS|
     ' [NF5, POST1, POST2, BR-PROJECT-ARCHIVED-READ-ONLY]
     :Mark project and work read-only;
-    stop
   else ($guard_right("[cancel", "— AF-01]"))
     |SYS|
     ' [AF-01.1]

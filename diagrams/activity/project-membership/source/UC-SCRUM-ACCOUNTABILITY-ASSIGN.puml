@@ -4,10 +4,11 @@
 ' Business Rules: BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED, BR-PROJECT-OWNER-ADMINISTRATION, BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F2 = accountability saved (postconditions met). F1 = replacement not confirmed
-' (AF-02) and F3 = member left or was removed (EX-01) both leave the accountabilities unchanged, but
-' they stay separate: AF-02 must bypass the EX-01 check and NF5, which the confirmed path (AF-01)
-' shares with the normal flow, so merging them would require drawing the EX-01 check and NF5 twice.
+' Final nodes: F1 = replacement not confirmed, accountabilities unchanged (AF-02); F2 = shared final
+' after the accountability is saved (postconditions met) or the assignment is rejected because the
+' member left or was removed (EX-01). F1 cannot join F2: AF-02 must bypass the EX-01 check and NF5,
+' which the confirmed path (AF-01) shares with the normal flow, so merging would require drawing
+' them twice.
 !include ../../_shared/activity-style.puml
 |OWN| $lane_title("Project Owner")
 |SYS| $lane_title("System")
@@ -53,10 +54,10 @@ if ($question("Member still in the project?")) then ($guard_left("[still a membe
   ' [POST2]
   :Record change in
   activity history;
-  stop
 else ($guard_right("[left or removed", "— EX-01]"))
   ' [EX-01, GUIDE-7.3]
   :Reject accountability assignment;
-  stop
 endif
+|SYS|
+stop
 @enduml
