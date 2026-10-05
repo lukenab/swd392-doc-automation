@@ -4,8 +4,9 @@
 ' Business Rules: BR-PRODUCT-ONE-GOAL, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = revised Product Goal saved and recorded (postconditions met); F2 = current
-' Product Goal unchanged (EX-01 rejection and AF-01 cancellation merged).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the revised Product Goal is saved and recorded (postconditions met) or with the
+' current Product Goal unchanged (EX-01 rejection, AF-01 cancellation).
 ' NF3 "revises the Product Goal and confirms the change" is drawn as the revision action followed
 ' by the actor's confirm/cancel decision, so AF-01 (cancel before saving) branches from it.
 !include ../../_shared/activity-style.puml
@@ -35,7 +36,6 @@ if ($question("Confirm change?")) then ($guard_left("[confirm]"))
     ' [POST2]
     :Record change in
     project activity history;
-    stop
   else ($guard_right("[accountability", "lost — EX-01]"))
     ' [EX-01, BR-PRODUCT-ONE-GOAL, GUIDE-7.3]
     :Reject Product Goal revision;
@@ -46,6 +46,6 @@ else ($guard_right("[cancel before", "saving — AF-01]"))
   :Keep current Product
   Goal unchanged;
 endif
-|PRO|
+|SYS|
 stop
 @enduml

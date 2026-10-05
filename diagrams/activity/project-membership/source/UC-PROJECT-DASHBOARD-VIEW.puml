@@ -4,8 +4,9 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = dashboard displayed, read-only when archived (NF4 or AF-01; postconditions
-' met); F2 = access denied, no dashboard displayed (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the dashboard is displayed, read-only when archived (NF4 or AF-01; postconditions
+' met), or after EX-01 (access denied, nothing displayed).
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -29,11 +30,11 @@ if ($question("Project and membership exist?")) then ($guard_left("[exist]"))
     ' [AF-01.1, BR-PROJECT-ARCHIVED-READ-ONLY]
     :Display read-only dashboard;
   endif
-  stop
 else ($guard_right("[project or membership", "removed — EX-01]"))
   |SYS|
   ' [EX-01, GUIDE-7.3]
   :Deny dashboard access;
-  stop
 endif
+|SYS|
+stop
 @enduml

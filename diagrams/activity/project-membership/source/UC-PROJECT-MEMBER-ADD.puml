@@ -4,7 +4,9 @@
 ' Business Rules: BR-ACTIVE-USER-REQUIRED, BR-PROJECT-OWNER-ADMINISTRATION
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = membership created (postconditions met); F2 = no membership change (AF-01, EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the membership is created (postconditions met) or with no membership change
+' (AF-01, EX-01).
 !include ../../_shared/activity-style.puml
 |OWN| $lane_title("Project Owner")
 |SYS| $lane_title("System")
@@ -31,7 +33,6 @@ if ($question("Already a member?")) then ($guard_left("[not a member]"))
     ' [POST2]
     :Record change in
     activity history;
-    stop
   else ($guard_right("[became inactive", "— EX-01]"))
     ' [EX-01, GUIDE-7.3]
     :Reject member addition;
@@ -41,5 +42,6 @@ else ($guard_right("[already a member", "— AF-01]"))
   :Report no new
   membership required;
 endif
+|SYS|
 stop
 @enduml

@@ -4,8 +4,9 @@
 ' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = item stored (complete or draft) and recorded (postconditions met); F2 = item
-' creation rejected, no item stored (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the item is stored (complete or draft) and recorded (postconditions met) or after
+' EX-01 (creation rejected, no item stored).
 ' EX-01 applies to complete items and to drafts (YAML), so the title check follows the merge of
 ' NF3 and AF-01; the later "Draft item?" decision only selects how the item is stored.
 !include ../../_shared/activity-style.puml
@@ -49,11 +50,11 @@ if ($question("Title present?")) then ($guard_left("[present]"))
   ' [POST2]
   :Record creation in
   item activity history;
-  stop
 else ($guard_right("[title missing", "— EX-01]"))
   |SYS|
   ' [EX-01, GUIDE-7.3]
   :Reject item creation;
-  stop
 endif
+|SYS|
+stop
 @enduml

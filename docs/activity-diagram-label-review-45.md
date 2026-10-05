@@ -416,7 +416,7 @@ Kích thước 523×472 px · 10.5 pt ở A4 · layout issues: none.
 | NF3 / POST1 | Display the item details and related Sprint information | article / extra words removed (label rule 1) | Display item details and related Sprint information | yes | EDITORIAL |
 | structure | main flow after endif | layout pattern | main flow in then, EX-01 sideways to final | yes | EDITORIAL |
 
-Final nodes: F1 = item details displayed (POST1); F2 = item no longer available, nothing displayed (EX-01, no response in UC).
+Final nodes (cập nhật 2026-10-05, theo quyết định của nhóm): một Activity Final chung, hai nhánh nhập ở merge node. Sau NF3 item được hiển thị (POST1); sau EX-01 không hiển thị gì và POST1 không đạt (UC không mô tả phản hồi). UML 2.5.1 cho phép cả một lẫn nhiều Activity Final; đây là lựa chọn trình bày.
 
 NEEDS CLARIFICATION — EX-01: What does the User see when the selected item is no longer available? Đề xuất cho spec: "EX-01: The selected item is no longer available; the system informs the User that the item is no longer available."
 
@@ -1467,3 +1467,34 @@ Render từng key (không render hàng loạt): `python3 scripts/activity_diagra
 Manifest được tạo lại từ YAML + quyết định review; 10 entry loại trừ và phần header giống từng byte so với trước. `output/activity-diagrams/by-id/` không nằm trong git (`.gitignore: output/*`); bản xuất này được làm mới bằng cách sao nguyên byte SVG theo manifest cho 45 UC trong phạm vi (43 cập nhật, 2 mới: UC-25, UC-27.4), không đụng 10 file UC-06 → UC-13.
 
 Bằng chứng 10 UC loại trừ không đổi: md5 của 30 file (10 `.puml`, 10 `.svg`, 10 bản `by-id`) trước và sau khi chép giống hệt; cả 20 file trong `diagrams/activity/project-membership/` có blob trùng với commit `7c08559`; `_shared/activity-style.puml`, `data/`, `scripts/` không đổi.
+
+## 9. Cập nhật 2026-10-05 — gộp Activity Final cho UC-06 → UC-22
+
+Theo quyết định của nhóm, các sơ đồ UC-06 → UC-22 được quy về **một Activity Final** khi khả thi; mọi nhánh nhập ở merge node trước final chung. UML 2.5.1 cho phép cả một lẫn nhiều Activity Final, nên đây là lựa chọn trình bày. "Khả thi" nghĩa là: không phải vẽ lặp bước nào, không thêm decision giả, không còn chữ bị đường cắt và guard vẫn ≥ 6 pt ở A4. Action, decision và guard giữ nguyên (trừ một guard ở UC-16), đã kiểm tra tự động. Comment `Final nodes` đầu mỗi file `.puml` đã viết lại; các dòng "Final nodes" ở mục 4 cho các UC này được thay bằng bảng dưới. Việc render lại 10 SVG UC-06 → UC-13 cũng loại bỏ khối metadata C2PA bị chèn trước đó.
+
+| UC | Semantic key | Final | A4 trước → sau | Ghi chú |
+|---|---|---|---|---|
+| UC-06 | `UC-PROJECT-CREATE` | 2 → 1 | 9.1 → 9.0 pt |  |
+| UC-07 | `UC-PROJECT-DASHBOARD-VIEW` | 2 → 1 | 8.3 → 8.3 pt |  |
+| UC-08 | `UC-PROJECT-UPDATE` | 2 → 1 | 9.0 → 8.8 pt |  |
+| UC-09.1 | `UC-PROJECT-MEMBERS-VIEW` | 2 → 1 | 10.3 → 7.6 pt | Phần còn lại của luồng chuyển vào nhánh [available] để EX-01 nhập lại |
+| UC-09.2 | `UC-PROJECT-MEMBER-ADD` | 2 → 1 | 8.0 → 8.0 pt |  |
+| UC-09.3 | `UC-PROJECT-MEMBER-REMOVE` | 2 → 1 | 6.6 → 6.6 pt |  |
+| UC-10 | `UC-SCRUM-ACCOUNTABILITY-ASSIGN` | 3 → 2 | 7.4 → 7.2 pt | AF-02 phải bỏ qua kiểm tra EX-01 và NF5 mà nhánh AF-01 dùng chung; gộp thì phải vẽ lặp 2 bước |
+| UC-11 | `UC-PROJECT-ARCHIVE` | 2 → 1 | 6.1 → 6.1 pt |  |
+| UC-12 | `UC-PROJECT-OWNERSHIP-TRANSFER` | 2 → 1 | 9.2 → 9.2 pt |  |
+| UC-13 | `UC-PROJECT-LEAVE` | 3 → 2 | 6.5 → 6.5 pt | Nhánh hủy (AF-01.2) phải bỏ qua NF5 mà nhánh xác nhận dùng chung; gộp thì phải vẽ lặp NF5 |
+| UC-14.1 | `UC-PRODUCT-GOAL-VIEW` | không đổi | 10.5 pt | Đã có 1 final |
+| UC-14.2 | `UC-PRODUCT-GOAL-SET` | 2 → 1 | 9.9 → 9.9 pt |  |
+| UC-14.3 | `UC-PRODUCT-GOAL-UPDATE` | 2 → 1 | 6.6 → 6.6 pt |  |
+| UC-15.1 | `UC-BACKLOG-ITEM-VIEW` | 2 → 1 | 10.5 pt | Gộp ở commit trước (6869df7) |
+| UC-15.2 | `UC-BACKLOG-ITEM-CREATE` | 2 → 1 | 7.1 → 7.1 pt |  |
+| UC-15.3 | `UC-BACKLOG-ITEM-UPDATE` | 2 → 1 | 9.8 → 9.5 pt |  |
+| UC-15.4 | `UC-BACKLOG-ITEM-REMOVE` | 2 → 1 | 6.9 → 6.9 pt |  |
+| UC-16 | `UC-BACKLOG-ORDER` | 2 → 1 | 8.6 → 8.4 pt | Guard [can be saved] → [complete] để đường vòng không cắt chữ |
+| UC-17 | `UC-BACKLOG-ITEM-REFINE` | không đổi | 6.1 pt | Đã có 1 final |
+| UC-18 | `UC-BACKLOG-ITEM-ESTIMATE` | 3 → 2 | 6.7 → 6.7 pt | Đã thử 1 final: chữ guard còn 5.4–5.8 pt (< 6) và có chữ bị cắt; AF-01 giữ final riêng |
+| UC-19 | `UC-SPRINT-PLAN` | 2 → 1 | 7.6 → 7.6 pt |  |
+| UC-20 | `UC-SPRINT-START` | không đổi | 6.3 pt | Không khả thi: đã thử, nhánh EX-01 phải đi dài xuống đáy và cắt 7 đường flow; giữ 2 final |
+| UC-21 | `UC-SPRINT-COMPLETE` | 2 → 1 | 6.7 → 6.1 pt | Phần còn lại của luồng chuyển vào nhánh [unchanged] để EX-01 nhập lại |
+| UC-22 | `UC-SPRINT-CANCEL` | 2 → 1 | 6.4 → 6.4 pt |  |

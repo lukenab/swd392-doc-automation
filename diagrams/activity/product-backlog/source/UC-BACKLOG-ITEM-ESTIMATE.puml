@@ -4,8 +4,10 @@
 ' Business Rules: BR-DEVELOPER-ESTIMATION, BR-BACKLOG-ITEM-READY, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = estimate left unset and item marked as requiring further refinement (AF-01);
-' F2 = agreed estimate recorded (postconditions met); F3 = estimate rejected, item unchanged (EX-01).
+' Final nodes: F1 = estimate left unset and item marked as requiring further refinement (AF-01); F2
+' = shared final after the agreed estimate is recorded (postconditions met) or the estimate is
+' rejected (EX-01). A single final was tried: drawing the rest of the flow inside the [sufficient]
+' branch drops the guard text below 6 pt at A4, so AF-01 keeps its own final.
 ' NF3 (the Product Owner clarifies "when requested") is drawn as a decision in the Product Owner
 ' lane.
 !include ../../_shared/activity-style.puml
@@ -51,11 +53,11 @@ if ($question("Item still estimable?")) then ($guard_left("[estimable]"))
   ' [POST2]
   :Record estimate change
   in item activity history;
-  stop
 else ($guard_right("[removed or in", "completed Sprint — EX-01]"))
   |SYS|
   ' [EX-01, GUIDE-7.3]
   :Reject estimate;
-  stop
 endif
+|SYS|
+stop
 @enduml

@@ -4,8 +4,9 @@
 ' Business Rules: BR-PRODUCT-ONE-GOAL, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = Product Goal stored and recorded (postconditions met); F2 = empty Product Goal
-' rejected, project still has no Product Goal (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the Product Goal is stored and recorded (postconditions met) or after EX-01
+' (empty Product Goal rejected, project still has no Product Goal).
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -31,11 +32,11 @@ if ($question("Product Goal empty?")) then ($guard_left("[not empty]"))
   ' [POST2]
   :Record creation in
   project activity history;
-  stop
 else ($guard_right("[empty", "— EX-01]"))
   |SYS|
   ' [EX-01, GUIDE-7.3]
   :Reject empty Product Goal;
-  stop
 endif
+|SYS|
+stop
 @enduml

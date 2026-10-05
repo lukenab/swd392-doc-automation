@@ -4,7 +4,9 @@
 ' Business Rules: BR-PROJECT-ONE-OWNER, BR-PROJECT-OWNER-ADMINISTRATION
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = member removed (postconditions met); F2 = membership unchanged (EX-01, AF-01).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the member is removed (postconditions met) or with the membership unchanged
+' (EX-01, AF-01).
 !include ../../_shared/activity-style.puml
 |OWN| $lane_title("Project Owner")
 |SYS| $lane_title("System")
@@ -29,7 +31,6 @@ if ($question_x("Own membership selected?")) then ($guard_left("[another member]
     and project membership;
     ' [NF5, POST2]
     :Record removal and refresh list;
-    stop
   else ($guard_right("[owns unfinished", "work — AF-01]"))
     ' [AF-01.1]
     :Require work reassignment first;

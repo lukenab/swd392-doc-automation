@@ -4,8 +4,10 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = membership information unavailable, nothing displayed (EX-01); F2 = member
-' list displayed (NF3 or AF-01; postconditions met).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the member list is displayed (NF3 or AF-01; postconditions met) or after EX-01
+' (membership information unavailable, nothing displayed). The rest of the flow is drawn inside the
+' [available] branch so that EX-01 can rejoin it.
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -20,17 +22,17 @@ start
 :Retrieve active
 members and assignments;
 if ($question("Membership information available?")) then ($guard_left("[available]"))
+  if ($question_x("Other members?")) then ($guard_left("[other members]"))
+    ' [NF3, POST1]
+    :Display member list;
+  else ($guard_right("[Project Owner", "only — AF-01]"))
+    ' [AF-01.1]
+    :Display Project Owner only;
+  endif
 else ($guard_right("[unavailable", "— EX-01]"))
   ' [EX-01, GUIDE-7.3]
   :Report member list unavailable;
-  stop
 endif
-if ($question_x("Other members?")) then ($guard_left("[other members]"))
-  ' [NF3, POST1]
-  :Display member list;
-else ($guard_right("[Project Owner", "only — AF-01]"))
-  ' [AF-01.1]
-  :Display Project Owner only;
-endif
+|SYS|
 stop
 @enduml

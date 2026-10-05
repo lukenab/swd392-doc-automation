@@ -4,8 +4,9 @@
 ' Business Rules: BR-PROJECT-OWNER-ADMINISTRATION, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = project information updated and recorded (postconditions met); F2 = update
-' rejected, project information unchanged (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the update is saved and recorded (postconditions met) or after EX-01 (update
+' rejected, project information unchanged).
 !include ../../_shared/activity-style.puml
 
 |OWN| $lane_title("Project Owner")
@@ -41,11 +42,11 @@ if ($question("Ownership unchanged?")) then ($guard_left("[unchanged]"))
   activity history;
   ' [NF5]
   :Confirm successful update;
-  stop
 else ($guard_right("[ownership changed", "— EX-01]"))
   |SYS|
   ' [EX-01]
   :Reject project update;
-  stop
 endif
+|SYS|
+stop
 @enduml

@@ -4,8 +4,9 @@
 ' Business Rules: BR-PROJECT-ONE-OWNER, BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, BR-PROJECT-OWNER-ADMINISTRATION, BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = ownership transferred and recorded (postconditions met); F2 = transfer
-' rejected, ownership unchanged (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after ownership is transferred and recorded (postconditions met) or after EX-01
+' (transfer rejected, ownership unchanged).
 !include ../../_shared/activity-style.puml
 
 |OWN| $lane_title("Project Owner")
@@ -37,11 +38,11 @@ if ($question("Ownership unchanged?")) then ($guard_left("[unchanged]"))
   ' [NF5, POST1, POST3, BR-PROJECT-ONE-OWNER]
   :Transfer ownership
   atomically and record change;
-  stop
 else ($guard_right("[changed concurrently", "— EX-01]"))
   |SYS|
   ' [EX-01, GUIDE-7.3]
   :Reject ownership transfer;
-  stop
 endif
+|SYS|
+stop
 @enduml

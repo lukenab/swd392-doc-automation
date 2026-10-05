@@ -4,8 +4,9 @@
 ' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = item removed and recorded (postconditions met); F2 = item unchanged (AF-01
-' cancellation and EX-01 rejection merged).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the item is removed and recorded (postconditions met) or with the item unchanged
+' (AF-01 cancellation, EX-01 rejection).
 !include ../../_shared/activity-style.puml
 |PRO| $lane_title("Product Owner")
 |SYS| $lane_title("System")
@@ -28,7 +29,6 @@ if ($question_x("Item locked in active Sprint?")) then ($guard_left("[not locked
     ' [NF4, POST1, POST2, BR-PRODUCT-OWNER-BACKLOG]
     :Remove item and
     record removal;
-    stop
   else ($guard_right("[cancel", "— AF-01]"))
     |SYS|
     ' [AF-01.1]

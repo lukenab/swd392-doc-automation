@@ -4,10 +4,10 @@
 ' Business Rules: BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, BR-PROJECT-MEMBER-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F2 = member has left (postconditions met). F1 = request cancelled (AF-01.2) and
-' F3 = request rejected (EX-01) both leave the membership unchanged, but they stay separate: the
-' cancel path must bypass NF5, which the confirm path (AF-01.2) shares with the normal flow, so
-' merging them would require drawing NF5 twice.
+' Final nodes: F1 = request cancelled, membership unchanged (AF-01.2); F2 = shared final after the
+' member has left (postconditions met) or the request is rejected (EX-01). F1 cannot join F2: the
+' cancel path must bypass NF5, which the confirm path (AF-01) shares with the normal flow, so
+' merging would require drawing NF5 twice.
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -45,11 +45,11 @@ if ($question("Current Project Owner?")) then ($guard_left("[not the owner]"))
   ' [NF5, POST1, POST2, POST3]
   :Remove membership and
   project permissions;
-  stop
 else ($guard_right("[current owner", "— EX-01]"))
   |SYS|
   ' [EX-01, BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, GUIDE-7.3]
   :Reject leave request;
-  stop
 endif
+|SYS|
+stop
 @enduml
