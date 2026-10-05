@@ -17,27 +17,26 @@
 |USR|
 start
 ' [NF1, BR-COMMENT-PROJECT-MEMBER]
-:Open a work item and
-enter a comment;
+:Open work item and enter comment;
 |SYS|
 ' [NF2, BR-COMMENT-PROJECT-MEMBER]
-:Validate the comment and
+:Validate comment and
 referenced members;
 while ($question("Comment has no content?")) is ($guard_left("[empty — AF-01]"))
   ' [AF-01.1]
-  :Ask the actor to enter content;
+  :Ask actor to enter comment content;
   |USR|
   ' [NF1]
-  :Enter the comment content;
+  :Enter comment content;
   |SYS|
 endwhile ($guard("[content present]"))
 |USR|
 ' [NF3]
-:Submit the comment;
+:Submit comment;
 |SYS|
 if ($question_x("Work item still exists?")) then ($guard_left("[exists]"))
   ' [NF4, POST1, BR-ACTIVITY-IMMUTABLE]
-  :Save the comment and record
+  :Save comment and record
   it in activity history;
   ' [NF5, POST2]
   :Create in-app notifications
@@ -47,21 +46,17 @@ if ($question_x("Work item still exists?")) then ($guard_left("[exists]"))
   for eligible members;
   |EML|
   ' [NF6]
-  :Return the email
-  delivery result;
+  :Return delivery result;
   |SYS|
   if ($question_x("Email delivered?")) then ($guard_left("[delivered]"))
   else ($guard_right("[not delivered", "— EX-02]"))
     ' [EX-02, BR-NOTIFICATION-DELIVERY-INDEPENDENT]
-    :Record the failed delivery
-    and keep the saved comment;
+    :Record failed email delivery;
   endif
   stop
 else ($guard_right("[removed", "— EX-01]"))
   ' [EX-01, GUIDE-7.3]
-  :Reject the comment
-  because the work
-  item was removed;
+  :Reject comment;
   stop
 endif
 @enduml

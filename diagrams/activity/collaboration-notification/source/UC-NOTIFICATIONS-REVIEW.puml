@@ -6,9 +6,11 @@
 ' No title: the Word caption supplies it.
 ' The User chooses to review one notification or to send another request (AF-01, AF-02);
 ' the System then distinguishes the received request.
-' Final nodes: one Activity Final. The completed paths (NF4, AF-01, AF-02 saved) and the
-' unchanged paths (EX-01, EX-02, EX-03) sit on nested branches; separate finals per outcome would
-' duplicate a final, so the last action on each path states its outcome.
+' Final nodes: F1 = preference not saved, previous preference remains (EX-02). The UC describes no
+' response to EX-02, so no action is drawn and the path ends at its own final (Needs clarification).
+' F2 = shared final of all other paths: the completed paths (NF4, AF-01, AF-02 saved) and the
+' unchanged paths (EX-01, EX-03) sit on nested branches, so separate finals would duplicate a final;
+' the last action on each path states its outcome.
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
@@ -16,71 +18,55 @@
 |USR|
 start
 ' [NF1, BR-NOTIFICATION-OWNER-ONLY]
-:Open the notification
+:Open notification
 center;
 |SYS|
 ' [NF2, BR-NOTIFICATION-OWNER-ONLY]
-:Display the actor's notifications
-and email delivery preference in
-reverse chronological order;
+:Display notifications and email
+preference, newest first;
 |USR|
 if ($question_x("Review a notification?")) then ($guard_left("[review]"))
   ' [NF3]
   :Select a
-  notification
-  to review;
+  notification;
   |SYS|
   if ($question_x("Item accessible?")) then ($guard_left("[accessible]"))
     ' [NF4, POST1, POST3]
-    :Mark it as
-    read and
-    display its
-    related project
-    context;
+    :Mark as read
+    and display
+    project context;
   else ($guard_right("[inaccessible", "— EX-01]"))
     ' [EX-01, BR-PROJECT-MEMBER-ACCESS, GUIDE-7.3]
-    :Report that
-    the related
-    project item
-    is no longer
-    accessible;
+    :Deny access
+    to related
+    item;
   endif
 else ($guard_right("[other", "request]"))
   |SYS|
   if ($question_x("Requested action?")) then ($guard_left("[mark all — AF-01]"))
     ' [AF-01.1, POST1, POST3]
-    :Mark all
-    visible
+    :Mark all visible
     notifications
     as read;
   else ($guard_right("[change email", "delivery — AF-02]"))
     ' [AF-02.1, BR-NOTIFICATION-EMAIL-PREFERENCE]
-    :Verify that the
-    actor has a
-    verified email
-    address when
-    email delivery
-    is enabled;
+    :Check verified
+    email when
+    enabling;
     if ($question("Change permitted?")) then ($guard_left("[disabling, or verified]"))
       ' [AF-02.2, POST2]
-      :Save the
-      updated email
+      :Save email
       delivery
       preference;
       if ($question("Preference saved?")) then ($guard_left("[saved]"))
       else ($guard_right("[not saved", "— EX-02]"))
-        ' [EX-02, GUIDE-7.3]
-        :Keep the previous
-        preference and
-        report the failure;
+        stop
       endif
     else ($guard_right("[enabling, not", "verified — EX-03]"))
       ' [EX-03, BR-NOTIFICATION-EMAIL-PREFERENCE]
-      :Reject the
-      change and
-      keep the
-      previous
-      preference;
+      :Reject
+      preference
+      change;
     endif
   endif
 endif
