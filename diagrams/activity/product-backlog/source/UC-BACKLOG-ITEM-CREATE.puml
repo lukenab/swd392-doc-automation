@@ -4,6 +4,10 @@
 ' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = item stored (complete or draft) and recorded (postconditions met); F2 = item
+' creation rejected, no item stored (EX-01).
+' EX-01 applies to complete items and to drafts (YAML), so the title check follows the merge of
+' NF3 and AF-01; the later "Draft item?" decision only selects how the item is stored.
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -12,45 +16,44 @@
 |PRO|
 start
 ' [NF1]
-:Choose to create a
+:Choose to create
 Product Backlog Item;
 |SYS|
 ' [NF2]
-:Request the title, description,
-acceptance criteria, and item type;
+:Request title, description,
+acceptance criteria, item type;
 |PRO|
 if ($question_x("Information complete?")) then ($guard_left("[complete]"))
   ' [NF3]
-  :Provide the required
-  information and
-  confirm creation;
-  |SYS|
-  ' [NF4]
-  :Validate the new item;
-  if ($question_x("Identifying information present?")) then ($guard_left("[present]"))
-  else ($guard_right("[missing", "— EX-01]"))
-    ' [EX-01, GUIDE-7.3]
-    :Reject the item without
-    identifying information;
-    stop
-  endif
-  ' [NF4, POST1]
-  :Store the new item in
-  the Product Backlog;
+  :Provide required information
+  and confirm creation;
 else ($guard_right("[incomplete, saved", "as draft — AF-01]"))
   |PRO|
   ' [AF-01]
-  :Save the incomplete
-  information
-  as a draft;
-  |SYS|
-  ' [AF-01.1, POST1]
-  :Store the item without
-  marking it ready for
-  Sprint planning;
+  :Save incomplete
+  information as draft;
 endif
-' [POST2]
-:Record the creation in
-item activity history;
-stop
+|SYS|
+' [NF4, EX-01]
+:Validate new item;
+if ($question("Title present?")) then ($guard_left("[present]"))
+  if ($question("Draft item?")) then ($guard_left("[complete]"))
+    ' [NF4, POST1, BR-PRODUCT-OWNER-BACKLOG]
+    :Store new item in
+    Product Backlog;
+  else ($guard_right("[draft", "— AF-01]"))
+    ' [AF-01.1, POST1]
+    :Store item not ready
+    for Sprint planning;
+  endif
+  ' [POST2]
+  :Record creation in
+  item activity history;
+  stop
+else ($guard_right("[title missing", "— EX-01]"))
+  |SYS|
+  ' [EX-01, GUIDE-7.3]
+  :Reject item creation;
+  stop
+endif
 @enduml

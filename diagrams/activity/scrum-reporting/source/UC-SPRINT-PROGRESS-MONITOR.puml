@@ -4,6 +4,9 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS, BR-PROGRESS-ACTIVE-SPRINT
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = Sprint indicators displayed (NF4, also after AF-01; postconditions met);
+' F2 = no active Sprint, no progress calculated (EX-01, BR-PROGRESS-ACTIVE-SPRINT). The UC does not
+' describe a response to EX-01, so no action is drawn (Needs clarification).
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
@@ -11,28 +14,25 @@
 |USR|
 start
 ' [NF1, BR-PROJECT-MEMBER-ACCESS]
-:Open the active Sprint
-progress view;
+:Open Sprint progress view;
 |SYS|
 if ($question_x("Active Sprint exists?")) then ($guard_left("[active Sprint]"))
+  ' [NF2]
+  :Aggregate work item status
+  and estimates;
+  ' [NF3]
+  :Calculate completion, remaining work,
+  overdue items and member workload;
+  if ($question("All work items estimated?")) then ($guard_left("[all estimated]"))
+  else ($guard_right("[estimates", "missing — AF-01]"))
+    ' [AF-01.1]
+    :Label estimate-based measures as incomplete;
+  endif
+  ' [NF4, AF-01.2, POST1]
+  :Display Sprint indicators
+  and charts;
+  stop
 else ($guard_right("[no active", "Sprint — EX-01]"))
-  ' [EX-01, BR-PROGRESS-ACTIVE-SPRINT, GUIDE-7.3]
-  :Report that no active Sprint exists for the project;
   stop
 endif
-' [NF2]
-:Aggregate current work item
-status and estimate data;
-' [NF3]
-:Calculate completion, remaining work,
-overdue items and member workload;
-if ($question("All work items estimated?")) then ($guard_left("[all estimated]"))
-else ($guard_right("[estimates", "missing — AF-01]"))
-  ' [AF-01.1]
-  :Label estimate-based measures as incomplete;
-endif
-' [NF4, AF-01.2, POST1]
-:Display the resulting Sprint
-indicators and charts;
-stop
 @enduml

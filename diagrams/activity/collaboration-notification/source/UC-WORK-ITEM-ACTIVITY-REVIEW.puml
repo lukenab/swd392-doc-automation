@@ -4,6 +4,9 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS, BR-ACTIVITY-IMMUTABLE
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = activity history reviewed (NF3 or AF-01, then NF4; postconditions met);
+' F2 = history not retrieved, nothing displayed (EX-01). The UC does not describe a response to
+' EX-01, so no action is drawn (Needs clarification).
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
@@ -11,29 +14,26 @@
 |USR|
 start
 ' [NF1, BR-PROJECT-MEMBER-ACCESS]
-:Request the activity history
-for a work item;
+:Request work item activity history;
 |SYS|
 ' [NF2]
-:Retrieve the activity entries in
-reverse chronological order;
+:Retrieve entries in reverse
+chronological order;
 if ($question("Activity data retrieved?")) then ($guard_left("[retrieved]"))
+  if ($question("Activity beyond creation?")) then ($guard_left("[further activity]"))
+    ' [NF3]
+    :Display events with actor,
+    time and change summary;
+  else ($guard_right("[creation only", "— AF-01]"))
+    ' [AF-01.1]
+    :Display creation event only;
+  endif
+  |USR|
+  ' [NF4, POST1, BR-ACTIVITY-IMMUTABLE]
+  :Review activity history;
+  stop
 else ($guard_right("[cannot be", "retrieved — EX-01]"))
-  ' [EX-01, GUIDE-7.3]
-  :Report that the activity history cannot be retrieved;
+  |SYS|
   stop
 endif
-if ($question("Activity beyond creation?")) then ($guard_left("[further activity]"))
-  ' [NF3]
-  :Display each event with its actor,
-  time and change summary;
-else ($guard_right("[creation only", "— AF-01]"))
-  ' [AF-01.1]
-  :Display only the
-  creation event;
-endif
-|USR|
-' [NF4, POST1, BR-ACTIVITY-IMMUTABLE]
-:Review the displayed history;
-stop
 @enduml

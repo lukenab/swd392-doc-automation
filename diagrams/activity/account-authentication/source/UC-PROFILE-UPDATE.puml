@@ -4,7 +4,7 @@
 ' Business Rules: BR-AUTH-ACTIVE-ACCOUNT, BR-PROFILE-SELF-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = profile changes saved (postconditions met); F2 = stored profile unchanged
+' Final nodes: F1 = profile changes saved (postcondition met); F2 = stored profile unchanged
 ' (EX-01 and AF-01 merge here).
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
@@ -12,38 +12,36 @@
 
 |USR|
 start
-' [NF1]
+' [NF1, TRIGGER]
 :Open profile editing;
 |SYS|
 ' [NF2]
-:Display the current
+:Display current
 editable profile values;
 |USR|
-if ($question_x("Save the changes?")) then ($guard_left("[submit]"))
+' [NF3]
+:Change desired values;
+if ($question("Submit or cancel?")) then ($guard_left("[submit]"))
   ' [NF3]
-  :Change the desired values
-  and submit the profile;
+  :Submit profile;
   |SYS|
   ' [NF4]
-  :Validate the profile changes;
-  if ($question_x("Values valid?")) then ($guard_left("[valid]"))
-    ' [NF4, POST1]
-    :Save the profile changes;
+  :Validate profile changes;
+  if ($question("Values valid?")) then ($guard_left("[valid]"))
+    ' [NF4, POST1, BR-PROFILE-SELF-ACCESS]
+    :Save profile changes;
     ' [NF5]
-    :Display the updated profile;
+    :Display updated profile;
     stop
   else ($guard_right("[invalid values", "— EX-01]"))
     ' [EX-01, GUIDE-7.3]
-    :Reject the profile
-    changes and keep the
-    stored profile;
+    :Reject profile changes;
   endif
 else ($guard_right("[cancel before", "saving — AF-01]"))
   |SYS|
   ' [AF-01.1]
-  :Discard the
-  unsaved changes;
+  :Discard unsaved changes;
 endif
-|USR|
+|SYS|
 stop
 @enduml

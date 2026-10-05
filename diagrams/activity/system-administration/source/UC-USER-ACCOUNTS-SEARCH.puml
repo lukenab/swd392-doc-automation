@@ -4,38 +4,46 @@
 ' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = administration data unavailable (EX-01); F2 = search completed, with the
-' selected account displayed (NF4) or with the report that none match (AF-01).
+' Final nodes: F1 = search ended without a matching account (AF-01, administrator does not search
+' again); F2 = selected account information displayed without modification (postcondition met);
+' F3 = account administration data unavailable, nothing displayed (EX-01). EX-01 describes no
+' System response, so its guard goes straight to F3.
+' AF-01.2 says the administrator "may" search again, so the loop exit is the administrator's choice.
 !include ../../_shared/activity-style.puml
 |ADM| $lane_title("System Administrator")
 |SYS| $lane_title("System")
 
 |ADM|
 start
-' [NF1, BR-SYSADMIN-USER-ACCOUNT]
+' [NF1, TRIGGER, BR-SYSADMIN-USER-ACCOUNT]
 :Open user account administration
 and enter search criteria;
 |SYS|
 if ($question_x("Administration data available?")) then ($guard_left("[available]"))
-else ($guard_right("[unavailable", "— EX-01]"))
-  ' [EX-01, GUIDE-7.3]
-  :Report that account administration data is temporarily unavailable;
-  stop
-endif
-if ($question("Matching accounts found?")) then ($guard_left("[found]"))
+  while ($question("No matching account?")) is ($guard_left("[no match — AF-01]"))
+    ' [AF-01.1]
+    :Report no matching account;
+    |ADM|
+    if ($question_x("Search again?")) then ($guard_right("[no", "— AF-01]"))
+      stop
+    else ($guard("[search again — AF-01]"))
+    endif
+    ' [AF-01.2]
+    :Change search criteria and search again;
+    |SYS|
+  endwhile ($guard("[found]"))
   ' [NF2]
   :Display matching User accounts;
   |ADM|
   ' [NF3]
-  :Select an account;
+  :Select account;
   |SYS|
   ' [NF4, POST1, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS, OTHER]
-  :Display its administrative status
+  :Display administrative status
   and relevant account metadata;
-else ($guard_right("[no match", "— AF-01]"))
-  ' [AF-01.1]
-  :Report that no matching
-  account was found;
+  stop
+else ($guard_right("[temporarily unavailable", "— EX-01]"))
+  |SYS|
+  stop
 endif
-stop
 @enduml

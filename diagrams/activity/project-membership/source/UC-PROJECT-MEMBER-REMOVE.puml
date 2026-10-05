@@ -12,36 +12,31 @@
 |OWN|
 start
 ' [NF1]
-:Select a project member
-and request removal;
+:Select member and
+request removal;
 |SYS|
 if ($question_x("Own membership selected?")) then ($guard_left("[another member]"))
   ' [NF2]
-  :Display the member's active assignments
-  and ask for confirmation;
+  :Display active assignments
+  and request confirmation;
   if ($question("Unfinished Sprint work?")) then ($guard_left("[none]"))
     |OWN|
     ' [NF3]
-    :Confirm the removal;
+    :Confirm removal;
     |SYS|
     ' [NF4, POST1]
     :Remove Scrum accountabilities
     and project membership;
     ' [NF5, POST2]
-    :Record the removal and
-    refresh the member list;
+    :Record removal and refresh list;
     stop
   else ($guard_right("[owns unfinished", "work — AF-01]"))
     ' [AF-01.1]
-    :Require the work to
-    be reassigned before
-    removal;
+    :Require work reassignment first;
   endif
 else ($guard_right("[own membership", "— EX-01]"))
   ' [EX-01, BR-PROJECT-ONE-OWNER, GUIDE-7.3]
-  :Reject the removal of
-  the Project Owner's
-  own membership;
+  :Reject self-removal;
 endif
 |SYS|
 stop

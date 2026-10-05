@@ -4,6 +4,8 @@
 ' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER, BR-SUBTASK-SINGLE-LEVEL
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = subtask created and parent progress recalculated (postconditions met);
+' F2 = creation rejected, no subtask created (EX-01).
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -11,29 +13,29 @@
 |DEV|
 start
 ' [NF1, BR-SPRINT-TASK-DEVELOPER]
-:Open a Sprint Task and
-choose to add a subtask;
+:Open Sprint Task and
+choose to add subtask;
 |SYS|
 ' [NF2]
-:Request the subtask's work
+:Request subtask's work
 details and optional assignee;
 |DEV|
 ' [NF3]
-:Provide the information
+:Provide information
 and confirm creation;
 |SYS|
 ' [NF4]
-:Validate the subtask;
-if ($question("Parent is itself a subtask?")) then ($guard_left("[Sprint Task]"))
-else ($guard_right("[subtask", "— EX-01]"))
+:Validate subtask;
+if ($question("Parent is a Sprint Task?")) then ($guard_left("[Sprint Task]"))
+  ' [NF4, POST1]
+  :Store and display
+  new subtask;
+  ' [POST2]
+  :Recalculate parent-task progress;
+  stop
+else ($guard_right("[parent is a", "subtask — EX-01]"))
   ' [EX-01, BR-SUBTASK-SINGLE-LEVEL, GUIDE-7.3]
-  :Reject the subtask below another subtask;
+  :Reject subtask creation;
   stop
 endif
-' [NF4, POST1]
-:Store and display
-the new subtask;
-' [POST2]
-:Recalculate parent-task progress;
-stop
 @enduml

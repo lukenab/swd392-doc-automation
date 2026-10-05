@@ -4,6 +4,8 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = membership information unavailable, nothing displayed (EX-01); F2 = member
+' list displayed (NF3 or AF-01; postconditions met).
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -12,24 +14,23 @@
 |USR|
 start
 ' [NF1]
-:Open the project member list;
+:Open project member list;
 |SYS|
 ' [NF2]
-:Retrieve active members and their
-project-scoped assignments;
+:Retrieve active
+members and assignments;
 if ($question("Membership information available?")) then ($guard_left("[available]"))
 else ($guard_right("[unavailable", "— EX-01]"))
   ' [EX-01, GUIDE-7.3]
-  :Report that membership information is temporarily unavailable;
+  :Report member list unavailable;
   stop
 endif
 if ($question_x("Other members?")) then ($guard_left("[other members]"))
   ' [NF3, POST1]
-  :Display the member list;
+  :Display member list;
 else ($guard_right("[Project Owner", "only — AF-01]"))
   ' [AF-01.1]
-  :Display only the
-  Project Owner;
+  :Display Project Owner only;
 endif
 stop
 @enduml

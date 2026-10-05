@@ -4,8 +4,9 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = board cannot be loaded (EX-01); F2 = review completed, either the current board
-' (NF4) or the notice that no Sprint is active (AF-01).
+' Final nodes: F1 = current Sprint Board displayed (POST1); F2 = current board not displayed, no
+' data changed: no active Sprint (AF-01) or Sprint data temporarily unavailable (EX-01, no response
+' specified in the UC).
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
@@ -13,24 +14,22 @@
 |USR|
 start
 ' [NF1, BR-PROJECT-MEMBER-ACCESS]
-:Open the Sprint Board;
+:Open Sprint Board;
 |SYS|
 if ($question_x("Active Sprint exists?")) then ($guard_left("[active Sprint]"))
   ' [NF2]
-  :Load the active Sprint
+  :Load active Sprint
   and its work items;
   if ($question("Sprint data available?")) then ($guard_left("[available]"))
-  else ($guard_right("[unavailable", "— EX-01]"))
-    ' [EX-01, GUIDE-7.3]
-    :Report that the Sprint Board cannot be loaded at this time;
+    ' [NF3]
+    :Group items by current
+    workflow status;
+    ' [NF4, POST1]
+    :Display item priority, assignee,
+    estimate and status;
     stop
+  else ($guard_right("[unavailable", "— EX-01]"))
   endif
-  ' [NF3]
-  :Group the items by their
-  current workflow status;
-  ' [NF4, POST1]
-  :Display item priority, assignee,
-  estimate and status;
 else ($guard_right("[no active Sprint", "— AF-01]"))
   ' [AF-01.1]
   :Display that no Sprint is active;

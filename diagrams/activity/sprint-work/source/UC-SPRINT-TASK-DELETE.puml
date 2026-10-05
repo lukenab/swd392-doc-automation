@@ -4,7 +4,8 @@
 ' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = task deleted (postconditions met); F2 = task unchanged (EX-01, AF-01).
+' Final nodes: F1 = task deleted and recorded (postconditions met); F2 = task unchanged: deletion
+' cancelled (AF-02), dependencies must be removed first (AF-01) or deletion rejected (EX-01).
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -12,32 +13,41 @@
 |DEV|
 start
 ' [NF1, BR-SPRINT-TASK-DEVELOPER]
-:Select a Sprint Task
+:Select Sprint Task
 and request deletion;
 |SYS|
-if ($question_x("Task already in execution?")) then ($guard_left("[not started]"))
-  if ($question("Other tasks depend on it?")) then ($guard_left("[no dependent tasks]"))
+if ($question_x("Task execution started?")) then ($guard_left("[not started]"))
+  if ($question("Dependent tasks exist?")) then ($guard_left("[none]"))
     ' [NF2]
-    :Display the dependency impact
+    :Display dependency impact
     and ask for confirmation;
     |DEV|
-    ' [NF3]
-    :Confirm deletion;
-    |SYS|
-    ' [NF4, POST1, POST2, OTHER]
-    :Delete the task and
-    record the action;
-    stop
+    if ($question_x("Confirm deletion?")) then ($guard_left("[confirm]"))
+      ' [NF3]
+      :Confirm deletion;
+      |SYS|
+      ' [NF4, POST1, POST2, OTHER]
+      :Delete task and
+      record action;
+      stop
+    else ($guard_right("[cancel", "— AF-02]"))
+      |SYS|
+      ' [AF-02.1]
+      :Leave Sprint Task
+      unchanged;
+    endif
   else ($guard_right("[dependent tasks", "— AF-01]"))
+    |SYS|
     ' [AF-01.1]
-    :Require the dependencies
-    to be removed before
-    deletion;
+    :Require dependency
+    removal first;
   endif
 else ($guard_right("[in execution", "— EX-01]"))
+  |SYS|
   ' [EX-01, GUIDE-7.3]
-  :Reject the deletion
-  of the started task;
+  :Reject Sprint
+  Task deletion;
 endif
+|SYS|
 stop
 @enduml

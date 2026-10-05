@@ -4,6 +4,8 @@
 ' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = Sprint Task created and recorded (postconditions met); F2 = creation rejected,
+' no task created (EX-01).
 !include ../../_shared/activity-style.puml
 
 |DEV| $lane_title("Developer")
@@ -11,31 +13,39 @@
 
 |DEV|
 start
-' [NF1]
-:Choose to create a task
-for a Sprint Backlog Item;
+' [NF1, BR-SPRINT-TASK-DEVELOPER]
+:Choose to create task
+for Sprint Backlog Item;
 |SYS|
 ' [NF2]
-:Request the task title and
+:Request task title and
 initial work details;
 |DEV|
 ' [NF3]
-:Provide the task information
+:Provide task information
 and confirm creation;
 |SYS|
 ' [NF4]
-:Validate the Sprint Task;
-if ($question("Does the related Product\nBacklog Item still belong\nto the active Sprint?")) then ($guard_left("[belongs to the active Sprint]"))
-  ' [NF4, POST1]
-  :Store the Sprint Task for the
-  selected Product Backlog Item;
+:Validate task information;
+while ($question("Information missing or invalid?")) is ($guard_left("[invalid — AF-01]"))
+  ' [AF-01.1]
+  :Identify missing or invalid task information;
+  |DEV|
+  ' [AF-01.2]
+  :Correct and resubmit information;
+  |SYS|
+endwhile ($guard("[valid]"))
+if ($question("Backlog Item still in active Sprint?")) then ($guard_left("[still in Sprint]"))
+  ' [NF4, POST1, BR-SPRINT-TASK-ACTIVE-SPRINT]
+  :Store Sprint Task for selected
+  Product Backlog Item;
   ' [POST2]
-  :Record the creation in
+  :Record creation in
   work item activity;
   stop
-else ($guard_right("[no longer belongs to", "the active Sprint — EX-01]"))
-  ' [EX-01, GUIDE-7.3]
-  :Reject the task creation;
+else ($guard_right("[no longer in active", "Sprint — EX-01]"))
+  ' [EX-01, BR-SPRINT-TASK-ACTIVE-SPRINT, GUIDE-7.3]
+  :Reject Sprint Task creation;
   stop
 endif
 @enduml

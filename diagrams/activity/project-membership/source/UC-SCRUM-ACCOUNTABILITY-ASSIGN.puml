@@ -4,8 +4,11 @@
 ' Business Rules: BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED, BR-PROJECT-OWNER-ADMINISTRATION, BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F2 = accountability saved (postconditions met). F1 = replacement not confirmed
+' (AF-02) and F3 = member left or was removed (EX-01) both leave the accountabilities unchanged, but
+' they stay separate: AF-02 must bypass the EX-01 check and NF5, which the confirmed path (AF-01)
+' shares with the normal flow, so merging them would require drawing the EX-01 check and NF5 twice.
 !include ../../_shared/activity-style.puml
-
 |OWN| $lane_title("Project Owner")
 |SYS| $lane_title("System")
 
@@ -15,37 +18,45 @@ start
 :Select an active project member;
 |SYS|
 ' [NF2]
-:Display the member's current
+:Display current
 Scrum accountability;
 |OWN|
 ' [NF3]
 :Select Product Owner or Developer;
 |SYS|
 ' [NF4, BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED]
-:Validate the assignment
+:Validate assignment
 against project constraints;
 if ($question("Conflicting Product Owner?")) then ($guard_left("[no conflict]"))
 else ($guard_right("[conflicting", "assignment — AF-01]"))
   ' [AF-01.1]
-  :Request confirmation of the replacement;
+  :Request replacement confirmation;
   |OWN|
-  ' [AF-01.2]
-  :Confirm the replacement;
-  |SYS|
-  ' [AF-01.2, BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE]
-  :Transfer the Product Owner accountability;
+  if ($question_x("Confirm replacement?")) then ($guard_left("[confirm — AF-01]"))
+    ' [AF-01]
+    :Confirm replacement;
+    |SYS|
+    ' [AF-01.2, BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE]
+    :Transfer Product
+    Owner accountability;
+  else ($guard_right("[not confirmed", "— AF-02]"))
+    |SYS|
+    ' [AF-02.1, BR-PRODUCT-OWNER-ACCOUNTABILITY-UNIQUE]
+    :Keep current
+    accountabilities unchanged;
+    stop
+  endif
 endif
-if ($question_x("Member still in the project?")) then ($guard_left("[still a member]"))
+if ($question("Member still in the project?")) then ($guard_left("[still a member]"))
+  ' [NF5, POST1]
+  :Save and confirm accountability;
+  ' [POST2]
+  :Record change in
+  activity history;
+  stop
 else ($guard_right("[left or removed", "— EX-01]"))
   ' [EX-01, GUIDE-7.3]
-  :Reject the assignment for the departed member;
+  :Reject accountability assignment;
   stop
 endif
-' [NF5, POST1]
-:Save and confirm the
-project-scoped accountability;
-' [POST2]
-:Record the accountability change
-in activity history;
-stop
 @enduml

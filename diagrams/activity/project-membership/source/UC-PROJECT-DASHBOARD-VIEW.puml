@@ -4,6 +4,8 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = dashboard displayed, read-only when archived (NF4 or AF-01; postconditions
+' met); F2 = access denied, no dashboard displayed (EX-01).
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -15,24 +17,23 @@ start
 :Select a project;
 |SYS|
 ' [NF2, BR-PROJECT-MEMBER-ACCESS]
-:Verify the actor's active
-project membership;
+:Verify active project membership;
 if ($question("Project and membership exist?")) then ($guard_left("[exist]"))
+  ' [NF3]
+  :Retrieve project, member
+  and Sprint summary;
+  if ($question_x("Project archived?")) then ($guard_left("[active]"))
+    ' [NF4, POST1]
+    :Display project dashboard;
+  else ($guard_right("[archived", "— AF-01]"))
+    ' [AF-01.1, BR-PROJECT-ARCHIVED-READ-ONLY]
+    :Display read-only dashboard;
+  endif
+  stop
 else ($guard_right("[project or membership", "removed — EX-01]"))
+  |SYS|
   ' [EX-01, GUIDE-7.3]
-  :Deny access to the project dashboard for this actor;
+  :Deny dashboard access;
   stop
 endif
-' [NF3]
-:Retrieve project information, member
-count, and current Sprint summary;
-if ($question_x("Project archived?")) then ($guard_left("[active]"))
-  ' [NF4, POST1]
-  :Display the project dashboard;
-else ($guard_right("[archived", "— AF-01]"))
-  ' [AF-01.1, BR-PROJECT-ARCHIVED-READ-ONLY]
-  :Display the dashboard
-  in read-only mode;
-endif
-stop
 @enduml

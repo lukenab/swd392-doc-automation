@@ -4,6 +4,8 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = item details displayed without modification (postcondition met); F2 = selected
+' item no longer available, nothing displayed (EX-01; the UC describes no response).
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -12,19 +14,18 @@
 |USR|
 start
 ' [NF1]
-:Select a Product Backlog Item;
+:Select Product Backlog Item;
 |SYS|
 ' [NF2]
-:Retrieve the item's
-current information;
-if ($question("Item available?")) then ($guard_left("[available]"))
+:Retrieve current
+item information;
+if ($question("Item still available?")) then ($guard_left("[available]"))
+  ' [NF3, POST1]
+  :Display item details and
+  related Sprint information;
+  stop
 else ($guard_right("[no longer", "available — EX-01]"))
-  ' [EX-01, GUIDE-7.3]
-  :Report that the selected item is no longer available;
+  |SYS|
   stop
 endif
-' [NF3, POST1]
-:Display the item details and
-related Sprint information;
-stop
 @enduml

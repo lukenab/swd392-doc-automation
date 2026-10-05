@@ -4,6 +4,8 @@
 ' Business Rules: BR-PROJECT-ONE-OWNER, BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, BR-PROJECT-OWNER-ADMINISTRATION, BR-SCRUM-ACCOUNTABILITY-PROJECT-SCOPED
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = ownership transferred and recorded (postconditions met); F2 = transfer
+' rejected, ownership unchanged (EX-01).
 !include ../../_shared/activity-style.puml
 
 |OWN| $lane_title("Project Owner")
@@ -15,32 +17,31 @@ start
 :Select Transfer Project Ownership;
 |SYS|
 ' [NF2]
-:Display eligible active
-Project Members;
+:Display eligible active members;
 |OWN|
 ' [NF3]
-:Select the new owner and
-confirm the transfer;
+:Select new owner and confirm;
 |SYS|
 ' [NF4]
-:Validate both memberships and
-the current ownership state;
+:Validate memberships
+and ownership state;
 while ($question("Selected member inactive?")) is ($guard_left("[inactive — AF-01]"))
   ' [AF-01.1]
-  :Reject the transfer to the inactive member;
+  :Reject transfer to inactive member;
   |OWN|
   ' [AF-01.2]
   :Select another eligible member;
   |SYS|
 endwhile ($guard("[active]"))
 if ($question("Ownership unchanged?")) then ($guard_left("[unchanged]"))
+  ' [NF5, POST1, POST3, BR-PROJECT-ONE-OWNER]
+  :Transfer ownership
+  atomically and record change;
+  stop
 else ($guard_right("[changed concurrently", "— EX-01]"))
+  |SYS|
   ' [EX-01, GUIDE-7.3]
-  :Reject the transfer because ownership changed concurrently;
+  :Reject ownership transfer;
   stop
 endif
-' [NF5, POST1, POST3, BR-PROJECT-ONE-OWNER]
-:Transfer ownership atomically
-and record the change;
-stop
 @enduml

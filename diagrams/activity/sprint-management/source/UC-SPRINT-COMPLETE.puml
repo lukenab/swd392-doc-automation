@@ -4,7 +4,10 @@
 ' Business Rules: BR-SPRINT-INCOMPLETE-RETURN-BACKLOG, BR-WORK-ITEM-STATUS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' AF-01 re-performs NF1: the loop repeats the display (NF2) and the review (NF3).
+' Final nodes: F1 = completion rejected, Sprint unchanged (EX-01); F2 = Sprint completed,
+' incomplete items returned, result recorded (postconditions met).
+' AF-01 re-performs NF1: the loop repeats the display (NF2) and the review (NF3), so these two
+' actions are drawn again inside the loop body.
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -15,27 +18,28 @@
 start
 ' [NF1]
 :Request to complete
-the active Sprint;
+active Sprint;
 |SYS|
 ' [NF2]
 :Display completed and
 incomplete Sprint work;
 |DEV|
 ' [NF3, BR-WORK-ITEM-STATUS]
-:Review the final work status and confirm that task data is current;
-while ($question("Statuses require correction?")) is ($guard_left("[correction required — AF-01]"))
+:Review work status and
+confirm task data;
+while ($question("Statuses require correction?")) is ($guard_left("[correction — AF-01]"))
   ' [AF-01.1, BR-WORK-ITEM-STATUS]
-  :Update the affected items;
+  :Update affected items;
   |PRO|
   ' [AF-01.2]
-  :Repeat the completion request;
+  :Repeat completion request;
   |SYS|
   ' [NF2]
   :Display completed and
   incomplete Sprint work;
   |DEV|
   ' [NF3, BR-WORK-ITEM-STATUS]
-  :Review the final work status and confirm that task data is current;
+  :Review work status and confirm task data;
 endwhile ($guard("[statuses current]"))
 |PRO|
 ' [NF4]
@@ -44,14 +48,14 @@ endwhile ($guard("[statuses current]"))
 if ($question_x("Sprint state unchanged?")) then ($guard_left("[unchanged]"))
 else ($guard_right("[state changed", "— EX-01]"))
   ' [EX-01, GUIDE-7.3]
-  :Reject the completion because the Sprint state has changed;
+  :Reject Sprint completion;
   stop
 endif
 ' [NF5, POST1, POST2, POST3, BR-SPRINT-INCOMPLETE-RETURN-BACKLOG]
-:Complete the Sprint and return incomplete
-items to the Product Backlog;
+:Complete Sprint and return incomplete
+items to Product Backlog;
 ' [NF6]
-:Record the Sprint result
+:Record Sprint result
 for reporting;
 stop
 @enduml

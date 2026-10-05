@@ -4,6 +4,8 @@
 ' Business Rules: BR-AUTH-ACTIVE-ACCOUNT, BR-PROFILE-SELF-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = profile displayed without modification (postcondition met); F2 = profile not
+' displayed (EX-01). EX-01 describes no System response, so its guard goes straight to F2.
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -11,20 +13,19 @@
 
 |USR|
 start
-' [NF1]
-:Open the personal profile page;
+' [NF1, TRIGGER]
+:Open personal profile page;
 |SYS|
 ' [NF2, BR-PROFILE-SELF-ACCESS]
-:Retrieve the profile belonging
-to the authenticated User;
+:Retrieve profile of
+authenticated User;
 if ($question("Profile available?")) then ($guard_left("[available]"))
-else ($guard_right("[unavailable", "— EX-01]"))
-  ' [EX-01, GUIDE-7.3]
-  :Report that the profile information is temporarily unavailable;
+  ' [NF3, POST1, OTHER]
+  :Display profile and non-sensitive
+  account information;
+  stop
+else ($guard_right("[temporarily unavailable", "— EX-01]"))
+  |SYS|
   stop
 endif
-' [NF3, POST1]
-:Display the User's profile and
-non-sensitive account information;
-stop
 @enduml

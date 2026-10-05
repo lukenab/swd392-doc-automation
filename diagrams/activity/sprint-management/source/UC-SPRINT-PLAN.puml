@@ -4,6 +4,8 @@
 ' Business Rules: BR-SPRINT-GOAL-REQUIRED, BR-SPRINT-DATE-RANGE, BR-BACKLOG-ITEM-READY, BR-SPRINT-ONE-DRAFT
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = Draft Sprint and initial Sprint Backlog created (postconditions met); F2 = Sprint
+' not saved because its date range conflicts with another Sprint (EX-01).
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -12,44 +14,45 @@
 
 |PRO|
 start
-' [NF1, BR-SPRINT-GOAL-REQUIRED]
-:Start Sprint planning and propose
-the Sprint Goal and date range;
+' [NF1, BR-SPRINT-GOAL-REQUIRED, BR-SPRINT-DATE-RANGE]
+:Propose Sprint Goal
+and date range;
 |SYS|
 ' [NF2, BR-BACKLOG-ITEM-READY]
-:Display the ordered Product Backlog
-Items that are ready for selection;
+:Display ordered Product Backlog
+Items ready for selection;
 |PRO|
 ' [NF3]
-:Propose backlog items that
-support the Sprint Goal;
+:Propose backlog items
+supporting Sprint Goal;
 |DEV|
 ' [NF4]
 :Review capacity, estimates
 and item readiness;
 |SYS|
-while ($question_x("A selected item not ready?")) is ($guard_left("[not ready — AF-01]"))
+while ($question_x("Selected item not ready?")) is ($guard_left("[not ready — AF-01]"))
   ' [AF-01.1, BR-BACKLOG-ITEM-READY]
-  :Identify the missing readiness information;
+  :Identify missing readiness information;
   |PRO|
   ' [AF-01.2]
-  :Refine the item or remove it from
-  the Sprint selection with the Developer;
+  :Refine or deselect item
+with Developers;
   |SYS|
 endwhile ($guard("[all ready]"))
 |PRO|
 ' [NF5]
-:Confirm the Sprint Goal and selected
-items with the Developer;
+:Confirm Sprint Goal and
+selected items with Developer;
 |SYS|
 if ($question_x("Date range conflicts?")) then ($guard_left("[no conflict]"))
-else ($guard_right("[conflict", "— EX-01]"))
+  ' [NF6, POST1, POST2, BR-SPRINT-ONE-DRAFT]
+  :Create Draft Sprint and
+  initial Sprint Backlog;
+  stop
+else ($guard_right("[conflicts with another", "Sprint — EX-01]"))
+  |SYS|
   ' [EX-01, GUIDE-7.3]
-  :Reject saving the Sprint because its date range conflicts with another Sprint;
+  :Reject Draft Sprint creation;
   stop
 endif
-' [NF6, POST1, POST2, BR-SPRINT-ONE-DRAFT]
-:Create the Draft Sprint and
-its initial Sprint Backlog;
-stop
 @enduml

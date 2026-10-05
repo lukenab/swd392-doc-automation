@@ -4,43 +4,43 @@
 ' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-OWNER-ACCOUNT-DELETION-GUARD, BR-LAST-ADMINISTRATOR-PROTECTION, BR-AUDIT-EVENT-COMPLETENESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = account suspended (postconditions met); F2 = account stays active (EX-01, EX-02, AF-01).
-' EX-01 and EX-02 share one decision: precondition 3 groups both as protected accounts and both
-' exceptions end with the same rejection.
+' Final nodes: F1 = account suspended and audit event recorded (postconditions met); F2 = account
+' stays active (EX-01, EX-02, AF-01 merge here).
+' EX-01 and EX-02 share one decision: both are protections on the requested target account
+' (BR-OWNER-ACCOUNT-DELETION-GUARD, BR-LAST-ADMINISTRATOR-PROTECTION) and both reject the request.
+' AF-01.1 is an explicit System step of the YAML, so it is kept as an action.
 !include ../../_shared/activity-style.puml
 |ADM| $lane_title("System Administrator")
 |SYS| $lane_title("System")
 
 |ADM|
 start
-' [NF1, BR-SYSADMIN-USER-ACCOUNT]
-:Select an active User account
+' [NF1, TRIGGER, BR-SYSADMIN-USER-ACCOUNT]
+:Select active User account
 and request suspension;
 |SYS|
 if ($question_x("Account protected?")) then ($guard_left("[not protected]"))
   ' [NF2]
-  :Display the impact and request
-  a reason and confirmation;
+  :Display impact and request
+  reason and confirmation;
   |ADM|
   if ($question_x("Confirm suspension?")) then ($guard_left("[confirm]"))
     ' [NF3]
-    :Provide a reason and
+    :Provide reason and
     confirm suspension;
     |SYS|
     ' [NF4, POST1, POST2, BR-AUDIT-EVENT-COMPLETENESS]
-    :Suspend the account and
-    record the audit event;
+    :Suspend account and
+    record audit event;
     stop
   else ($guard_right("[cancel", "— AF-01]"))
     |SYS|
     ' [AF-01.1]
-    :Leave the account active;
+    :Leave account active;
   endif
 else ($guard_right("[current owner — EX-01 or", "last administrator — EX-02]"))
   ' [EX-01, EX-02, BR-OWNER-ACCOUNT-DELETION-GUARD, BR-LAST-ADMINISTRATOR-PROTECTION, GUIDE-7.3]
-  :Reject the suspension
-  of the protected
-  account;
+  :Reject suspension;
 endif
 |SYS|
 stop

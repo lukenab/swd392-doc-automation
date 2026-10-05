@@ -4,6 +4,8 @@
 ' Business Rules: BR-PROJECT-OWNER-ADMINISTRATION, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = project information updated and recorded (postconditions met); F2 = update
+' rejected, project information unchanged (EX-01).
 !include ../../_shared/activity-style.puml
 
 |OWN| $lane_title("Project Owner")
@@ -12,39 +14,38 @@
 |OWN|
 start
 ' [NF1]
-:Request to update
-project information;
+:Request project update;
 |SYS|
 ' [NF2]
-:Present the current
+:Present current
 project information;
 |OWN|
 ' [NF3]
-:Change the permitted values
-and submit the update;
+:Edit permitted values and submit;
 |SYS|
 ' [NF4]
-:Validate the updated information;
+:Validate submitted values;
 while ($question("Submitted values invalid?")) is ($guard_left("[invalid — AF-01]"))
   ' [AF-01.1]
-  :Reject the update and identify the invalid values;
+  :Reject update and identify invalid values;
   |OWN|
   ' [AF-01.2]
-  :Correct and resubmit the information;
+  :Correct and resubmit values;
   |SYS|
 endwhile ($guard("[valid]"))
 if ($question("Ownership unchanged?")) then ($guard_left("[unchanged]"))
+  ' [NF4, POST1]
+  :Save project information;
+  ' [POST2]
+  :Record change in
+  activity history;
+  ' [NF5]
+  :Confirm successful update;
+  stop
 else ($guard_right("[ownership changed", "— EX-01]"))
+  |SYS|
   ' [EX-01]
-  :Reject the update because ownership changed;
+  :Reject project update;
   stop
 endif
-' [NF4, POST1]
-:Save the updated information;
-' [POST2]
-:Record the change in
-project activity history;
-' [NF5]
-:Confirm the successful update;
-stop
 @enduml

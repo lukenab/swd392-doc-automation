@@ -4,9 +4,10 @@
 ' Business Rules: BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, BR-PROJECT-MEMBER-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = request rejected (EX-01) and F2 = request cancelled (AF-01.2) both leave the
-' membership unchanged, but they stay separate: the cancel path must bypass NF5, which the
-' confirm path (AF-01.2) shares with the normal flow, so merging them would require drawing NF5 twice.
+' Final nodes: F2 = member has left (postconditions met). F1 = request cancelled (AF-01.2) and
+' F3 = request rejected (EX-01) both leave the membership unchanged, but they stay separate: the
+' cancel path must bypass NF5, which the confirm path (AF-01.2) shares with the normal flow, so
+' merging them would require drawing NF5 twice.
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -15,40 +16,40 @@
 |USR|
 start
 ' [NF1]
-:Request to leave the project;
+:Request to leave project;
 |SYS|
 ' [NF2]
-:Check ownership and
-unfinished work constraints;
+:Check ownership
+and unfinished work;
 if ($question("Current Project Owner?")) then ($guard_left("[not the owner]"))
+  if ($question_x("Unfinished Sprint Tasks?")) then ($guard_left("[none]"))
+    ' [NF3]
+    :Explain effects and
+    request confirmation;
+    |USR|
+    ' [NF4]
+    :Confirm leaving;
+  else ($guard_right("[owns tasks", "— AF-01]"))
+    |SYS|
+    ' [AF-01.1]
+    :Warn work will become unclaimed;
+    |USR|
+    if ($question_x("Leave anyway?")) then ($guard_left("[confirm — AF-01]"))
+    else ($guard_right("[cancel", "— AF-01]"))
+      ' [AF-01.2]
+      :Cancel leave request;
+      stop
+    endif
+  endif
+  |SYS|
+  ' [NF5, POST1, POST2, POST3]
+  :Remove membership and
+  project permissions;
+  stop
 else ($guard_right("[current owner", "— EX-01]"))
+  |SYS|
   ' [EX-01, BR-PROJECT-OWNER-TRANSFER-BEFORE-LEAVE, GUIDE-7.3]
-  :Reject the request until ownership is transferred;
+  :Reject leave request;
   stop
 endif
-if ($question_x("Unfinished Sprint Tasks?")) then ($guard_left("[none]"))
-  ' [NF3]
-  :Explain the effects of leaving
-  and request confirmation;
-  |USR|
-  ' [NF4]
-  :Confirm leaving the project;
-else ($guard_right("[owns tasks", "— AF-01]"))
-  |SYS|
-  ' [AF-01.1]
-  :Warn that unfinished work
-  will become unclaimed;
-  |USR|
-  if ($question_x("Leave anyway?")) then ($guard_left("[confirm — AF-01]"))
-  else ($guard_right("[cancel", "— AF-01]"))
-    ' [AF-01.2]
-    :Cancel the leave request;
-    stop
-  endif
-endif
-|SYS|
-' [NF5, POST1, POST2, POST3]
-:Remove active membership and
-project-scoped permissions;
-stop
 @enduml

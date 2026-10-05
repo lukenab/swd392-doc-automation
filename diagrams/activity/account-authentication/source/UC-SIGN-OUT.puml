@@ -4,6 +4,9 @@
 ' Business Rules: BR-LOG-OUT-SESSION
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = local credentials removed and remote revocation unconfirmed (EX-01);
+' F2 = User logged out and public log-in page displayed (NF3 and AF-01 merge, postconditions met).
+' EX-01 is performed by the client; with no client partition it stays in the System lane.
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -11,30 +14,31 @@
 
 |USR|
 start
-' [NF1]
+' [NF1, TRIGGER]
 :Request to log out;
 |SYS|
 if ($question_x("Current session expired?")) then ($guard_left("[still valid]"))
-  ' [NF2, POST1]
-  :Invalidate the current session
+  ' [NF2, BR-LOG-OUT-SESSION]
+  :Invalidate current session
   and its refresh credential;
   if ($question("Session revoked?")) then ($guard_left("[revoked]"))
+    ' [NF3, POST1, POST2, POST3]
+    :Remove local credentials and
+    display public log-in page;
   else ($guard_right("[cannot be revoked", "— EX-01]"))
+    ' [EX-01, POST2]
+    :Remove local credentials;
     ' [EX-01]
-    :Remove the local credentials and report that
-    remote revocation could not be confirmed;
+    :Report remote revocation
+    could not be confirmed;
     stop
   endif
-  ' [NF3, POST2]
-  :Remove the local authentication
-  credentials and display the
-  public log-in page;
 else ($guard_right("[already expired", "— AF-01]"))
   ' [AF-01.1, POST2]
-  :Remove any remaining local
-  authentication credentials;
-  ' [AF-01.2]
-  :Display the public log-in page;
+  :Remove remaining
+  local credentials;
+  ' [AF-01.2, POST3]
+  :Display public log-in page;
 endif
 stop
 @enduml

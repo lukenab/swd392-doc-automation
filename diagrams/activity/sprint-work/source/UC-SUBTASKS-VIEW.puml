@@ -11,17 +11,17 @@
 |USR|
 start
 ' [NF1, BR-PROJECT-MEMBER-ACCESS]
-:Open a Sprint Task's
+:Open Sprint Task's
 subtask section;
 |SYS|
 ' [NF2]
-:Retrieve the existing subtasks;
+:Retrieve existing subtasks;
 if ($question("Subtasks exist?")) then ($guard_left("[subtasks exist]"))
   ' [NF2, POST1]
-  :Display the existing subtasks;
+  :Display existing subtasks;
 else ($guard_right("[no subtasks", "— AF-01]"))
   ' [AF-01.1, POST1]
-  :Display an empty
+  :Display empty
   subtask list;
 endif
 stop
