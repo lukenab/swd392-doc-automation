@@ -4,8 +4,10 @@
 ' Business Rules: BR-PRODUCT-ONE-GOAL, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = revised Product Goal saved (postconditions met); F2 = current Product Goal
-' unchanged (EX-01, AF-01).
+' Final nodes: F1 = revised Product Goal saved and recorded (postconditions met); F2 = current
+' Product Goal unchanged (EX-01 rejection and AF-01 cancellation merged).
+' NF3 "revises the Product Goal and confirms the change" is drawn as the revision action followed
+' by the actor's confirm/cancel decision, so AF-01 (cancel before saving) branches from it.
 !include ../../_shared/activity-style.puml
 |PRO| $lane_title("Product Owner")
 |SYS| $lane_title("System")
@@ -13,36 +15,35 @@
 |PRO|
 start
 ' [NF1]
-:Open the current Product Goal
-and choose to edit it;
+:Choose to edit
+Product Goal;
 |SYS|
 ' [NF2]
-:Display the current goal text;
+:Display current goal text;
 |PRO|
-if ($question_x("Save the revision?")) then ($guard_left("[save]"))
+' [NF3]
+:Revise Product Goal;
+if ($question("Confirm change?")) then ($guard_left("[confirm]"))
   ' [NF3]
-  :Revise the Product Goal
-  and confirm the change;
+  :Confirm change;
   |SYS|
   ' [NF4]
-  :Validate the revised Product Goal;
-  if ($question_x("Still the Product Owner?")) then ($guard_left("[yes]"))
-    ' [NF4, POST1]
-    :Save the revised Product Goal;
+  :Validate revised Product Goal;
+  if ($question("Still the Product Owner?")) then ($guard_left("[yes]"))
+    ' [NF4, POST1, BR-PRODUCT-ONE-GOAL]
+    :Save revised Product Goal;
     ' [POST2]
-    :Record the change in
+    :Record change in
     project activity history;
     stop
   else ($guard_right("[accountability", "lost — EX-01]"))
     ' [EX-01, BR-PRODUCT-ONE-GOAL, GUIDE-7.3]
-    :Reject the revision
-    from the former
-    Product Owner;
+    :Reject Product Goal revision;
   endif
 else ($guard_right("[cancel before", "saving — AF-01]"))
   |SYS|
   ' [AF-01.1]
-  :Keep the current Product
+  :Keep current Product
   Goal unchanged;
 endif
 |PRO|

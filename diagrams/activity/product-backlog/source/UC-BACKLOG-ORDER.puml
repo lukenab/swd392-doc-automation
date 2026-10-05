@@ -4,6 +4,8 @@
 ' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = new order saved and displayed (postcondition met); F2 = new order not saved,
+' previous order kept (EX-01; the UC describes no response, so no action is drawn).
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -12,36 +14,35 @@
 |PRO|
 start
 ' [NF1]
-:Open the ordered Product Backlog;
+:Open ordered Product Backlog;
 |SYS|
 ' [NF2]
-:Display all available items
-in their current order;
+:Display available items
+in current order;
 |PRO|
 ' [NF3]
-:Change the relative order
+:Change relative order
 of one or more items;
 |SYS|
 ' [NF4]
-:Validate the new order;
+:Validate new order;
 while ($question_x("Order changed concurrently?")) is ($guard_left("[changed — AF-01]"))
   ' [AF-01.1]
-  :Refresh the current order of the Product Backlog;
+  :Refresh current Product Backlog order;
   |PRO|
   ' [AF-01.2]
-  :Reapply the intended changes;
+  :Reapply intended changes;
   |SYS|
 endwhile ($guard("[not changed]"))
-if ($question("Complete and unique order?")) then ($guard_left("[complete and unique]"))
+if ($question("Complete unique order?")) then ($guard_left("[can be saved]"))
+  ' [NF4, POST1, BR-PRODUCT-OWNER-BACKLOG]
+  :Save new order;
+  ' [NF5, POST1]
+  :Display updated
+  Product Backlog;
+  stop
 else ($guard_right("[cannot be saved", "— EX-01]"))
-  ' [EX-01, GUIDE-7.3]
-  :Reject the order because it cannot be saved completely and uniquely;
+  |SYS|
   stop
 endif
-' [NF4, POST1]
-:Save the new order;
-' [NF5, POST1]
-:Display the updated
-Product Backlog;
-stop
 @enduml

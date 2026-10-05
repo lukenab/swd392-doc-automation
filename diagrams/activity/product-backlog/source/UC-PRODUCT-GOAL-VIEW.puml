@@ -12,18 +12,17 @@
 |USR|
 start
 ' [NF1]
-:Open the Product Goal view;
+:Open Product Goal view;
 |SYS|
 ' [NF2]
-:Retrieve the current Product Goal;
+:Retrieve current Product Goal;
 if ($question("Product Goal defined?")) then ($guard_left("[defined]"))
   ' [NF2, POST1]
-  :Display the current
-  Product Goal;
+  :Display current Product Goal;
 else ($guard_right("[not defined", "— AF-01]"))
   ' [AF-01.1]
-  :Display that the Product Goal
-  is not yet available;
+  :Display Product Goal
+  not yet available;
 endif
 stop
 @enduml

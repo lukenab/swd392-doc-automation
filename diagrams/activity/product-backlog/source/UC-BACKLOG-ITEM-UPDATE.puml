@@ -4,6 +4,8 @@
 ' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = changes saved and recorded (postconditions met); F2 = update rejected, item
+' unchanged (EX-01).
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -12,34 +14,34 @@
 |PRO|
 start
 ' [NF1]
-:Open an existing Product
-Backlog Item for editing;
+:Open Product Backlog Item
+for editing;
 |SYS|
 ' [NF2]
-:Display the editable item values;
-if ($question("Item in the active Sprint?")) then ($guard_left("[not in the active Sprint]"))
-else ($guard_right("[in the active", "Sprint — AF-01]"))
+:Display editable item values;
+if ($question("Item in active Sprint?")) then ($guard_left("[not in active Sprint]"))
+else ($guard_right("[in active Sprint", "— AF-01]"))
   ' [AF-01.1]
-  :Limit changes that would invalidate
+  :Limit changes invalidating
   active Sprint planning;
 endif
 |PRO|
 ' [NF3]
-:Revise the desired values
-and submit the item;
+:Revise values and submit item;
 |SYS|
 ' [NF4]
-:Validate the changes;
-if ($question_x("Changed by another User?")) then ($guard_left("[not changed]"))
+:Validate changes;
+if ($question("Changed by another User?")) then ($guard_left("[not changed]"))
+  ' [NF4, POST1, BR-PRODUCT-OWNER-BACKLOG]
+  :Save changes;
+  ' [POST2]
+  :Record update in
+  item activity history;
+  stop
 else ($guard_right("[changed by another", "User — EX-01]"))
+  |SYS|
   ' [EX-01, GUIDE-7.3]
-  :Reject the update because the item was changed concurrently;
+  :Reject item update;
   stop
 endif
-' [NF4, POST1]
-:Save the changes;
-' [POST2]
-:Record the update in
-item activity history;
-stop
 @enduml

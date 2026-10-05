@@ -4,6 +4,10 @@
 ' Business Rules: BR-DEVELOPER-ESTIMATION, BR-BACKLOG-ITEM-READY, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = estimate left unset and item marked as requiring further refinement (AF-01);
+' F2 = agreed estimate recorded (postconditions met); F3 = estimate rejected, item unchanged (EX-01).
+' NF3 (the Product Owner clarifies "when requested") is drawn as a decision in the Product Owner
+' lane.
 !include ../../_shared/activity-style.puml
 
 |DEV| $lane_title("Developer")
@@ -13,43 +17,45 @@
 |DEV|
 start
 ' [NF1]
-:Select a refined
+:Select refined
 Product Backlog Item;
 |SYS|
 ' [NF2]
-:Display the item's details
+:Display item details
 and current estimate;
 |PRO|
 if ($question_x("Clarification requested?")) then ($guard_left("[requested]"))
   ' [NF3]
-  :Clarify the expected outcome;
+  :Clarify expected outcome;
 else ($guard_right("[not", "requested]"))
 endif
 |DEV|
 if ($question_x("Sufficiently refined?")) then ($guard_left("[sufficient]"))
   ' [NF4, BR-DEVELOPER-ESTIMATION]
-  :Provide the agreed estimate;
+  :Provide agreed estimate;
 else ($guard_right("[not refined", "— AF-01]"))
   |SYS|
   ' [AF-01.1]
-  :Leave the estimate unset for this item;
-  ' [AF-01.2]
-  :Return the item for further refinement;
+  :Leave estimate unset;
+  ' [AF-01.2, BR-BACKLOG-ITEM-READY]
+  :Mark item as requiring
+  further refinement;
   stop
 endif
 |SYS|
 ' [NF5]
-:Validate the estimate;
-if ($question_x("Item still estimable?")) then ($guard_left("[estimable]"))
-else ($guard_right("[unavailable", "— EX-01]"))
+:Validate estimate;
+if ($question("Item still estimable?")) then ($guard_left("[estimable]"))
+  ' [NF5, POST1]
+  :Record estimate;
+  ' [POST2]
+  :Record estimate change
+  in item activity history;
+  stop
+else ($guard_right("[removed or in", "completed Sprint — EX-01]"))
+  |SYS|
   ' [EX-01, GUIDE-7.3]
-  :Reject the estimate because the item was removed or is in a completed Sprint;
+  :Reject estimate;
   stop
 endif
-' [NF5, POST1]
-:Record the estimate;
-' [POST2]
-:Record the estimate change in
-item activity history;
-stop
 @enduml

@@ -4,6 +4,8 @@
 ' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-BACKLOG-ITEM-READY, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' EX-01: the System rejects only the decomposition; refinement then continues with NF5-NF6
+' without splitting the item (YAML), so the EX-01 path merges back before NF5.
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -13,46 +15,45 @@
 |PRO|
 start
 ' [NF1]
-:Select an item that
+:Select item that
 requires refinement;
 |SYS|
 ' [NF2]
-:Display the item's current
+:Display current item
 details and estimate;
 |PRO|
 ' [NF3]
-:Clarify the expected outcome
+:Clarify expected outcome
 and acceptance criteria;
 |DEV|
 ' [NF4]
-:Add implementation-relevant
-clarification and propose
-decomposition when needed;
+:Add implementation clarification
+and propose decomposition if needed;
 if ($question("Too large for one Sprint?")) then ($guard_left("[fits one Sprint]"))
 else ($guard_right("[too large", "— AF-01]"))
   |SYS|
-  if ($question_x("Selected into an active Sprint?")) then ($guard_left("[not selected]"))
-  else ($guard_right("[selected", "— EX-01]"))
+  if ($question_x("Item in active Sprint?")) then ($guard_left("[not in Sprint]"))
+    |PRO|
+    ' [AF-01.1, BR-PRODUCT-OWNER-BACKLOG]
+    :Define smaller independent
+    items with Developer;
+    |SYS|
+    ' [AF-01.2]
+    :Preserve traceability
+    to original item;
+  else ($guard_right("[in active Sprint", "— EX-01]"))
+    |SYS|
     ' [EX-01, GUIDE-7.3]
-    :Reject the decomposition of the item in the active Sprint;
-    stop
+    :Reject item decomposition;
   endif
-  |PRO|
-  ' [AF-01.1, BR-PRODUCT-OWNER-BACKLOG]
-  :Define smaller independent
-  backlog items with the Developer;
-  |SYS|
-  ' [AF-01.2]
-  :Preserve traceability
-  to the original item;
 endif
 |PRO|
 ' [NF5]
-:Confirm the refined
-scope and description;
+:Confirm refined scope
+and description;
 |SYS|
 ' [NF6, POST1, POST2]
-:Save the refined item and
-record the participants;
+:Save refined item and
+record participants;
 stop
 @enduml

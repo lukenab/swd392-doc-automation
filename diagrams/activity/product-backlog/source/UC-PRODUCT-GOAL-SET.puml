@@ -4,6 +4,8 @@
 ' Business Rules: BR-PRODUCT-ONE-GOAL, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
+' Final nodes: F1 = Product Goal stored and recorded (postconditions met); F2 = empty Product Goal
+' rejected, project still has no Product Goal (EX-01).
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -12,28 +14,28 @@
 |PRO|
 start
 ' [NF1]
-:Choose to define the Product Goal;
+:Choose to define Product Goal;
 |SYS|
 ' [NF2]
-:Request the desired
+:Request desired
 future product outcome;
 |PRO|
 ' [NF3]
-:Enter the Product Goal
-and confirm it;
+:Enter and confirm Product Goal;
 |SYS|
 ' [NF4]
-:Validate the Product Goal;
+:Validate Product Goal;
 if ($question("Product Goal empty?")) then ($guard_left("[not empty]"))
+  ' [NF4, POST1, BR-PRODUCT-ONE-GOAL]
+  :Store Product Goal;
+  ' [POST2]
+  :Record creation in
+  project activity history;
+  stop
 else ($guard_right("[empty", "— EX-01]"))
+  |SYS|
   ' [EX-01, GUIDE-7.3]
-  :Reject the empty Product Goal;
+  :Reject empty Product Goal;
   stop
 endif
-' [NF4, POST1, BR-PRODUCT-ONE-GOAL]
-:Store the Product Goal;
-' [POST2]
-:Record the creation in
-project activity history;
-stop
 @enduml
