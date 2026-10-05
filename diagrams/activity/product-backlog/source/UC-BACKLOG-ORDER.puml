@@ -4,8 +4,9 @@
 ' Business Rules: BR-PRODUCT-OWNER-BACKLOG, BR-PROJECT-ARCHIVED-READ-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = new order saved and displayed (postcondition met); F2 = new order not saved,
-' previous order kept (EX-01; the UC describes no response, so no action is drawn).
+' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
+' is reached after the new order is saved and displayed (postcondition met) or after EX-01 (new
+' order not saved, previous order kept; the UC describes no response, so no action is drawn).
 !include ../../_shared/activity-style.puml
 
 |PRO| $lane_title("Product Owner")
@@ -34,15 +35,14 @@ while ($question_x("Order changed concurrently?")) is ($guard_left("[changed —
   :Reapply intended changes;
   |SYS|
 endwhile ($guard("[not changed]"))
-if ($question("Complete unique order?")) then ($guard_left("[can be saved]"))
+if ($question("Complete unique order?")) then ($guard_left("[complete]"))
   ' [NF4, POST1, BR-PRODUCT-OWNER-BACKLOG]
   :Save new order;
   ' [NF5, POST1]
   :Display updated
   Product Backlog;
-  stop
 else ($guard_right("[cannot be saved", "— EX-01]"))
-  |SYS|
-  stop
 endif
+|SYS|
+stop
 @enduml
