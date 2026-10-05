@@ -4,41 +4,41 @@
 ' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-AUDIT-EVENT-COMPLETENESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = account reactivated (postconditions met); F2 = account stays suspended
-' (EX-01, AF-01).
+' Final nodes: F1 = account reactivated and audit event recorded (postconditions met); F2 = account
+' not reactivated (AF-01: stays suspended; EX-01: deleted before confirmation).
+' EX-01 is checked after the confirmation because the YAML places the deletion before the
+' reactivation is confirmed. AF-01.1 is an explicit System step of the YAML, so it is kept as an action.
 !include ../../_shared/activity-style.puml
 |ADM| $lane_title("System Administrator")
 |SYS| $lane_title("System")
 
 |ADM|
 start
-' [NF1, BR-SYSADMIN-USER-ACCOUNT]
-:Select a suspended User account
+' [NF1, TRIGGER, BR-SYSADMIN-USER-ACCOUNT]
+:Select suspended User account
 and request reactivation;
 |SYS|
-if ($question_x("Account deleted?")) then ($guard_left("[not deleted]"))
-  ' [NF2]
-  :Display the account status
-  and request confirmation;
-  |ADM|
-  if ($question_x("Confirm reactivation?")) then ($guard_left("[confirm]"))
-    ' [NF3]
-    :Confirm reactivation;
-    |SYS|
+' [NF2]
+:Display account status
+and request confirmation;
+|ADM|
+if ($question_x("Confirm reactivation?")) then ($guard_left("[confirm]"))
+  ' [NF3]
+  :Confirm reactivation;
+  |SYS|
+  if ($question_x("Account still exists?")) then ($guard_left("[exists]"))
     ' [NF4, POST1, POST2, BR-AUDIT-EVENT-COMPLETENESS, OTHER]
-    :Reactivate the account and
-    record the audit event;
+    :Reactivate account and
+    record audit event;
     stop
-  else ($guard_right("[cancel", "— AF-01]"))
-    |SYS|
-    ' [AF-01.1]
-    :Leave the account
-    suspended;
+  else ($guard_right("[deleted", "— EX-01]"))
+    ' [EX-01, GUIDE-7.3]
+    :Reject reactivation;
   endif
-else ($guard_right("[deleted", "— EX-01]"))
-  ' [EX-01, GUIDE-7.3]
-  :Reject the reactivation
-  of the deleted account;
+else ($guard_right("[cancel", "— AF-01]"))
+  |SYS|
+  ' [AF-01.1]
+  :Leave account suspended;
 endif
 |SYS|
 stop
