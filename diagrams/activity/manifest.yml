@@ -29,11 +29,21 @@ use_cases:
   blocked_reason: null
   audit_status: REQUEST CHANGES
   observations:
-  - The outcome when the Identity Provider returns an email address that already belongs to an account is not specified;
-    it is not modelled.
-  review_notes: 'Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 3.3 pt when the diagram is
-    fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page,
-    accept it, or ask the BA to split the use case.'
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01, EX-02 and EX-03.'
+  - 'NEEDS CLARIFICATION (EX-01): Is the Guest informed that the verification message could not be delivered, and
+    how is verification requested again? Proposed spec sentence: "EX-01: The Email Service cannot deliver the verification
+    message; the account remains pending, and the system informs the Guest that the message could not be sent and
+    that verification can be requested again."'
+  - 'NEEDS CLARIFICATION (EX-02): Is the Guest informed when the Identity Provider returns no valid verified identity?
+    Proposed spec sentence: "EX-02: The Identity Provider does not return a valid verified identity; registration
+    is cancelled and the system informs the Guest that Google registration could not be completed."'
+  - 'NEEDS CLARIFICATION (EX-03): Is the Guest informed when account data cannot be persisted? Proposed spec sentence:
+    "EX-03: Account data cannot be persisted, so no User account is created; the system informs the Guest that registration
+    could not be completed and can be tried again later."'
+  review_notes: 'Review 2026-10-05: REQUEST CHANGES (layout only). Labels were shortened, but guard text is still
+    about 4.3 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during
+    peer review: give it a full page, accept it, or ask the BA to split the use case.'
 - key: UC-SIGN-IN
   display_id: UC-02
   name: Log In
@@ -51,9 +61,17 @@ use_cases:
   final_status: needs-manual-review
   blocked_reason: null
   audit_status: REQUEST CHANGES
-  review_notes: 'Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 3.7 pt when the diagram is
-    fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page,
-    accept it, or ask the BA to split the use case.'
+  observations:
+  - The Google branch (AF-01) is drawn below the email branch, so two pairs of finals share an outcome (F1/F4 session
+    created, F2/F5 no session); merging them renders at 3.7 pt. Confirm during peer review.
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-03.'
+  - 'NEEDS CLARIFICATION (EX-03): Is the User informed when the Identity Provider is unavailable or rejects authentication?
+    Proposed spec sentence: "EX-03: The Identity Provider is unavailable or rejects authentication; no session is
+    created and the system informs the User that Google log-in could not be completed."'
+  review_notes: 'Review 2026-10-05: REQUEST CHANGES (layout only). Labels were shortened, but guard text is still
+    about 5.0 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during
+    peer review: give it a full page, accept it, or ask the BA to split the use case.'
 - key: UC-SIGN-OUT
   display_id: UC-03
   name: Log Out
@@ -69,7 +87,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-PASSWORD-RESET
   display_id: UC-04
   name: Forgot Password
@@ -87,11 +105,9 @@ use_cases:
   final_status: needs-manual-review
   blocked_reason: null
   audit_status: REQUEST CHANGES
-  observations:
-  - The outcome when the new password fails the strength requirements is not specified; it is not modelled.
-  review_notes: 'Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 3.5 pt when the diagram is
-    fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page,
-    accept it, or ask the BA to split the use case.'
+  review_notes: 'Review 2026-10-05: REQUEST CHANGES (layout only). Labels were shortened, but guard text is still
+    about 4.7 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during
+    peer review: give it a full page, accept it, or ask the BA to split the use case.'
 - key: UC-PROFILE-VIEW
   display_id: UC-05.1
   name: View Personal Profile
@@ -107,7 +123,13 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
+  observations:
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
+  - 'NEEDS CLARIFICATION (EX-01): Is the User told that the profile is temporarily unavailable? Proposed spec sentence:
+    "EX-01: The profile information is temporarily unavailable; the system informs the User that the profile cannot
+    be displayed at the moment."'
 - key: UC-PROFILE-UPDATE
   display_id: UC-05.2
   name: Update Personal Profile
@@ -123,7 +145,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-PASSWORD-CHANGE
   display_id: UC-05.3
   name: Change Password
@@ -139,11 +161,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - AF-01 (account managed only by an external Identity Provider) contradicts a precondition; modelled as a defensive
-    System check that rejects the request (the System enforces the precondition). Confirm with the BA that the check
-    is intended.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-PROJECT-CREATE
   display_id: UC-06
   name: Create Project
@@ -336,7 +354,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-PRODUCT-GOAL-SET
   display_id: UC-14.2
   name: Set Product Goal
@@ -352,7 +370,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-PRODUCT-GOAL-UPDATE
   display_id: UC-14.3
   name: Update Product Goal
@@ -368,7 +386,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-BACKLOG-ITEM-VIEW
   display_id: UC-15.1
   name: View Product Backlog Item
@@ -384,7 +402,13 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
+  observations:
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
+  - 'NEEDS CLARIFICATION (EX-01): What does the User see when the selected item is no longer available? Proposed
+    spec sentence: "EX-01: The selected item is no longer available; the system informs the User that the item is
+    no longer available."'
 - key: UC-BACKLOG-ITEM-CREATE
   display_id: UC-15.2
   name: Create Product Backlog Item
@@ -400,10 +424,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - The YAML does not say whether EX-01 (required identifying information missing) also applies to a draft saved
-    through AF-01; the diagram applies EX-01 to the complete-item path only.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-BACKLOG-ITEM-UPDATE
   display_id: UC-15.3
   name: Update Product Backlog Item
@@ -419,7 +440,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-BACKLOG-ITEM-REMOVE
   display_id: UC-15.4
   name: Remove Product Backlog Item
@@ -435,10 +456,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - EX-01 (the item is locked in the active Sprint) contradicts a precondition; modelled as a defensive System check
-    that rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-BACKLOG-ORDER
   display_id: UC-16
   name: Order Product Backlog
@@ -454,7 +472,13 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
+  observations:
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
+  - 'NEEDS CLARIFICATION (EX-01): What does the Product Owner see when a complete and unique order cannot be saved?
+    Proposed spec sentence: "EX-01: The system cannot save a complete and unique order for all backlog items; the
+    previous order is kept and the system informs the Product Owner that the new order could not be saved."'
 - key: UC-BACKLOG-ITEM-REFINE
   display_id: UC-17
   name: Refine Backlog Item
@@ -470,10 +494,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - EX-01 only says the item 'can no longer be substantially decomposed'; the YAML does not say whether refinement
-    then continues with NF5-NF6. The diagram ends the use case after the rejection.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-BACKLOG-ITEM-ESTIMATE
   display_id: UC-18
   name: Estimate Backlog Item
@@ -486,18 +507,10 @@ use_cases:
   generation_status: generated
   traceability_status: pass
   uml_review_status: pass
-  visual_review_status: needs-manual-review
-  final_status: needs-manual-review
+  visual_review_status: pass
+  final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: REQUEST CHANGES
-  observations:
-  - NF3 (the Product Owner clarifies 'when requested') is drawn as a decision; the decision node sits in the Product
-    Owner partition because PlantUML cannot route the branch label cleanly otherwise.
-  - AF-01.2 'The item is returned for further refinement' does not name who returns the item; the action is drawn
-    in the System partition.
-  review_notes: 'Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 5.4 pt when the diagram is
-    fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page,
-    accept it, or ask the BA to split the use case.'
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SPRINT-PLAN
   display_id: UC-19
   name: Plan Sprint
@@ -513,7 +526,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SPRINT-START
   display_id: UC-20
   name: Start Sprint
@@ -529,11 +542,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - EX-01 (another Sprint is already active) contradicts a precondition; modelled as a defensive System check that
-    rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
-  - AF-01.2 does not say what happens when the revalidation fails; only the successful revalidation is modelled.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SPRINT-COMPLETE
   display_id: UC-21
   name: Complete Sprint
@@ -546,16 +555,10 @@ use_cases:
   generation_status: generated
   traceability_status: pass
   uml_review_status: pass
-  visual_review_status: needs-manual-review
-  final_status: needs-manual-review
+  visual_review_status: pass
+  final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: REQUEST CHANGES
-  observations:
-  - AF-01.2 re-performs NF1, so the loop repeats NF2 and NF3; these two actions appear twice because PlantUML cannot
-    label the back edge of a bottom-tested loop.
-  review_notes: 'Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 5.5 pt when the diagram is
-    fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page,
-    accept it, or ask the BA to split the use case.'
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SPRINT-CANCEL
   display_id: UC-22
   name: Cancel Sprint
@@ -571,11 +574,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - EX-01 (the Sprint is already completed or cancelled) contradicts a precondition; modelled as a defensive System
-    check that rejects the request (the System enforces the precondition). Confirm with the BA that the check is
-    intended.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SPRINT-BOARD-REVIEW
   display_id: UC-23
   name: Review Sprint Board
@@ -591,10 +590,13 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
   observations:
-  - AF-01 (the project has no active Sprint) contradicts a precondition; modelled as a defensive System check that
-    rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
+  - 'NEEDS CLARIFICATION (EX-01): What does the User see when Sprint data is temporarily unavailable? Proposed spec
+    sentence: "EX-01: The board cannot be loaded because Sprint data is temporarily unavailable; the system informs
+    the User that the Sprint Board is temporarily unavailable."'
 - key: UC-SPRINT-TASK-VIEW
   display_id: UC-24.1
   name: View Sprint Task
@@ -610,7 +612,14 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
+  observations:
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01 (read as data that cannot
+    be retrieved, consistent with UC-15.1).'
+  - 'NEEDS CLARIFICATION (EX-01): Does ''no longer available'' mean the task was removed (a state rejection) or
+    that its data temporarily cannot be retrieved? Proposed spec sentence: "EX-01: The selected Sprint Task has
+    been removed; the system informs the User that the task is no longer available."'
 - key: UC-SPRINT-TASK-CREATE
   display_id: UC-24.2
   name: Create Sprint Task
@@ -626,9 +635,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - The outcome when the task information is invalid is not specified; it is not modelled.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SPRINT-TASK-UPDATE
   display_id: UC-24.3
   name: Update Sprint Task
@@ -644,7 +651,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SPRINT-TASK-ASSIGN
   display_id: UC-24.4
   name: Assign Sprint Task
@@ -660,7 +667,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SPRINT-TASK-DELETE
   display_id: UC-24.5
   name: Delete Sprint Task
@@ -676,11 +683,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - EX-01 (the task has already entered execution) contradicts a precondition; modelled as a defensive System check
-    that rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
-  - No alternative flow covers declining the confirmation, so the confirmation step has no decline path.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-TASK-DEPENDENCY-ADD
   display_id: UC-24.6
   name: Add Task Dependency
@@ -696,7 +699,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-TASK-DEPENDENCY-REMOVE
   display_id: UC-24.7
   name: Remove Task Dependency
@@ -712,7 +715,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SPRINT-TASK-CLAIM
   display_id: UC-25
   name: Claim Sprint Task
@@ -722,19 +725,17 @@ use_cases:
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SPRINT-TASK-CLAIM.puml
   svg: diagrams/activity/sprint-work/svg/UC-SPRINT-TASK-CLAIM.svg
-  generation_status: blocked
-  traceability_status: blocked
-  uml_review_status: not-run
-  visual_review_status: not-run
-  final_status: BLOCKED — INSUFFICIENT SPECIFICATION
-  blocked_reason: AF-01 'The Developer withdraws before confirmation' refers to a confirmation step that the normal
-    flow does not contain (NF1 opens and claims the task; NF2-NF4 are System steps). The point at which AF-01 can
-    occur, and what the Developer confirms, are not specified.
-  audit_status: BLOCKED
-  questions:
-  - Should the normal flow contain a confirmation step (for example 'System asks the Developer to confirm the claim'
-    and 'Developer confirms the claim'), or should AF-01 be removed?
-  - If a confirmation step is added, does EX-01 (another Developer claims first) apply before or after the confirmation?
+  generation_status: generated
+  traceability_status: pass
+  uml_review_status: pass
+  visual_review_status: pass
+  final_status: ready-for-peer-review
+  blocked_reason: null
+  audit_status: READY FOR PEER REVIEW
+  observations:
+  - 'NEEDS CLARIFICATION (NF2): What happens if NF2 finds the task is no longer active (for example, removed from
+    the Sprint between selection and claim)? Proposed spec sentence: "EX-02: The task is no longer active in the
+    Sprint; the system rejects the claim."'
 - key: UC-WORK-ITEM-STATUS-UPDATE
   display_id: UC-26
   name: Update Work Item Status
@@ -750,10 +751,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - After AF-01.2 the diagram re-evaluates the AF-01 condition and then EX-01; the YAML does not say whether NF2
-    validation is repeated when another status is chosen.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SUBTASKS-VIEW
   display_id: UC-27.1
   name: View Subtasks
@@ -769,7 +767,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SUBTASK-CREATE
   display_id: UC-27.2
   name: Create Subtask
@@ -785,7 +783,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SUBTASK-UPDATE
   display_id: UC-27.3
   name: Update Subtask
@@ -801,7 +799,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SUBTASK-COMPLETE
   display_id: UC-27.4
   name: Complete Subtask
@@ -811,20 +809,16 @@ use_cases:
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SUBTASK-COMPLETE.puml
   svg: diagrams/activity/sprint-work/svg/UC-SUBTASK-COMPLETE.svg
-  generation_status: blocked
-  traceability_status: blocked
-  uml_review_status: not-run
-  visual_review_status: not-run
-  final_status: BLOCKED — REQUIREMENT CONFLICT
-  blocked_reason: AF-01 'The User restores a completed subtask to an incomplete state' conflicts with precondition
-    3 'The subtask is not already complete' and with NF1 'Selects an incomplete subtask'. AF-01 is an actor-initiated
-    action that can only start from a state the preconditions exclude, so it cannot be drawn without violating the
-    Use Case Description.
-  audit_status: BLOCKED
-  questions:
-  - Should restoring a completed subtask be a separate use case (for example 'Reopen Subtask'), or should precondition
-    3 be relaxed so that this use case covers both directions?
-  - If both directions stay here, which steps does the restore path share with the normal flow (validation, EX-01)?
+  generation_status: generated
+  traceability_status: pass
+  uml_review_status: pass
+  visual_review_status: pass
+  final_status: ready-for-peer-review
+  blocked_reason: null
+  audit_status: READY FOR PEER REVIEW
+  observations:
+  - Completion (NF2-NF4) and reopening (AF-01) share one validation and one recording step; the requested status
+    is the Developer's decision. Confirm during peer review.
 - key: UC-SUBTASK-DELETE
   display_id: UC-27.5
   name: Delete Subtask
@@ -840,7 +834,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
 - key: UC-WORK-ITEM-COMMENT
   display_id: UC-28
   name: Comment on Work Item
@@ -854,13 +848,10 @@ use_cases:
   generation_status: generated
   traceability_status: pass
   uml_review_status: pass
-  visual_review_status: needs-manual-review
-  final_status: needs-manual-review
+  visual_review_status: pass
+  final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: REQUEST CHANGES
-  review_notes: 'Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 5.3 pt when the diagram is
-    fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page,
-    accept it, or ask the BA to split the use case.'
+  audit_status: READY FOR PEER REVIEW
 - key: UC-WORK-ITEM-ACTIVITY-REVIEW
   display_id: UC-29
   name: Review Work Item Activity
@@ -876,7 +867,13 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
+  observations:
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
+  - 'NEEDS CLARIFICATION (EX-01): Is the User informed when activity data cannot be retrieved? Proposed spec sentence:
+    "EX-01: Activity data cannot be retrieved; the system informs the User that the activity history is temporarily
+    unavailable."'
 - key: UC-NOTIFICATIONS-REVIEW
   display_id: UC-30
   name: Review Notifications
@@ -889,17 +886,17 @@ use_cases:
   generation_status: generated
   traceability_status: pass
   uml_review_status: pass
-  visual_review_status: needs-manual-review
-  final_status: needs-manual-review
+  visual_review_status: pass
+  final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: REQUEST CHANGES
+  audit_status: READY FOR PEER REVIEW
   observations:
-  - AF-02.1 does not say what happens when the actor has no verified email address; the failure path is not modelled.
-  - The YAML does not order NF3, AF-01 and AF-02; the diagram lets the User choose to review a notification or send
-    another request, which the System then distinguishes.
-  review_notes: 'Audit 2026-10-03: REQUEST CHANGES (layout only). Guard text is about 4.6 pt when the diagram is
-    fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during peer review: give it a full page,
-    accept it, or ask the BA to split the use case.'
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-02 (the previous preference
+    remains unchanged).'
+  - 'NEEDS CLARIFICATION (EX-02): Is the User informed that the email delivery preference could not be saved? Proposed
+    spec sentence: "EX-02: The email delivery preference cannot be saved; the previous preference remains unchanged
+    and the system informs the User that the change was not saved."'
 - key: UC-SPRINT-PROGRESS-MONITOR
   display_id: UC-31
   name: Monitor Sprint Progress
@@ -915,10 +912,13 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
   observations:
-  - EX-01 (no active Sprint exists) contradicts a precondition; modelled as a defensive System check that rejects
-    the request (the System enforces the precondition). Confirm with the BA that the check is intended.
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
+  - 'NEEDS CLARIFICATION (EX-01): What does the User see when the selected project has no active Sprint? Proposed
+    spec sentence: "EX-01: No active Sprint exists for the selected project; the system informs the User that there
+    is no active Sprint to monitor."'
 - key: UC-USER-ACCOUNTS-SEARCH
   display_id: UC-32.1
   name: Search and View User Accounts
@@ -934,9 +934,13 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
   observations:
-  - AF-01 ends the use case; the YAML does not say whether the administrator may search again.
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
+  - 'NEEDS CLARIFICATION (EX-01): Is the System Administrator told that account administration data is unavailable?
+    Proposed spec sentence: "EX-01: Account administration data is temporarily unavailable; the system informs the
+    System Administrator that accounts cannot be searched at the moment."'
 - key: UC-USER-ACCOUNT-SUSPEND
   display_id: UC-32.2
   name: Suspend User Account
@@ -952,10 +956,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - EX-01 and EX-02 (protected accounts) contradicts a precondition; modelled as a defensive System check that rejects
-    the request (the System enforces the precondition). Confirm with the BA that the check is intended.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-USER-ACCOUNT-REACTIVATE
   display_id: UC-32.3
   name: Reactivate User Account
@@ -971,10 +972,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - EX-01 (the account has been deleted) contradicts a precondition; modelled as a defensive System check that rejects
-    the request (the System enforces the precondition). Confirm with the BA that the check is intended.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-USER-ACCOUNT-DELETE
   display_id: UC-32.4
   name: Delete User Account
@@ -990,10 +988,7 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
-  observations:
-  - EX-01 and EX-02 (protected accounts) contradicts a precondition; modelled as a defensive System check that rejects
-    the request (the System enforces the precondition). Confirm with the BA that the check is intended.
+  audit_status: READY FOR PEER REVIEW
 - key: UC-SYSTEM-AUDIT-LOG-REVIEW
   display_id: UC-33
   name: Review System Audit Log
@@ -1009,7 +1004,13 @@ use_cases:
   visual_review_status: pass
   final_status: ready-for-peer-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: READY FOR PEER REVIEW
+  observations:
+  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
+    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
+  - 'NEEDS CLARIFICATION (EX-01): Is the System Administrator informed that the audit store is unavailable? Proposed
+    spec sentence: "EX-01: The audit store is temporarily unavailable; the system informs the System Administrator
+    that audit events cannot be displayed at the moment."'
 review_sections:
 - title: Modelling conventions applied
   body: "- Authentication is a precondition only; Log In appears only in UC-SIGN-IN.\n- Partitions name the responsibility,\
