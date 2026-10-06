@@ -4,9 +4,10 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS, BR-PROGRESS-ACTIVE-SPRINT
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = Sprint indicators displayed (NF4, also after AF-01; postconditions met);
-' F2 = no active Sprint, no progress calculated (EX-01, BR-PROGRESS-ACTIVE-SPRINT). The UC does not
-' describe a response to EX-01, so no action is drawn (Needs clarification).
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the Sprint indicators are displayed (NF4, also after AF-01; postconditions met)
+' or after EX-01 (no active Sprint, no progress calculated, BR-PROGRESS-ACTIVE-SPRINT). The UC does
+' not describe a response to EX-01, so no action is drawn (Needs clarification).
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
@@ -31,8 +32,7 @@ if ($question_x("Active Sprint exists?")) then ($guard_left("[active Sprint]"))
   ' [NF4, AF-01.2, POST1]
   :Display Sprint indicators
   and charts;
-  stop
 else ($guard_right("[no active", "Sprint — EX-01]"))
-  stop
 endif
+stop
 @enduml
