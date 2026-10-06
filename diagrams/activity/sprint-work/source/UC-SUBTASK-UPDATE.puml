@@ -45,6 +45,6 @@ else ($guard_right("[cancel", "editing — AF-01]"))
   :Keep subtask
   unchanged;
 endif
-|SYS|
+|DEV|
 stop
 @enduml
