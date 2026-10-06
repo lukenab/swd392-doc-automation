@@ -70,6 +70,6 @@ else ($guard_right("[other", "request]"))
     endif
   endif
 endif
-|SYS|
+|USR|
 stop
 @enduml
