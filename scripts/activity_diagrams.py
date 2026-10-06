@@ -252,6 +252,11 @@ def format_svg(svg_path: Path) -> tuple[float, float]:
         x1, x2, y1, y2 = (num(line.get(a)) for a in ("x1", "x2", "y1", "y2"))
         if abs(x1 - x2) < 0.01 and abs(y2 - y1) >= 0.6 * vb[3]:
             lanes.append(line)
+    if lanes:
+        # a long bypass flow line can also span most of the drawing; real borders all start at the
+        # top of the partitions, so keep only the lines that start there
+        lanes_top = min(min(num(l.get("y1")), num(l.get("y2"))) for l in lanes)
+        lanes = [l for l in lanes if min(num(l.get("y1")), num(l.get("y2"))) - lanes_top < 1]
     if len(lanes) < 2:
         raise RuntimeError(f"No swimlane borders found in {svg_path}; activity diagrams must use partitions.")
     xs = [num(l.get("x1")) for l in lanes]
