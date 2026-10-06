@@ -1531,3 +1531,9 @@ Sửa lỗi pipeline `scripts/activity_diagrams.py`: bước hậu xử lý nh�
 | UC-32.3 | `UC-USER-ACCOUNT-REACTIVATE` | 2 → 1 | 6.8 → 6.8 pt |  |
 | UC-32.4 | `UC-USER-ACCOUNT-DELETE` | 2 → 1 | 7.0 → 7.0 pt |  |
 | UC-33 | `UC-SYSTEM-AUDIT-LOG-REVIEW` | 3 → 1 | 9.2 → 8.9 pt | Đường vòng EX-01 mới đủ dài để bị lỗi pipeline kéo tới đáy khung; đã sửa pipeline |
+
+## 11. Cập nhật 2026-10-06 — đặt Activity Final cùng lane với merge cuối
+
+PlantUML đặt merge node của một `if` ngay dưới decision của nó. Khi decision ngoài cùng là lựa chọn của actor, merge cuối nằm ở lane actor; nếu final node lại khai báo ở lane System, luồng phải đi từ merge sang System rồi mới tới final. Vị trí lane của merge và final không mang ý nghĩa UML, nên final được chuyển sang lane của merge cuối (chỉ đổi dòng lane ngay trước `stop`). Đã áp dụng cho: UC-05.2 `UC-PROFILE-UPDATE`, UC-14.3 `UC-PRODUCT-GOAL-UPDATE`, UC-22 `UC-SPRINT-CANCEL`, UC-24.3 `UC-SPRINT-TASK-UPDATE`, UC-24.4 `UC-SPRINT-TASK-ASSIGN`, UC-24.7 `UC-TASK-DEPENDENCY-REMOVE`, UC-27.3 `UC-SUBTASK-UPDATE`, UC-27.5 `UC-SUBTASK-DELETE`, UC-30 `UC-NOTIFICATIONS-REVIEW`, UC-32.3 `UC-USER-ACCOUNT-REACTIVATE`. Render lại cả 55 sơ đồ: chỉ 10 SVG này thay đổi; action, decision, guard và số final giữ nguyên.
+
+Còn một đoạn vòng ngắn ở UC-02, UC-10, UC-11, UC-13, UC-15.4, UC-24.5, UC-32.2, UC-32.4: ở đó merge **bên trong** (sau quyết định xác nhận của actor) nằm ở lane actor rồi mới nối sang merge ngoài ở lane System. Muốn bỏ đoạn này phải đặt quyết định của actor vào lane System, trái với quy tắc lane, nên giữ nguyên.
