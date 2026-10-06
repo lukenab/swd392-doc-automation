@@ -4,9 +4,10 @@
 ' Business Rules: BR-COMMENT-PROJECT-MEMBER, BR-ACTIVITY-IMMUTABLE, BR-NOTIFICATION-EMAIL-PREFERENCE, BR-NOTIFICATION-DELIVERY-INDEPENDENT
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = comment saved (postconditions met; an email delivery failure (EX-02) does not
-' change this outcome, BR-NOTIFICATION-DELIVERY-INDEPENDENT); F2 = comment rejected because the work
-' item was removed (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the comment is saved (postconditions met; an email delivery failure, EX-02, does
+' not change this outcome, BR-NOTIFICATION-DELIVERY-INDEPENDENT) or after EX-01 (comment rejected
+' because the work item was removed).
 ' NF5 requests email delivery only for eligible members (BR-NOTIFICATION-EMAIL-PREFERENCE); the YAML
 ' does not describe the case where no member is eligible, so no separate branch is drawn for it.
 !include ../../_shared/activity-style.puml
@@ -53,10 +54,10 @@ if ($question_x("Work item still exists?")) then ($guard_left("[exists]"))
     ' [EX-02, BR-NOTIFICATION-DELIVERY-INDEPENDENT]
     :Record failed email delivery;
   endif
-  stop
 else ($guard_right("[removed", "— EX-01]"))
   ' [EX-01, GUIDE-7.3]
   :Reject comment;
-  stop
 endif
+|SYS|
+stop
 @enduml

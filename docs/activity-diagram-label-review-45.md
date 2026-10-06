@@ -1498,3 +1498,36 @@ Theo quyết định của nhóm, các sơ đồ UC-06 → UC-22 được quy v�
 | UC-20 | `UC-SPRINT-START` | không đổi | 6.3 pt | Không khả thi: đã thử, nhánh EX-01 phải đi dài xuống đáy và cắt 7 đường flow; giữ 2 final |
 | UC-21 | `UC-SPRINT-COMPLETE` | 2 → 1 | 6.7 → 6.1 pt | Phần còn lại của luồng chuyển vào nhánh [unchanged] để EX-01 nhập lại |
 | UC-22 | `UC-SPRINT-CANCEL` | 2 → 1 | 6.4 → 6.4 pt |  |
+
+## 10. Cập nhật 2026-10-06 — gộp Activity Final cho UC-23 → UC-33
+
+Áp dụng cùng tiêu chí "khả thi" như mục 9 cho UC-23 → UC-33. Action, decision, loop và guard không đổi (đã đối chiếu tự động); comment `Final nodes` đầu mỗi file `.puml` đã viết lại và thay cho các dòng "Final nodes" ở mục 4 của các UC này.
+
+Sửa lỗi pipeline `scripts/activity_diagrams.py`: bước hậu xử lý nhận mọi đường dọc dài ≥ 60% chiều cao là đường chia lane rồi kéo dài tới đáy khung. Một đường vòng dài (bypass) cũng bị nhận nhầm, nên trên SVG có một đoạn thừa chạy xuống đáy. Giờ chỉ những đường bắt đầu ở đỉnh các lane mới được coi là đường chia lane. Render lại cả 55 sơ đồ: chỉ các SVG có lỗi này thay đổi, gồm UC-31, UC-32.1, UC-33 và hai sơ đồ đã có trên `develop` là UC-04 và UC-05.3.
+
+| UC | Semantic key | Final | A4 trước → sau | Ghi chú |
+|---|---|---|---|---|
+| UC-23 | `UC-SPRINT-BOARD-REVIEW` | 2 → 1 | 8.1 → 8.1 pt |  |
+| UC-24.1 | `UC-SPRINT-TASK-VIEW` | 2 → 1 | 10.5 → 10.5 pt |  |
+| UC-24.2 | `UC-SPRINT-TASK-CREATE` | 2 → 1 | 8.9 → 8.8 pt |  |
+| UC-24.3 | `UC-SPRINT-TASK-UPDATE` | 2 → 1 | 7.3 → 7.3 pt |  |
+| UC-24.4 | `UC-SPRINT-TASK-ASSIGN` | 3 → 1 | 7.3 → 7.3 pt |  |
+| UC-24.5 | `UC-SPRINT-TASK-DELETE` | 2 → 1 | 6.1 → 6.1 pt |  |
+| UC-24.6 | `UC-TASK-DEPENDENCY-ADD` | 2 → 1 | 8.1 → 8.1 pt |  |
+| UC-24.7 | `UC-TASK-DEPENDENCY-REMOVE` | 2 → 1 | 7.0 → 7.0 pt |  |
+| UC-25 | `UC-SPRINT-TASK-CLAIM` | 2 → 1 | 10.5 → 10.5 pt |  |
+| UC-26 | `UC-WORK-ITEM-STATUS-UPDATE` | 2 → 1 | 8.0 → 8.0 pt |  |
+| UC-27.1 | `UC-SUBTASKS-VIEW` | không đổi | 10.5 pt | Đã có 1 final |
+| UC-27.2 | `UC-SUBTASK-CREATE` | 2 → 1 | 10.3 → 10.3 pt |  |
+| UC-27.3 | `UC-SUBTASK-UPDATE` | 2 → 1 | 7.0 → 7.0 pt |  |
+| UC-27.4 | `UC-SUBTASK-COMPLETE` | 2 → 1 | 7.3 → 7.3 pt |  |
+| UC-27.5 | `UC-SUBTASK-DELETE` | 2 → 1 | 7.0 → 7.0 pt |  |
+| UC-28 | `UC-WORK-ITEM-COMMENT` | 2 → 1 | 6.5 → 6.5 pt |  |
+| UC-29 | `UC-WORK-ITEM-ACTIVITY-REVIEW` | 2 → 1 | 9.3 → 8.9 pt |  |
+| UC-30 | `UC-NOTIFICATIONS-REVIEW` | không đổi | 6.0 pt | Không khả thi: gộp thì quyết định "Preference saved?" có hai nhánh nhập lại ngay, không bước nào ở giữa (quyết định suông); giữ final riêng cho EX-02 |
+| UC-31 | `UC-SPRINT-PROGRESS-MONITOR` | 2 → 1 | 10.3 → 10.1 pt | Đường vòng EX-01 mới đủ dài để bị lỗi pipeline kéo tới đáy khung; đã sửa pipeline |
+| UC-32.1 | `UC-USER-ACCOUNTS-SEARCH` | 3 → 2 | 8.6 → 8.3 pt | Nhánh [no — AF-01] kết thúc ngay trong vòng lặp; nối về final chung phải thêm một decision mà UC không mô tả. Đường vòng EX-01 cũng cần bản sửa pipeline |
+| UC-32.2 | `UC-USER-ACCOUNT-SUSPEND` | 2 → 1 | 7.0 → 7.0 pt |  |
+| UC-32.3 | `UC-USER-ACCOUNT-REACTIVATE` | 2 → 1 | 6.8 → 6.8 pt |  |
+| UC-32.4 | `UC-USER-ACCOUNT-DELETE` | 2 → 1 | 7.0 → 7.0 pt |  |
+| UC-33 | `UC-SYSTEM-AUDIT-LOG-REVIEW` | 3 → 1 | 9.2 → 8.9 pt | Đường vòng EX-01 mới đủ dài để bị lỗi pipeline kéo tới đáy khung; đã sửa pipeline |

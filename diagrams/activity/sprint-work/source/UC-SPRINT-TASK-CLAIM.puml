@@ -4,8 +4,9 @@
 ' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = task assigned to the Developer and recorded (postconditions met); F2 = claim
-' rejected because another Developer claimed the task first, task not assigned to this Developer (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the task is assigned to the Developer and recorded (postconditions met) or after
+' EX-01 (claim rejected, another Developer claimed the task first).
 ' The UC defines no outcome for a task that fails the "active" part of NF2, so no branch is drawn for it.
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
@@ -26,10 +27,10 @@ if ($question("Task still unassigned?")) then ($guard_left("[unassigned]"))
   ' [NF4, POST2]
   :Update Sprint Board
   and record assignment;
-  stop
 else ($guard_right("[claimed by another", "Developer — EX-01]"))
   ' [EX-01, GUIDE-7.3]
   :Reject task claim;
-  stop
 endif
+|SYS|
+stop
 @enduml

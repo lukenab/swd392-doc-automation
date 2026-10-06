@@ -4,8 +4,9 @@
 ' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = assignment saved and recorded (postconditions met); F2 = assignment rejected,
-' task assignment unchanged (EX-01); F3 = current assignment cleared, task unassigned (AF-01).
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the assignment is saved and recorded (postconditions met), after the current
+' assignment is cleared (AF-01) or after EX-01 (assignment rejected, unchanged).
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -27,17 +28,16 @@ if ($question_x("Assign or clear?")) then ($guard_left("[assign]"))
     ' [NF4, POST1, POST2]
     :Save assignment
     and record change;
-    stop
   else ($guard_right("[assignee no longer", "active — EX-01]"))
     ' [EX-01, GUIDE-7.3]
     :Reject task assignment;
-    stop
   endif
 else ($guard_right("[clear current", "assignment — AF-01]"))
   |SYS|
   ' [AF-01.1]
   :Mark Sprint Task
   as unassigned;
-  stop
 endif
+|SYS|
+stop
 @enduml

@@ -4,8 +4,9 @@
 ' Business Rules: BR-SPRINT-TASK-DEVELOPER, BR-WORK-ITEM-STATUS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = status updated, board refreshed and change recorded (postconditions met);
-' F2 = status change rejected, work item status unchanged (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the status is updated, the board refreshed and the change recorded
+' (postconditions met) or after EX-01 (status change rejected, status unchanged).
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -35,10 +36,10 @@ if ($question("Status still available?")) then ($guard_left("[available]"))
   ' [NF4, POST2]
   :Refresh Sprint Board
   and record change;
-  stop
 else ($guard_right("[no longer", "available — EX-01]"))
   ' [EX-01, BR-WORK-ITEM-STATUS, GUIDE-7.3]
   :Reject status change;
-  stop
 endif
+|SYS|
+stop
 @enduml

@@ -4,8 +4,9 @@
 ' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-OWNER-ACCOUNT-DELETION-GUARD, BR-LAST-ADMINISTRATOR-PROTECTION, BR-AUDIT-EVENT-COMPLETENESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = account deleted, audit and attribution data preserved (postconditions met);
-' F2 = account unchanged (EX-01, EX-02, AF-01 merge here).
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the account is deleted with audit and attribution data preserved (postconditions
+' met) or with the account unchanged (EX-01, EX-02, AF-01).
 ' EX-01 and EX-02 share one decision: both are protections on the requested target account
 ' (BR-OWNER-ACCOUNT-DELETION-GUARD, BR-LAST-ADMINISTRATOR-PROTECTION) and both reject the request.
 ' AF-01.1 is an explicit System step of the YAML, so it is kept as an action.
@@ -32,7 +33,6 @@ if ($question_x("Account protected?")) then ($guard_left("[not protected]"))
     ' [NF4, POST1, POST2, BR-AUDIT-EVENT-COMPLETENESS, OTHER]
     :Delete account and
     record audit event;
-    stop
   else ($guard_right("[cancel", "— AF-01]"))
     |SYS|
     ' [AF-01.1]
