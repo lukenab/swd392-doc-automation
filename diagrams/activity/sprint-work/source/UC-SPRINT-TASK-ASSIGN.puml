@@ -38,6 +38,6 @@ else ($guard_right("[clear current", "assignment — AF-01]"))
   :Mark Sprint Task
   as unassigned;
 endif
-|SYS|
+|DEV|
 stop
 @enduml

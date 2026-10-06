@@ -47,6 +47,6 @@ else ($guard_right("[continue", "Sprint — AF-01]"))
   ' [AF-01.2]
   :Leave Sprint unchanged;
 endif
-|SYS|
+|PRO|
 stop
 @enduml

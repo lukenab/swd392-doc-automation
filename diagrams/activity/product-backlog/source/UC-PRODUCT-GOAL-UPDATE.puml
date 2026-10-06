@@ -46,6 +46,6 @@ else ($guard_right("[cancel before", "saving — AF-01]"))
   :Keep current Product
   Goal unchanged;
 endif
-|SYS|
+|PRO|
 stop
 @enduml

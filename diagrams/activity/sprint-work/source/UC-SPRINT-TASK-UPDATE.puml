@@ -43,6 +43,6 @@ else ($guard_right("[cancel before", "saving — AF-01]"))
   :Discard unsaved
   task changes;
 endif
-|SYS|
+|DEV|
 stop
 @enduml

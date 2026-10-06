@@ -41,6 +41,6 @@ else ($guard_right("[cancel", "— AF-01]"))
   :Leave dependency
   unchanged;
 endif
-|SYS|
+|DEV|
 stop
 @enduml

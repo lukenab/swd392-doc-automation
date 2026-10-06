@@ -42,6 +42,6 @@ else ($guard_right("[cancel before", "saving — AF-01]"))
   ' [AF-01.1]
   :Discard unsaved changes;
 endif
-|SYS|
+|USR|
 stop
 @enduml
