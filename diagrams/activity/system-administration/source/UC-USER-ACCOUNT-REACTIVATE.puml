@@ -4,8 +4,9 @@
 ' Business Rules: BR-SYSADMIN-USER-ACCOUNT, BR-AUDIT-EVENT-COMPLETENESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = account reactivated and audit event recorded (postconditions met); F2 = account
-' not reactivated (AF-01: stays suspended; EX-01: deleted before confirmation).
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the account is reactivated and the audit event recorded (postconditions met) or
+' with the account not reactivated (AF-01: stays suspended; EX-01: deleted before confirmation).
 ' EX-01 is checked after the confirmation because the YAML places the deletion before the
 ' reactivation is confirmed. AF-01.1 is an explicit System step of the YAML, so it is kept as an action.
 !include ../../_shared/activity-style.puml
@@ -30,7 +31,6 @@ if ($question_x("Confirm reactivation?")) then ($guard_left("[confirm]"))
     ' [NF4, POST1, POST2, BR-AUDIT-EVENT-COMPLETENESS, OTHER]
     :Reactivate account and
     record audit event;
-    stop
   else ($guard_right("[deleted", "— EX-01]"))
     ' [EX-01, GUIDE-7.3]
     :Reject reactivation;

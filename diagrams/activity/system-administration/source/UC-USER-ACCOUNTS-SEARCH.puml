@@ -5,9 +5,10 @@
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
 ' Final nodes: F1 = search ended without a matching account (AF-01, administrator does not search
-' again); F2 = selected account information displayed without modification (postcondition met);
-' F3 = account administration data unavailable, nothing displayed (EX-01). EX-01 describes no
-' System response, so its guard goes straight to F3.
+' again); F2 = shared final after the selected account information is displayed without modification
+' (postcondition met) or after EX-01 (data unavailable, nothing displayed; no System response
+' described, so its guard goes straight to F2). F1 stays separate: it ends the flow from inside the
+' AF-01 loop, and joining F2 would need an extra decision that the UC does not describe.
 ' AF-01.2 says the administrator "may" search again, so the loop exit is the administrator's choice.
 !include ../../_shared/activity-style.puml
 |ADM| $lane_title("System Administrator")
@@ -41,9 +42,8 @@ if ($question_x("Administration data available?")) then ($guard_left("[available
   ' [NF4, POST1, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS, OTHER]
   :Display administrative status
   and relevant account metadata;
-  stop
 else ($guard_right("[temporarily unavailable", "— EX-01]"))
-  |SYS|
-  stop
 endif
+|SYS|
+stop
 @enduml

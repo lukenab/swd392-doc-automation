@@ -4,9 +4,10 @@
 ' Business Rules: BR-AUDIT-IMMUTABLE, BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS, BR-AUDIT-EVENT-COMPLETENESS, BR-AUDIT-VIEW-SYSADMIN-ONLY
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = matching events displayed and reviewed (postcondition met); F2 = no matching
-' events reported (AF-01); F3 = audit store unavailable, no events displayed (EX-01). EX-01
-' describes no System response, so its guard goes straight to F3.
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after matching events are displayed and reviewed (postcondition met), after no matching
+' events are reported (AF-01) or after EX-01 (audit store unavailable, no events displayed; no
+' System response described, so its guard goes straight to the final).
 !include ../../_shared/activity-style.puml
 |ADM| $lane_title("System Administrator")
 |SYS| $lane_title("System")
@@ -31,15 +32,13 @@ if ($question_x("Audit store available?")) then ($guard_left("[available]"))
     |ADM|
     ' [NF5, POST1]
     :Review results;
-    stop
   else ($guard_right("[no match", "— AF-01]"))
     |SYS|
     ' [AF-01.1]
     :Report no matching events;
-    stop
   endif
 else ($guard_right("[temporarily unavailable", "— EX-01]"))
-  |SYS|
-  stop
 endif
+|SYS|
+stop
 @enduml
