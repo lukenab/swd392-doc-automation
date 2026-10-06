@@ -4,9 +4,10 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = Sprint Task displayed (POST1); F2 = selected task no longer available, nothing
-' displayed (EX-01). The UC does not describe a response to EX-01, so no action is drawn
-' (Needs clarification).
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the Sprint Task is displayed (POST1) or after EX-01 (task no longer available,
+' nothing displayed). The UC does not describe a response to EX-01, so no action is drawn (Needs
+' clarification).
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
@@ -22,9 +23,8 @@ dependencies and activity summary;
 if ($question("Task still available?")) then ($guard_left("[available]"))
   ' [NF3, POST1]
   :Display Sprint Task;
-  stop
 else ($guard_right("[no longer", "available — EX-01]"))
-  |SYS|
-  stop
 endif
+|SYS|
+stop
 @enduml

@@ -4,8 +4,9 @@
 ' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER, BR-SUBTASK-SINGLE-LEVEL
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = subtask created and parent progress recalculated (postconditions met);
-' F2 = creation rejected, no subtask created (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the subtask is created and parent progress recalculated (postconditions met) or
+' after EX-01 (creation rejected, no subtask created).
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -32,10 +33,10 @@ if ($question("Parent is a Sprint Task?")) then ($guard_left("[Sprint Task]"))
   new subtask;
   ' [POST2]
   :Recalculate parent-task progress;
-  stop
 else ($guard_right("[parent is a", "subtask — EX-01]"))
   ' [EX-01, BR-SUBTASK-SINGLE-LEVEL, GUIDE-7.3]
   :Reject subtask creation;
-  stop
 endif
+|SYS|
+stop
 @enduml

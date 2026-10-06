@@ -4,7 +4,8 @@
 ' Business Rules: BR-PROJECT-MEMBER-ACCESS
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = current Sprint Board displayed (POST1); F2 = current board not displayed, no
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the current Sprint Board is displayed (POST1) or with no board displayed and no
 ' data changed: no active Sprint (AF-01) or Sprint data temporarily unavailable (EX-01, no response
 ' specified in the UC).
 !include ../../_shared/activity-style.puml
@@ -27,7 +28,6 @@ if ($question_x("Active Sprint exists?")) then ($guard_left("[active Sprint]"))
     ' [NF4, POST1]
     :Display item priority, assignee,
     estimate and status;
-    stop
   else ($guard_right("[unavailable", "— EX-01]"))
   endif
 else ($guard_right("[no active Sprint", "— AF-01]"))
@@ -40,5 +40,6 @@ else ($guard_right("[no active Sprint", "— AF-01]"))
   else ($guard_right("[not", "available]"))
   endif
 endif
+|SYS|
 stop
 @enduml

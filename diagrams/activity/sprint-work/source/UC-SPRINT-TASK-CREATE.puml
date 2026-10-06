@@ -4,8 +4,9 @@
 ' Business Rules: BR-SPRINT-TASK-ACTIVE-SPRINT, BR-SPRINT-TASK-DEVELOPER
 ' Trace comments ' [ref] name the YAML element behind the next action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = Sprint Task created and recorded (postconditions met); F2 = creation rejected,
-' no task created (EX-01).
+' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
+' is reached after the Sprint Task is created and recorded (postconditions met) or after EX-01
+' (creation rejected, no task created).
 !include ../../_shared/activity-style.puml
 
 |DEV| $lane_title("Developer")
@@ -42,10 +43,10 @@ if ($question("Backlog Item still in active Sprint?")) then ($guard_left("[still
   ' [POST2]
   :Record creation in
   work item activity;
-  stop
 else ($guard_right("[no longer in active", "Sprint — EX-01]"))
   ' [EX-01, BR-SPRINT-TASK-ACTIVE-SPRINT, GUIDE-7.3]
   :Reject Sprint Task creation;
-  stop
 endif
+|SYS|
+stop
 @enduml
