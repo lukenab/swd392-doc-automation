@@ -9,6 +9,9 @@
 ' member left or was removed (EX-01). F1 cannot join F2: AF-02 must bypass the EX-01 check and NF5,
 ' which the confirmed path (AF-01) shares with the normal flow, so merging would require drawing
 ' them twice.
+' Layout (2026-10-06): the decision "Confirm replacement?" is drawn in the System lane, where the
+' System waits for the Project Owner's answer; the guards name the Project Owner's choice. In the
+' Project Owner lane its merge forced a detour across the lanes.
 !include ../../_shared/activity-style.puml
 |OWN| $lane_title("Project Owner")
 |SYS| $lane_title("System")
@@ -32,8 +35,8 @@ if ($question("Conflicting Product Owner?")) then ($guard_left("[no conflict]"))
 else ($guard_right("[conflicting", "assignment — AF-01]"))
   ' [AF-01.1]
   :Request replacement confirmation;
-  |OWN|
-  if ($question_x("Confirm replacement?")) then ($guard_left("[confirm — AF-01]"))
+  if ($question("Confirm replacement?")) then ($guard_left("[confirm — AF-01]"))
+    |OWN|
     ' [AF-01]
     :Confirm replacement;
     |SYS|

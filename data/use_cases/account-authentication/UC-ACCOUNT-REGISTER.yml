@@ -2,20 +2,19 @@ key: UC-ACCOUNT-REGISTER
 group: ACCOUNT_AUTHENTICATION
 order: 100
 name: Register Account
-summary: Create a system-wide User account using email and password or Google.
+summary: Create a system-wide User account using email and password after email verification.
 created_by: Trần Công Luận
 date_created: 2026-09-26
 primary_actor: Guest
 secondary_actors:
   - Email Service
-  - Identity Provider
 trigger: The Guest chooses to create a system-wide account.
 description: >
-  This use case allows a Guest to register with an email address and password
-  or with a verified Google identity and become a system-wide User.
+  This use case allows a Guest to register with an email address and password,
+  verify control of the email address, and become a system-wide User.
 preconditions:
   - The Guest is not authenticated.
-  - The Guest can access the submitted email account or Google identity.
+  - The Guest can access the submitted email account.
 postconditions:
   - One active User account is linked to the verified email address.
   - The new User is not automatically a member of any project.
@@ -40,24 +39,18 @@ normal_flow:
     action: Activates the User account and confirms registration.
 alternative_flows:
   - id: AF-01
-    condition: The Guest chooses to register with Google.
+    condition: At Normal Flow Step 4, the email/password registration information is invalid or the email address is already in use.
     steps:
-      - The system redirects the Guest to the Identity Provider.
-      - The Identity Provider authenticates the Guest and returns a verified identity.
-      - The system validates email uniqueness and creates an active User account.
-  - id: AF-02
-    condition: The registration information is invalid.
-    steps:
-      - The system requests registration information again.
+      - The system identifies the invalid information or duplicate email and requests correction.
+      - The Guest corrects and resubmits the registration information.
+      - Return to Normal Flow Step 4 for validation.
 exceptions:
   - id: EX-01
-    description: The Email Service cannot deliver the verification message; the account remains pending and verification can be requested again.
+    description: "At Normal Flow Step 7, if the Email Service cannot deliver the verification message, the account remains pending. The Guest may request another verification message; the account is not activated until verification succeeds."
   - id: EX-02
-    description: The Identity Provider does not return a valid verified identity; registration is cancelled.
+    description: "At Normal Flow Step 5, if the pending account record cannot be saved, no new User account is created."
   - id: EX-03
-    description: Account data cannot be persisted, so no User account is created.
-  - id: EX-04
-    description: The Identity Provider returns an email address that already belongs to an existing account; no new account is created and the Guest is directed to Log In.
+    description: "At Normal Flow Step 8, if the verification link is invalid or expired, the account remains pending. The Guest may request another verification message; the account is not activated until verification succeeds."
 priority: Must Have
 frequency_of_use: Rare
 business_rules:
@@ -65,6 +58,6 @@ business_rules:
   - BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP
   - BR-ACCOUNT-VERIFIED-IDENTITY
   - BR-PASSWORD-STRENGTH
-other_information: Registration is self-service; a System Administrator does not create the account through this use case. Duplicate-email handling applies to both email/password registration and Google registration.
+other_information: Registration is self-service; a System Administrator does not create the account through this use case. First-time registration through Google is handled by UC-02 Log In.
 assumptions:
-  - Email/password authentication and Google OAuth are configured through a managed authentication provider.
+  - Email/password authentication is configured through a managed authentication provider.

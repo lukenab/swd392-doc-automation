@@ -2,105 +2,84 @@
 ' UC-01 - Register Account | semantic key: UC-ACCOUNT-REGISTER
 ' Source: data/use_cases/account-authentication/UC-ACCOUNT-REGISTER.yml
 ' Business Rules: BR-ACCOUNT-EMAIL-UNIQUE, BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP, BR-ACCOUNT-VERIFIED-IDENTITY, BR-PASSWORD-STRENGTH
-' Trace comments ' [ref] name the YAML element behind the next action.
+' Trace comments [ref] identify the YAML element behind each action.
 ' No title: the Word caption supplies it.
-' Final nodes: F1 = User account active via email verification (POST1, POST2); F2 = account remains
-' pending, verification can be requested again (EX-01); F3 = active User account created with Google
-' (POST1, POST2 hold once the AF-01.3 account data is persisted); F4 = no User account created
-' (EX-02, EX-03 on either path, EX-04). F1 and F3 have the same outcome but end two separate
-' registration-method branches with no common last step; merging them would split F4 instead.
-' EX-01, EX-02, EX-03 describe no System response, so their guards go straight to the final.
+' Final node: one Activity Final in the System lane. Activation (POST1, POST2), account kept
+' pending (EX-03 link invalid or expired; EX-01 message not delivered) and registration not
+' completed (EX-02) meet at merge nodes before it; the end states are named by the guards.
+' Layout: the AF-01 loop decision is drawn in the Guest lane so that the loop exit does not cross
+' the flows into and out of the Guest's correction step; the System checks the information.
 !include ../../_shared/activity-style.puml
 |GST| $lane_title("Guest")
 |SYS| $lane_title("System")
 |EML| $lane_title("Email Service")
-|IDP| $lane_title("Identity Provider")
 
 |GST|
 start
 ' [NF1, TRIGGER]
-:Open account registration;
+:Choose email/password
+registration;
 |SYS|
-if ($question_x("Registration method?")) then ($guard_left("[email and password]"))
-  ' [NF2]
-  :Request display name,
-  email and password;
-  |GST|
-  ' [NF3]
-  :Provide registration
-  information;
-  |SYS|
-  ' [NF4, BR-ACCOUNT-EMAIL-UNIQUE, BR-PASSWORD-STRENGTH]
-  :Validate information,
-  email uniqueness and
-  password strength;
-  while ($question("Information invalid?")) is ($guard_left("[invalid — AF-02]"))
-    ' [AF-02.1]
-    :Request registration information
-    again;
-    |GST|
-    ' [NF3, AF-02]
-    :Provide registration
-    information;
-    |SYS|
-  endwhile ($guard("[valid]"))
-  ' [NF5]
-  :Create pending account;
-  if ($question("Account data persisted?")) then ($guard_left("[persisted]"))
-    ' [NF6]
-    :Request email
-    verification message;
-    |EML|
-    ' [NF7]
-    :Deliver verification
-    message to submitted
-    email address;
-    |SYS|
-    if ($question_x("Message delivered?")) then ($guard_left("[delivered]"))
-      |GST|
-      ' [NF8]
-      :Open valid
-      verification link;
-      |SYS|
-      ' [NF9, POST1, POST2, BR-ACCOUNT-VERIFIED-IDENTITY, BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP]
-      :Activate User account
-      and confirm registration;
-      stop
-    else ($guard_right("[not delivered", "— EX-01]"))
-      |SYS|
-      stop
-    endif
-  else ($guard_right("[not persisted", "— EX-03]"))
-  endif
-else ($guard_right("[Google", "— AF-01]"))
+' [NF2]
+:Request display name,
+email and password;
+|GST|
+' [NF3]
+:Provide registration
+information;
+|SYS|
+' [NF4, BR-ACCOUNT-EMAIL-UNIQUE, BR-PASSWORD-STRENGTH]
+:Validate registration
+information;
+|GST|
+while ($question_x("Information invalid?")) is ($guard_right("", "[invalid or used — AF-01]"))
   |SYS|
   ' [AF-01.1]
-  :Redirect Guest to
-  Identity Provider;
-  |IDP|
-  ' [AF-01.2, BR-ACCOUNT-VERIFIED-IDENTITY]
-  :Authenticate Guest and
-  return verified identity;
+  :Request correction of
+  invalid information;
+  |GST|
+  ' [AF-01.2]
+  :Correct and resubmit
+  information;
   |SYS|
-  if ($question_x("Valid verified identity?")) then ($guard_left("[valid]"))
-    ' [AF-01.3, BR-ACCOUNT-EMAIL-UNIQUE]
-    :Validate email
-    uniqueness;
-    if ($question("Email address unused?")) then ($guard_left("[unused]"))
-      ' [AF-01.3, BR-ACCOUNT-VERIFIED-IDENTITY]
-      :Create active
-      User account;
-      if ($question("Account data persisted?")) then ($guard_left("[persisted]"))
-        stop
-      else ($guard_right("[not persisted", "— EX-03]"))
-      endif
-    else ($guard_right("[already registered", "— EX-04]"))
-      ' [EX-04, BR-ACCOUNT-EMAIL-UNIQUE]
-      :Direct Guest
-      to sign-in;
+  ' [AF-01.3, NF4, BR-ACCOUNT-EMAIL-UNIQUE, BR-PASSWORD-STRENGTH]
+  :Revalidate registration
+  information;
+  |GST|
+endwhile ($guard("[valid]"))
+|SYS|
+' [NF5]
+:Create pending User account;
+if ($question("Account saved?")) then ($guard_left("[saved]"))
+  ' [NF6]
+  :Request verification email;
+  |EML|
+  ' [NF7]
+  :Attempt email delivery;
+  |SYS|
+  if ($question_x("Message delivered?")) then ($guard_left("[delivered]"))
+    |GST|
+    ' [NF8]
+    :Open verification link;
+    |SYS|
+    if ($question_x("Link valid?")) then ($guard_left("[valid]"))
+      ' [NF9, POST1, POST2, BR-ACCOUNT-VERIFIED-IDENTITY, BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP]
+      :Activate account and
+      confirm registration;
+    else ($guard_right("[invalid or", "expired — EX-03]"))
+      ' [EX-03]
+      :Keep account pending;
     endif
-  else ($guard_right("[no valid identity", "— EX-02]"))
+  else ($guard_right("[not delivered", "— EX-01]"))
+    |SYS|
+    ' [EX-01]
+    :Keep account pending;
   endif
+else ($guard_right("[not saved", "— EX-02]"))
+  |SYS|
+  ' [EX-02, GUIDE-7.3]
+  :Report registration
+  not completed;
 endif
 |SYS|
 stop

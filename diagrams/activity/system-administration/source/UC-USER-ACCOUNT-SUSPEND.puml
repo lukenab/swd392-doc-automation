@@ -10,6 +10,9 @@
 ' EX-01 and EX-02 share one decision: both are protections on the requested target account
 ' (BR-OWNER-ACCOUNT-DELETION-GUARD, BR-LAST-ADMINISTRATOR-PROTECTION) and both reject the request.
 ' AF-01.1 is an explicit System step of the YAML, so it is kept as an action.
+' Layout (2026-10-06): the decision "Confirm suspension?" is drawn in the System lane, where the
+' System waits for the System Administrator's answer; the guards name the System Administrator's
+' choice. In the System Administrator lane its merge forced a detour across the lanes.
 !include ../../_shared/activity-style.puml
 |ADM| $lane_title("System Administrator")
 |SYS| $lane_title("System")
@@ -24,8 +27,8 @@ if ($question_x("Account protected?")) then ($guard_left("[not protected]"))
   ' [NF2]
   :Display impact and request
   reason and confirmation;
-  |ADM|
-  if ($question_x("Confirm suspension?")) then ($guard_left("[confirm]"))
+  if ($question("Confirm suspension?")) then ($guard_left("[confirm]"))
+    |ADM|
     ' [NF3]
     :Provide reason and
     confirm suspension;

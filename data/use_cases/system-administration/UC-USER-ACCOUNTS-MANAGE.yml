@@ -46,6 +46,6 @@ business_rules:
   - BR-SYSADMIN-NO-PROJECT-AUTO-ACCESS
   - BR-OWNER-ACCOUNT-DELETION-GUARD
   - BR-LAST-ADMINISTRATOR-PROTECTION
-other_information: Accounts are created through self-service Register Account; project roles are managed within each project, not through this use case.
+other_information: Accounts are created through self-service Register Account or on the first eligible Google log-in (UC-02 Log In); project roles are managed within each project, not through this use case.
 assumptions:
   - At least one active System Administrator must always remain.

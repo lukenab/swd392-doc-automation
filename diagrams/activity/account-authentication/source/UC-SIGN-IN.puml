@@ -1,89 +1,111 @@
 @startuml UC-SIGN-IN
 ' UC-02 - Log In | semantic key: UC-SIGN-IN
 ' Source: data/use_cases/account-authentication/UC-SIGN-IN.yml
-' Business Rules: BR-ACCOUNT-VERIFIED-IDENTITY, BR-AUTH-ACTIVE-ACCOUNT
-' Trace comments ' [ref] name the YAML element behind the next action.
+' Business Rules: BR-ACCOUNT-EMAIL-UNIQUE, BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP, BR-ACCOUNT-VERIFIED-IDENTITY, BR-AUTH-ACTIVE-ACCOUNT
+' Trace comments [ref] identify the YAML element behind each action.
 ' No title: the Word caption supplies it.
-' EX-01 and EX-02 share one decision on the email path: NF4 checks both in one step and both
-' reject the log-in. AF-02 applies to the locally managed password, so it is drawn as the User's
-' choice instead of submitting credentials.
-' Final nodes: F1 = session established with email and password (POST1, POST2); F2 = log-in
-' rejected, no session (EX-01, EX-02); F3 = User directed to Forgot Password, no session (AF-02);
-' F4 = session established with Google (POST1, POST2); F5 = no session created on the Google path
-' (EX-02, EX-03, EX-04). The Google branch (AF-01) is drawn below the email branch to keep the
-' diagram legible at A4; each branch therefore ends in its own finals (F1/F4 and F2/F5 share an
-' outcome). Side-by-side branches with merged finals render at 3.7 pt.
-' EX-03 describes no System response, so its guard goes straight to F5.
+' Final node: one Activity Final in the System lane. Session created (email/password, linked
+' Google, first Google log-in), AF-02 hand-off to Forgot Password and EX-01 to EX-06 meet at merge
+' nodes before it; the end states are named by the guards. EX-06 and EX-04 are nested decisions
+' so that every branch reaches the shared merges.
+' Layout: email/password and Google are parallel alternatives; linked-account and
+' first-time Google paths are parallel alternatives. Keep Password forgotten? in System.
+' AF-01.5 checks email control (EX-06) before email uniqueness (EX-04), so an unverified
+' identity never learns whether the address already has an account.
 !include ../../_shared/activity-style.puml
-|USR| $lane_title("User")
+|GST| $lane_title("Guest")
 |SYS| $lane_title("System")
 |IDP| $lane_title("Identity Provider")
 
-|USR|
+|GST|
 start
 ' [NF1, TRIGGER]
-:Open log-in page and choose log-in option;
+:Open log-in page and
+choose a method;
 |SYS|
-if ($question_x("Log-in option?")) then ($guard_left("[email and password]"))
+if ($question_x("Authentication method?")) then ($guard_left("[email/password]"))
   ' [NF2]
   :Request registered
   email and password;
-  |USR|
-  if ($question_x("Password forgotten?")) then ($guard_left("[no]"))
+  if ($question("Password forgotten?")) then ($guard_left("[no]"))
+    |GST|
     ' [NF3]
     :Submit credentials;
     |SYS|
     ' [NF4, BR-AUTH-ACTIVE-ACCOUNT]
-    :Validate credentials and
-    confirm account is active;
-    if ($question("Valid and active?")) then ($guard_left("[yes]"))
-      ' [NF5, POST1, POST2]
-      :Create authenticated session
-      and display available projects;
-      stop
+    :Validate credentials
+    and account status;
+    if ($question("Credentials accepted?")) then ($guard_left("[valid and active]"))
+      ' [NF5, POST1, POST3]
+      :Create session and
+      display available projects;
     else ($guard_right("[invalid — EX-01", "or inactive — EX-02]"))
-      ' [EX-01, EX-02, BR-AUTH-ACTIVE-ACCOUNT, GUIDE-7.3]
+      ' [EX-01, EX-02, GUIDE-7.3]
       :Reject log-in;
-      stop
     endif
   else ($guard_right("[forgotten", "— AF-02]"))
     |SYS|
     ' [AF-02.1]
-    :Direct User to
+    :Direct Guest to
     Forgot Password;
-    stop
   endif
 else ($guard_right("[Google", "— AF-01]"))
-endif
 |SYS|
 ' [AF-01.1]
-:Redirect User to
+:Redirect Guest to
 Identity Provider;
 |IDP|
-' [AF-01.2, BR-ACCOUNT-VERIFIED-IDENTITY]
-:Authenticate User and
-return verified identity;
+' [AF-01.2]
+:Authenticate Guest and
+return Google identity;
 |SYS|
-if ($question_x("Identity verified?")) then ($guard_left("[verified]"))
-  ' [AF-01.3]
-  :Match identity to existing
-  active User account;
-  if ($question("Account found?")) then ($guard_left("[found]"))
+' [AF-01.3, OTHER]
+:Validate identity and
+find User by subject;
+if ($question("Identity valid?")) then ($guard_left("[valid]"))
+  if ($question("Linked User found?")) then ($guard_left("[linked]"))
     if ($question("Account active?")) then ($guard_left("[active]"))
-      ' [AF-01.3, POST1, POST2, BR-AUTH-ACTIVE-ACCOUNT]
-      :Create authenticated
-      session;
-      stop
-    else ($guard_right("[not active", "— EX-02]"))
+      ' [AF-01.4, POST1, POST3, BR-AUTH-ACTIVE-ACCOUNT]
+      :Create session and
+      display available projects;
+    else ($guard_right("[inactive", "— EX-02]"))
       ' [EX-02, BR-AUTH-ACTIVE-ACCOUNT]
       :Reject log-in;
     endif
-  else ($guard_right("[no account", "— EX-04]"))
-    ' [EX-04]
-    :Direct to
-    Register Account;
+  else ($guard_right("[not linked", "— AF-01]"))
+  ' [AF-01.5, BR-ACCOUNT-VERIFIED-IDENTITY, BR-ACCOUNT-EMAIL-UNIQUE]
+  :Check email control
+  and email uniqueness;
+  if ($question("Email control unverified?")) then ($guard_left("[unverified\n— EX-06]"))
+    ' [EX-06, BR-ACCOUNT-VERIFIED-IDENTITY, GUIDE-7.3]
+    :Reject first-time
+    Google log-in;
+  else ($guard("[verified]"))
+    if ($question("Email already used?")) then ($guard_left("[used\n— EX-04]"))
+      ' [EX-04, BR-ACCOUNT-EMAIL-UNIQUE]
+      :Direct Guest to
+      existing log-in method;
+    else ($guard("[unused — AF-03]"))
+      ' [AF-03.1, POST2, BR-ACCOUNT-EMAIL-UNIQUE, BR-ACCOUNT-VERIFIED-IDENTITY]
+      :Create active User
+      linked to Google subject;
+      if ($question("Account saved?")) then ($guard_left("[saved]"))
+        ' [AF-03.2, POST1, POST3, BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP]
+        :Create session and
+        display available projects;
+      else ($guard_right("[not saved", "— EX-05]"))
+        ' [EX-05, GUIDE-7.3]
+        :Report account
+        not created;
+      endif
+    endif
   endif
-else ($guard_right("[unavailable or", "rejected — EX-03]"))
+  endif
+else ($guard_right("[unavailable or", "invalid — EX-03]"))
+  ' [EX-03, GUIDE-7.3]
+  :Report Google log-in
+  not completed;
+endif
 endif
 |SYS|
 stop

@@ -17,38 +17,26 @@ use_cases:
   primary_actor: Guest
   secondary_actors:
   - Email Service
-  - Identity Provider
   assignee: Trần Công Luận
   source: diagrams/activity/account-authentication/source/UC-ACCOUNT-REGISTER.puml
   svg: diagrams/activity/account-authentication/svg/UC-ACCOUNT-REGISTER.svg
   generation_status: generated
   traceability_status: pass
-  uml_review_status: pass
+  uml_review_status: needs-manual-review
   visual_review_status: needs-manual-review
   final_status: needs-manual-review
   blocked_reason: null
-  audit_status: REQUEST CHANGES
+  audit_status: PENDING REVIEW
   observations:
-  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
-    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01, EX-02 and EX-03.'
-  - 'NEEDS CLARIFICATION (EX-01): Is the Guest informed that the verification message could not be delivered, and
-    how is verification requested again? Proposed spec sentence: "EX-01: The Email Service cannot deliver the verification
-    message; the account remains pending, and the system informs the Guest that the message could not be sent and
-    that verification can be requested again."'
-  - 'NEEDS CLARIFICATION (EX-02): Is the Guest informed when the Identity Provider returns no valid verified identity?
-    Proposed spec sentence: "EX-02: The Identity Provider does not return a valid verified identity; registration
-    is cancelled and the system informs the Guest that Google registration could not be completed."'
-  - 'NEEDS CLARIFICATION (EX-03): Is the Guest informed when account data cannot be persisted? Proposed spec sentence:
-    "EX-03: Account data cannot be persisted, so no User account is created; the system informs the Guest that registration
-    could not be completed and can be tried again later."'
-  review_notes: 'Review 2026-10-05: REQUEST CHANGES (layout only). Labels were shortened, but guard text is still
-    about 4.3 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during
-    peer review: give it a full page, accept it, or ask the BA to split the use case.'
+  - 'Redrawn 2026-10-06 from email/password-only UC-01 YAML; previous Google-registration review notes no longer apply.'
+  - 'Updated 2026-10-07: EX-03 (invalid or expired verification link) added; AF-01 loop decision drawn in the Guest lane so the loop exit no longer crosses the Guest flows; EX-02 ends with a report action.'
+  - 'Updated 2026-10-07: four Activity Finals reduced to one in the System lane; all end states meet at merge nodes, matching UC-06 to UC-33.'
+  review_notes: 'Peer review required. At 16.5 x 20.5 cm, guard text is about 4.8 pt (below the 6 pt team target); give the figure a full page or accept it.'
 - key: UC-SIGN-IN
   display_id: UC-02
   name: Log In
   group: ACCOUNT_AUTHENTICATION
-  primary_actor: User
+  primary_actor: Guest
   secondary_actors:
   - Identity Provider
   assignee: Trần Công Luận
@@ -56,22 +44,16 @@ use_cases:
   svg: diagrams/activity/account-authentication/svg/UC-SIGN-IN.svg
   generation_status: generated
   traceability_status: pass
-  uml_review_status: pass
+  uml_review_status: needs-manual-review
   visual_review_status: needs-manual-review
   final_status: needs-manual-review
   blocked_reason: null
-  audit_status: REQUEST CHANGES
+  audit_status: PENDING REVIEW
   observations:
-  - The Google branch (AF-01) is drawn below the email branch, so two pairs of finals share an outcome (F1/F4 session
-    created, F2/F5 no session); merging them renders at 3.7 pt. Confirm during peer review.
-  - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
-    action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-03.'
-  - 'NEEDS CLARIFICATION (EX-03): Is the User informed when the Identity Provider is unavailable or rejects authentication?
-    Proposed spec sentence: "EX-03: The Identity Provider is unavailable or rejects authentication; no session is
-    created and the system informs the User that Google log-in could not be completed."'
-  review_notes: 'Review 2026-10-05: REQUEST CHANGES (layout only). Labels were shortened, but guard text is still
-    about 5.0 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during
-    peer review: give it a full page, accept it, or ask the BA to split the use case.'
+  - 'Redrawn 2026-10-06 for returning and first-time Google sign-in; prior no-account redirect no longer applies.'
+  - 'Updated 2026-10-07: identity validation now precedes the Identity valid? decision; email control (EX-06) is checked before email uniqueness (EX-04); EX-03 and EX-05 end with report actions; labels use log-in.'
+  - 'Updated 2026-10-07: nine Activity Finals reduced to one in the System lane; EX-06 and EX-04 are nested decisions so all branches meet at merge nodes, matching UC-06 to UC-33.'
+  review_notes: 'Re-laid out on 2026-10-06: email/password and Google branches run side by side; single-final version is 2204 x 1439 px (about 3.0 pt guard text at A4 width). Peer review required for all AF/EX guards. Still below the 6 pt guard-text target when fitted to one A4 report page; use a larger page or split into method-specific views before insertion.'
 - key: UC-SIGN-OUT
   display_id: UC-03
   name: Log Out

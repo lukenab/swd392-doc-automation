@@ -11,6 +11,9 @@
 ' F2 = shared final of all other paths: the completed paths (NF4, AF-01, AF-02 saved) and the
 ' unchanged paths (EX-01, EX-03) sit on nested branches, so separate finals would duplicate a final;
 ' the last action on each path states its outcome.
+' Layout (2026-10-06): the decision "Review a notification?" is drawn in the System lane, where the
+' System waits for the User's answer; the guards name the User's choice. In the User lane its merge
+' forced a detour across the lanes. The final stays in the System lane.
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
@@ -24,8 +27,8 @@ center;
 ' [NF2, BR-NOTIFICATION-OWNER-ONLY]
 :Display notifications and email
 preference, newest first;
-|USR|
-if ($question_x("Review a notification?")) then ($guard_left("[review]"))
+if ($question("Review a notification?")) then ($guard_left("[review]"))
+  |USR|
   ' [NF3]
   :Select a
   notification;
@@ -70,6 +73,6 @@ else ($guard_right("[other", "request]"))
     endif
   endif
 endif
-|USR|
+|SYS|
 stop
 @enduml

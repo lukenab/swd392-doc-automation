@@ -7,6 +7,9 @@
 ' One Activity Final shared by all paths (team decision 2026-10-05; UML allows one or several). It
 ' is reached after the item is removed and recorded (postconditions met) or with the item unchanged
 ' (AF-01 cancellation, EX-01 rejection).
+' Layout (2026-10-06): the decision "Confirm removal?" is drawn in the System lane, where the System
+' waits for the Product Owner's answer; the guards name the Product Owner's choice. In the Product
+' Owner lane its merge forced a detour across the lanes.
 !include ../../_shared/activity-style.puml
 |PRO| $lane_title("Product Owner")
 |SYS| $lane_title("System")
@@ -21,8 +24,8 @@ if ($question_x("Item locked in active Sprint?")) then ($guard_left("[not locked
   ' [NF2]
   :Display impact and
   request confirmation;
-  |PRO|
-  if ($question_x("Confirm removal?")) then ($guard_left("[confirm]"))
+  if ($question("Confirm removal?")) then ($guard_left("[confirm]"))
+    |PRO|
     ' [NF3]
     :Confirm removal;
     |SYS|

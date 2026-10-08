@@ -7,6 +7,9 @@
 ' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
 ' is reached after the dependency is removed and recorded (postconditions met) or with no removal:
 ' request rejected because the dependency was already removed (EX-01) or cancelled (AF-01).
+' Layout (2026-10-06): the decision "Confirm removal?" is drawn in the System lane, where the System
+' waits for the Developer's answer; the guards name the Developer's choice. In the Developer lane
+' its merge forced a detour across the lanes. The final stays in the System lane.
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -22,8 +25,8 @@ existing dependency;
 ' [NF3]
 :Request confirmation and
 display affected tasks;
-|DEV|
-if ($question_x("Confirm removal?")) then ($guard_left("[confirm]"))
+if ($question("Confirm removal?")) then ($guard_left("[confirm]"))
+  |DEV|
   ' [NF4]
   :Confirm removal;
   |SYS|
@@ -41,6 +44,6 @@ else ($guard_right("[cancel", "— AF-01]"))
   :Leave dependency
   unchanged;
 endif
-|DEV|
+|SYS|
 stop
 @enduml

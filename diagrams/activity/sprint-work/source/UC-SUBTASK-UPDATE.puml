@@ -7,6 +7,9 @@
 ' One Activity Final shared by all paths (team decision 2026-10-06; UML allows one or several). It
 ' is reached after the changes are saved (postconditions met) or with the subtask unchanged (EX-01
 ' rejection, AF-01 cancellation).
+' Layout (2026-10-06): the decision "Submit changes?" is drawn in the System lane, where the System
+' waits for the Developer's answer; the guards name the Developer's choice. In the Developer lane
+' its merge forced a detour across the lanes. The final stays in the System lane.
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -19,8 +22,8 @@ start
 ' [NF2]
 :Display current
 editable values;
-|DEV|
-if ($question_x("Submit changes?")) then ($guard_left("[submit]"))
+if ($question("Submit changes?")) then ($guard_left("[submit]"))
+  |DEV|
   ' [NF3]
   :Revise information
   and submit subtask;
@@ -45,6 +48,6 @@ else ($guard_right("[cancel", "editing — AF-01]"))
   :Keep subtask
   unchanged;
 endif
-|DEV|
+|SYS|
 stop
 @enduml
