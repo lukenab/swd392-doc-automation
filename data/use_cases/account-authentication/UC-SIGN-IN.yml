@@ -2,28 +2,29 @@ key: UC-SIGN-IN
 group: ACCOUNT_AUTHENTICATION
 order: 200
 name: Log In
-summary: Establish an authenticated session using email and password or Google.
+summary: Establish a session using email and password or Google, creating an eligible User on first Google log-in.
 created_by: Trần Công Luận
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Guest
 secondary_actors:
   - Identity Provider
-trigger: The User chooses to log in to the system.
+trigger: The Guest chooses to access the system using email and password or Google.
 description: >
-  This use case authenticates a registered User with email and password or
-  Google and creates a session for accessing authorized system functions.
+  This use case authenticates an existing User with email and password or Google.
+  On the first eligible Google log-in, it creates a system-wide User account
+  before establishing an authenticated session.
 preconditions:
-  - The User has a registered system-wide account.
-  - The User is not already authenticated in the current client session.
+  - The Guest is not already authenticated in the current client session.
 postconditions:
-  - An authenticated session is established for the User.
-  - No project membership or project-scoped responsibility is changed.
+  - On success, an authenticated session is established for an active User account.
+  - On first eligible Google log-in, one active system-wide User account is created and linked to the verified Google identity.
+  - No project membership or project-scoped responsibility is granted or changed.
 normal_flow:
-  - actor: User
+  - actor: Guest
     action: Opens the log-in page and chooses email and password.
   - actor: System
     action: Requests the registered email address and password.
-  - actor: User
+  - actor: Guest
     action: Submits the credentials.
   - actor: System
     action: Validates the credentials and confirms that the account is active.
@@ -31,29 +32,42 @@ normal_flow:
     action: Creates an authenticated session and displays the User's available projects.
 alternative_flows:
   - id: AF-01
-    condition: The User chooses to log in with Google.
+    condition: At Normal Flow Step 1, the Guest chooses Continue with Google. This path replaces Normal Flow Steps 2-5.
     steps:
-      - The system redirects the User to the Identity Provider.
-      - The Identity Provider authenticates the User and returns a verified identity.
-      - The system matches the identity to an existing active User account and creates a session.
+      - The system redirects the Guest to the Identity Provider.
+      - The Identity Provider authenticates the Guest and returns a verified identity.
+      - The system validates the returned identity and looks up a User account by the provider's stable subject identifier.
+      - If a linked User account exists and is active, the system creates an authenticated session and displays the User's available projects; if the linked account is not active, continue at EX-02.
+      - If no User account is linked, the system first checks that current control of the returned email address is established (EX-06 if it is not), then checks email uniqueness (EX-04 if the email belongs to another account); continue at AF-03 if both checks pass.
   - id: AF-02
-    condition: The User has forgotten the locally managed password.
+    condition: On the email/password path, the Guest has forgotten the locally managed password.
     steps:
-      - The system directs the User to Forgot Password.
+      - The system directs the Guest to Forgot Password.
+  - id: AF-03
+    condition: At AF-01 Step 5, no User account is linked to the Google subject and the email address satisfies BR-ACCOUNT-VERIFIED-IDENTITY and BR-ACCOUNT-EMAIL-UNIQUE.
+    steps:
+      - The system creates one active system-wide User account linked to the Google subject and verified email address.
+      - The system creates an authenticated session and displays the User's available projects without granting project membership.
 exceptions:
   - id: EX-01
     description: The submitted credentials are invalid; no session is created.
   - id: EX-02
     description: The User account is pending, suspended, or deleted; log-in is rejected.
   - id: EX-03
-    description: The Identity Provider is unavailable or rejects authentication; no session is created.
+    description: The Identity Provider is unavailable, rejects authentication, or returns an invalid identity; no session is created.
   - id: EX-04
-    description: The Identity Provider returns a verified identity but no matching User account exists; no session is created and the person is directed to Register Account.
+    description: A verified Google identity has no linked User account but its email address already belongs to another account; the system does not link accounts by email alone, creates no session, and directs the Guest to authenticate using the existing account method.
+  - id: EX-05
+    description: During AF-03, the new User account cannot be saved; no account or session is created.
+  - id: EX-06
+    description: On first Google log-in, current control of the returned email address cannot be established under BR-ACCOUNT-VERIFIED-IDENTITY; no new account or session is created.
 priority: Must Have
 frequency_of_use: Very Frequent
 business_rules:
+  - BR-ACCOUNT-EMAIL-UNIQUE
+  - BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP
   - BR-ACCOUNT-VERIFIED-IDENTITY
   - BR-AUTH-ACTIVE-ACCOUNT
-other_information: Logging in authenticates the User but does not grant access to projects in which the User is not an active member.
+other_information: Continue with Google serves both new and returning people. The Google subject, not the email address, identifies a linked account. A matching email alone must not link accounts or grant access. First-time Google log-in does not grant access to any project.
 assumptions:
   - Session credentials are issued and validated by the managed authentication provider.

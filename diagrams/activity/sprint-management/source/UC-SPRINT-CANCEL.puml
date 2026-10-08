@@ -11,6 +11,9 @@
 ' of the Product Owner's confirmation decision.
 ' EX-01 occurs "before the cancellation is confirmed", so the System checks the Sprint state
 ' after the confirmation (NF3) and before cancelling (NF4).
+' Layout (2026-10-06): the decision "Confirm cancellation?" is drawn in the System lane, where the
+' System waits for the Product Owner's answer; the guards name the Product Owner's choice. In the
+' Product Owner lane its merge forced a detour across the lanes. The final stays in the System lane.
 !include ../../_shared/activity-style.puml
 |PRO| $lane_title("Product Owner")
 |SYS| $lane_title("System")
@@ -24,8 +27,8 @@ and provide reason;
 ' [NF2]
 :Display impact on selected
 and completed work;
-|PRO|
-if ($question_x("Confirm cancellation?")) then ($guard_left("[confirm]"))
+if ($question("Confirm cancellation?")) then ($guard_left("[confirm]"))
+  |PRO|
   ' [NF3]
   :Confirm cancellation;
   |SYS|
@@ -47,6 +50,6 @@ else ($guard_right("[continue", "Sprint — AF-01]"))
   ' [AF-01.2]
   :Leave Sprint unchanged;
 endif
-|PRO|
+|SYS|
 stop
 @enduml

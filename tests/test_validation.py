@@ -118,7 +118,31 @@ class ValidationTests(unittest.TestCase):
             [item["name"] for item in authentication_cases],
         )
         self.assertEqual("Guest", authentication_cases[0]["primary_actor"])
-        self.assertIn("Identity Provider", authentication_cases[0]["secondary_actors"])
+        self.assertNotIn("Identity Provider", authentication_cases[0]["secondary_actors"])
+        self.assertEqual(
+            ["AF-01"],
+            [flow["id"] for flow in authentication_cases[0]["alternative_flows"]],
+        )
+        self.assertEqual(
+            ["EX-01", "EX-02", "EX-03"],
+            [exception["id"] for exception in authentication_cases[0]["exceptions"]],
+        )
+        self.assertEqual("Guest", authentication_cases[1]["primary_actor"])
+        self.assertIn("Identity Provider", authentication_cases[1]["secondary_actors"])
+        self.assertIn(
+            "AF-03",
+            [flow["id"] for flow in authentication_cases[1]["alternative_flows"]],
+        )
+        self.assertIn(
+            "BR-ACCOUNT-NO-PROJECT-AUTO-MEMBERSHIP",
+            authentication_cases[1]["business_rules"],
+        )
+        sign_in_exceptions = {
+            exception["id"]: exception["description"]
+            for exception in authentication_cases[1]["exceptions"]
+        }
+        self.assertIn("does not link accounts by email alone", sign_in_exceptions["EX-04"])
+        self.assertIn("EX-06", sign_in_exceptions)
         self.assertIn("Email Service", authentication_cases[3]["secondary_actors"])
         self.assertTrue(authentication_cases[4]["abstract"])
         self.assertTrue(

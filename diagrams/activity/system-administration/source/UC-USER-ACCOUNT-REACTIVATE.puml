@@ -9,6 +9,10 @@
 ' with the account not reactivated (AF-01: stays suspended; EX-01: deleted before confirmation).
 ' EX-01 is checked after the confirmation because the YAML places the deletion before the
 ' reactivation is confirmed. AF-01.1 is an explicit System step of the YAML, so it is kept as an action.
+' Layout (2026-10-06): the decision "Confirm reactivation?" is drawn in the System lane, where the
+' System waits for the System Administrator's answer; the guards name the System Administrator's
+' choice. In the System Administrator lane its merge forced a detour across the lanes. The final
+' stays in the System lane.
 !include ../../_shared/activity-style.puml
 |ADM| $lane_title("System Administrator")
 |SYS| $lane_title("System")
@@ -22,8 +26,8 @@ and request reactivation;
 ' [NF2]
 :Display account status
 and request confirmation;
-|ADM|
-if ($question_x("Confirm reactivation?")) then ($guard_left("[confirm]"))
+if ($question("Confirm reactivation?")) then ($guard_left("[confirm]"))
+  |ADM|
   ' [NF3]
   :Confirm reactivation;
   |SYS|
@@ -40,6 +44,6 @@ else ($guard_right("[cancel", "— AF-01]"))
   ' [AF-01.1]
   :Leave account suspended;
 endif
-|ADM|
+|SYS|
 stop
 @enduml

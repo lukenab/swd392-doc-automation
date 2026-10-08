@@ -9,6 +9,9 @@
 ' current Product Goal unchanged (EX-01 rejection, AF-01 cancellation).
 ' NF3 "revises the Product Goal and confirms the change" is drawn as the revision action followed
 ' by the actor's confirm/cancel decision, so AF-01 (cancel before saving) branches from it.
+' Layout (2026-10-06): the decision "Confirm change?" is drawn in the System lane, where the System
+' waits for the Product Owner's answer; the guards name the Product Owner's choice. In the Product
+' Owner lane its merge forced a detour across the lanes. The final stays in the System lane.
 !include ../../_shared/activity-style.puml
 |PRO| $lane_title("Product Owner")
 |SYS| $lane_title("System")
@@ -24,7 +27,9 @@ Product Goal;
 |PRO|
 ' [NF3]
 :Revise Product Goal;
-if ($question("Confirm change?")) then ($guard_left("[confirm]"))
+|SYS|
+if ($question_x("Confirm change?")) then ($guard_left("[confirm]"))
+  |PRO|
   ' [NF3]
   :Confirm change;
   |SYS|
@@ -46,6 +51,6 @@ else ($guard_right("[cancel before", "saving — AF-01]"))
   :Keep current Product
   Goal unchanged;
 endif
-|PRO|
+|SYS|
 stop
 @enduml

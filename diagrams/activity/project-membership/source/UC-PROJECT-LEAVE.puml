@@ -8,6 +8,9 @@
 ' member has left (postconditions met) or the request is rejected (EX-01). F1 cannot join F2: the
 ' cancel path must bypass NF5, which the confirm path (AF-01) shares with the normal flow, so
 ' merging would require drawing NF5 twice.
+' Layout (2026-10-06): the decision "Leave anyway?" is drawn in the System lane, where the System
+' waits for the User's answer; the guards name the User's choice. In the User lane its merge forced
+' a detour across the lanes.
 !include ../../_shared/activity-style.puml
 
 |USR| $lane_title("User")
@@ -33,9 +36,9 @@ if ($question("Current Project Owner?")) then ($guard_left("[not the owner]"))
     |SYS|
     ' [AF-01.1]
     :Warn work will become unclaimed;
-    |USR|
-    if ($question_x("Leave anyway?")) then ($guard_left("[confirm — AF-01]"))
+    if ($question("Leave anyway?")) then ($guard_left("[confirm — AF-01]"))
     else ($guard_right("[cancel", "— AF-01]"))
+      |USR|
       ' [AF-01.2]
       :Cancel leave request;
       stop

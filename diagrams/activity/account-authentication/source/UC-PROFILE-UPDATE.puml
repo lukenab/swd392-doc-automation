@@ -6,6 +6,9 @@
 ' No title: the Word caption supplies it.
 ' Final nodes: F1 = profile changes saved (postcondition met); F2 = stored profile unchanged
 ' (EX-01 and AF-01 merge here).
+' Layout (2026-10-06): the decision "Submit or cancel?" is drawn in the System lane, where the
+' System waits for the User's answer; the guards name the User's choice. In the User lane its merge
+' forced a detour across the lanes. The final stays in the System lane.
 !include ../../_shared/activity-style.puml
 |USR| $lane_title("User")
 |SYS| $lane_title("System")
@@ -21,7 +24,9 @@ editable profile values;
 |USR|
 ' [NF3]
 :Change desired values;
-if ($question("Submit or cancel?")) then ($guard_left("[submit]"))
+|SYS|
+if ($question_x("Submit or cancel?")) then ($guard_left("[submit]"))
+  |USR|
   ' [NF3]
   :Submit profile;
   |SYS|
@@ -42,6 +47,6 @@ else ($guard_right("[cancel before", "saving — AF-01]"))
   ' [AF-01.1]
   :Discard unsaved changes;
 endif
-|USR|
+|SYS|
 stop
 @enduml

@@ -1537,3 +1537,24 @@ Sửa lỗi pipeline `scripts/activity_diagrams.py`: bước hậu xử lý nh�
 PlantUML đặt merge node của một `if` ngay dưới decision của nó. Khi decision ngoài cùng là lựa chọn của actor, merge cuối nằm ở lane actor; nếu final node lại khai báo ở lane System, luồng phải đi từ merge sang System rồi mới tới final. Vị trí lane của merge và final không mang ý nghĩa UML, nên final được chuyển sang lane của merge cuối (chỉ đổi dòng lane ngay trước `stop`). Đã áp dụng cho: UC-05.2 `UC-PROFILE-UPDATE`, UC-14.3 `UC-PRODUCT-GOAL-UPDATE`, UC-22 `UC-SPRINT-CANCEL`, UC-24.3 `UC-SPRINT-TASK-UPDATE`, UC-24.4 `UC-SPRINT-TASK-ASSIGN`, UC-24.7 `UC-TASK-DEPENDENCY-REMOVE`, UC-27.3 `UC-SUBTASK-UPDATE`, UC-27.5 `UC-SUBTASK-DELETE`, UC-30 `UC-NOTIFICATIONS-REVIEW`, UC-32.3 `UC-USER-ACCOUNT-REACTIVATE`. Render lại cả 55 sơ đồ: chỉ 10 SVG này thay đổi; action, decision, guard và số final giữ nguyên.
 
 Còn một đoạn vòng ngắn ở UC-02, UC-10, UC-11, UC-13, UC-15.4, UC-24.5, UC-32.2, UC-32.4: ở đó merge **bên trong** (sau quyết định xác nhận của actor) nằm ở lane actor rồi mới nối sang merge ngoài ở lane System. Muốn bỏ đoạn này phải đặt quyết định của actor vào lane System, trái với quy tắc lane, nên giữ nguyên.
+
+## 12. Cập nhật 2026-10-06 — sửa lại mục 11 và bỏ hết đoạn vòng ở merge
+
+Mục 11 đã chuyển Activity Final sang lane actor. Cách này sai về trình bày: final ở lane actor khiến người đọc hiểu là actor kết thúc
+use case, trong khi theo spec kết cục do System tạo ra (lưu, từ chối, giữ nguyên). Nó cũng không bỏ được đoạn vòng, vì merge bên trong
+vẫn phải nối sang merge ngoài ở lane actor. Bản này **hoàn tác mục 11**: mọi Activity Final nằm lại ở lane System.
+
+Nguyên nhân gốc: PlantUML đặt merge của một `if` ngay dưới decision của nó. Quyết định của actor (xác nhận/huỷ, chọn tuỳ chọn) nằm ở
+lane actor nên merge của nó cũng ở lane actor, trong khi các nhánh đều kết thúc bằng bước của System. Cách sửa: vẽ decision đó ở lane
+System, nơi hệ thống chờ câu trả lời của actor. Guard vẫn ghi lựa chọn của actor, và mọi action của actor (ví dụ "Confirm archival",
+"Submit profile") vẫn nằm ở lane actor. Comment đầu mỗi file `.puml` ghi lại lý do.
+
+Áp dụng cho 18 sơ đồ: UC-02, 05.2, 10, 11, 13, 14.3, 15.4, 22, 24.3, 24.4, 24.5, 24.7, 27.3, 27.5, 30, 32.2, 32.3, 32.4.
+
+Đối chiếu tự động với `develop` trước mục 11: action (cả lane và trace NF/AF/EX/POST/BR), decision, guard và số final không đổi; chỉ
+decision của actor đổi lane. Validator 0 lỗi, kiểm tra lane theo actor của từng bước YAML không có lỗi thật, 18 test OK. Render lại cả
+55 sơ đồ: chỉ 18 SVG này thay đổi so với trước mục 11. Không còn sơ đồ nào có final ngoài lane System hoặc merge lane actor nằm ngay
+trước một merge/final của System. Cỡ chữ ở A4 bằng hoặc tốt hơn (ví dụ UC-11: 6.1 → 6.7 pt, UC-24.5: 6.1 → 6.9 pt, UC-30: 6.0 → 6.5 pt).
+
+Quy ước sau thay đổi: quyết định của actor được vẽ ở lane System khi nó phân nhánh tới các bước của System; các quyết định của actor
+không gây đoạn vòng (ví dụ "Search again?" ở UC-32.1, "Clarification requested?" ở UC-18) vẫn ở lane actor.

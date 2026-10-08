@@ -8,6 +8,9 @@
 ' is reached after the task is deleted and recorded (postconditions met) or with the task unchanged:
 ' deletion cancelled (AF-02), dependencies must be removed first (AF-01) or deletion rejected
 ' (EX-01).
+' Layout (2026-10-06): the decision "Confirm deletion?" is drawn in the System lane, where the
+' System waits for the Developer's answer; the guards name the Developer's choice. In the Developer
+' lane its merge forced a detour across the lanes.
 !include ../../_shared/activity-style.puml
 |DEV| $lane_title("Developer")
 |SYS| $lane_title("System")
@@ -23,8 +26,8 @@ if ($question_x("Task execution started?")) then ($guard_left("[not started]"))
     ' [NF2]
     :Display dependency impact
     and ask for confirmation;
-    |DEV|
-    if ($question_x("Confirm deletion?")) then ($guard_left("[confirm]"))
+    if ($question("Confirm deletion?")) then ($guard_left("[confirm]"))
+      |DEV|
       ' [NF3]
       :Confirm deletion;
       |SYS|
