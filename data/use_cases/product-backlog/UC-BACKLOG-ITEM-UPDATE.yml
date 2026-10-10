@@ -3,13 +3,16 @@ parent: UC-BACKLOG-ITEMS-MANAGE
 group: PRODUCT_BACKLOG
 order: 230
 name: Update Product Backlog Item
-summary: Revise the editable details of an existing Product Backlog Item.
+summary: Update the editable details of an existing Product Backlog Item.
 created_by: Nguyễn Quốc Khánh
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Product Owner
 secondary_actors: []
 trigger: The Product Owner chooses to edit a Product Backlog Item.
-description: This use case allows the Product Owner to keep a Product Backlog Item clear and current.
+description: >
+  This use case allows the Product Owner to update the editable details of an existing
+  Product Backlog Item. Changes to an item in an active Sprint must not invalidate Sprint
+  planning. Reordering and estimation are handled separately.
 preconditions:
   - The actor holds Product Owner accountability in the project.
   - The project is active.
@@ -18,11 +21,11 @@ postconditions:
   - Valid changes are stored on the selected Product Backlog Item.
   - The update is recorded in item activity history.
 normal_flow:
-  - actor: User
+  - actor: Product Owner
     action: Opens an existing Product Backlog Item for editing.
   - actor: System
     action: Displays the editable item values.
-  - actor: User
+  - actor: Product Owner
     action: Revises the desired values and submits the item.
   - actor: System
     action: Validates and saves the changes.
@@ -33,7 +36,7 @@ alternative_flows:
       - The system limits changes that would invalidate active Sprint planning.
 exceptions:
   - id: EX-01
-    description: The item was changed by another User before the update was submitted.
+    description: The item was changed by another Staff member before the update was submitted.
 priority: Must Have
 frequency_of_use: Frequent
 business_rules:

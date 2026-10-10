@@ -3,13 +3,17 @@ parent: UC-USER-ACCOUNTS-MANAGE
 group: SYSTEM_ADMINISTRATION
 order: 130
 name: Reactivate User Account
-summary: Restore authentication access for an eligible suspended User account.
+summary: Reactivate an eligible suspended account.
 created_by: Trần Công Luận
 date_created: 2026-09-26
 primary_actor: System Administrator
 secondary_actors: []
 trigger: The System Administrator determines that a suspended account may be restored.
-description: This use case allows an authorized administrator to return a suspended User account to active status.
+description: >
+  This use case allows a System Administrator to reactivate a suspended website account
+  that has not been deleted. The account returns to active status, and the change is
+  recorded in the system audit log. Removed project memberships are not automatically
+  restored.
 preconditions:
   - The System Administrator is authenticated and authorized.
   - The target User account is suspended and has not been deleted.

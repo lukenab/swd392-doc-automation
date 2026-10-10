@@ -3,31 +3,34 @@ parent: UC-SUBTASKS-MANAGE
 group: SPRINT_WORK
 order: 530
 name: Update Subtask
-summary: Revise the work details or assignee of an existing subtask.
+summary: Update a subtask's work details or assignee in the active Sprint.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Developer
 secondary_actors: []
 trigger: A Developer chooses to edit an existing subtask.
-description: This use case allows a Developer to maintain the details of a subtask in the active Sprint.
+description: >
+  This use case allows a Developer to update the work details or assignee of a subtask in
+  the active Sprint. Parent-task progress is recalculated when relevant. Completion
+  changes are handled by Update Work Item Status.
 preconditions:
-  - The User holds Developer accountability in the project.
+  - The actor holds Developer accountability in the project.
   - The subtask's parent task belongs to the active Sprint.
 postconditions:
   - Valid subtask changes are stored.
   - Parent-task progress is recalculated when relevant.
 normal_flow:
-  - actor: User
+  - actor: Developer
     action: Opens a subtask for editing.
   - actor: System
     action: Displays its current editable values.
-  - actor: User
+  - actor: Developer
     action: Revises the information and submits the subtask.
   - actor: System
     action: Validates and saves the changes.
 alternative_flows:
   - id: AF-01
-    condition: The User cancels editing.
+    condition: The Developer cancels editing.
     steps:
       - The system keeps the subtask unchanged.
 exceptions:
@@ -39,6 +42,6 @@ business_rules:
   - BR-SPRINT-TASK-ACTIVE-SPRINT
   - BR-SPRINT-TASK-DEVELOPER
   - BR-SUBTASK-SINGLE-LEVEL
-other_information: Completion status is handled by Complete Subtask.
+other_information: Completion status is handled by Update Work Item Status.
 assumptions:
   - Concurrent subtask updates are detected by the system.

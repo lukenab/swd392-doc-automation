@@ -2,45 +2,64 @@ key: UC-WORK-ITEM-STATUS-UPDATE
 group: SPRINT_WORK
 order: 400
 name: Update Work Item Status
-summary: Move a Sprint work item to an allowed workflow status.
+summary: Update a Sprint work item's status or mark a subtask complete or incomplete.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-25
-primary_actor: User
+primary_actor: Developer
 secondary_actors: []
-trigger: The Developer changes the state of a task or Sprint Backlog Item.
+trigger: The Developer requests a status change for a Sprint work item, including completing or reopening a subtask.
 description: >
-  This use case allows a Developer to update a work item's status directly or
-  by moving its card between columns on the Sprint Board.
+  This use case allows a Developer to change a task or selected Product Backlog Item's
+  status, or mark a subtask complete or incomplete, in the active Sprint. The change
+  updates the Sprint Board and progress information. Subtask changes recalculate
+  parent-task progress without automatically completing the parent task.
 preconditions:
   - The Developer is active in the project.
   - The work item belongs to the active Sprint.
 postconditions:
-  - The work item has the selected valid status.
+  - The work item has the requested valid workflow status or completion state.
   - The Sprint Board and progress information reflect the change.
+  - For a subtask change, parent-task progress is recalculated without automatically changing the parent task's status.
+  - The change is recorded in work item activity history.
 normal_flow:
-  - actor: User
-    action: Selects a new status or moves a card to another workflow column.
+  - actor: Developer
+    action: Selects a new workflow status, moves a card, or marks an incomplete subtask complete.
   - actor: System
-    action: Validates the requested transition and actor permission.
+    action: Validates the requested change, actor permission, and active Sprint membership of the work item (AF-01, EX-01, EX-02).
   - actor: System
-    action: Updates the work item status.
+    action: Saves the requested workflow status or subtask completion state.
   - actor: System
-    action: Refreshes the Sprint Board and records the change.
+    action: Recalculates parent-task progress when a subtask changes, refreshes the Sprint Board and progress information, and records the change.
 alternative_flows:
   - id: AF-01
-    condition: The work item is marked Done with incomplete required information.
+    condition: A task or selected Product Backlog Item is marked Done with incomplete required information.
     steps:
       - The system identifies the missing information.
       - The Developer completes the information or chooses another status.
       - The system validates the requested transition again.
+  - id: AF-02
+    condition: The Developer restores a completed subtask to an incomplete state.
+    steps:
+      - The Developer requests reopening the subtask.
+      - The flow resumes at Normal Flow step 2 to validate the request again.
+      - The system saves the incomplete state and recalculates parent-task progress through Normal Flow steps 3 and 4.
 exceptions:
   - id: EX-01
-    description: The selected status is no longer available.
+    description: The selected workflow status is no longer available; the system rejects the change and leaves the current state unchanged.
+  - id: EX-02
+    description: The Sprint ends or the work item no longer belongs to the active Sprint before the change is saved; the system rejects the change and leaves the current state unchanged.
 priority: Must Have
 frequency_of_use: Very Frequent
 business_rules:
+  - BR-SPRINT-TASK-ACTIVE-SPRINT
   - BR-SPRINT-TASK-DEVELOPER
   - BR-WORK-ITEM-STATUS
-other_information: A Sprint Work Item is a selected Product Backlog Item, task, or subtask that belongs to the active Sprint. Drag and drop and a status selector invoke the same use case.
+other_information: >
+  A Sprint Work Item is a selected Product Backlog Item, task, or subtask in the
+  active Sprint. Tasks and selected Product Backlog Items use workflow statuses;
+  subtasks use incomplete/complete states. Completing all subtasks does not
+  automatically complete the parent task. Complete Subtask is no longer a
+  separate use case; its completion and reopening behavior is covered here.
 assumptions:
-  - The client has loaded the latest Sprint Board state.
+  - The client has loaded the latest Sprint Board state; the system rechecks the active Sprint and permissions before saving.
+  - Parent-task progress can be recalculated from subtask completion states.

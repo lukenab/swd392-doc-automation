@@ -1,54 +1,31 @@
 key: UC-BACKLOG-ITEMS-MANAGE
 group: PRODUCT_BACKLOG
 order: 200
-name: Manage Product Backlog Items
+name: Manage Product Backlog
 abstract: true
-summary: Create, review, update, and remove Product Backlog Items.
+grouping_only: true
+summary: View, create, update, remove, order, and refine Product Backlog Items.
 created_by: Nguyễn Quốc Khánh
 date_created: 2026-09-25
-primary_actor: User
-secondary_actors: []
-trigger: The Product Owner opens the Product Backlog to maintain its items.
+primary_actor: Product Owner
+secondary_actors:
+  - Project Member
+  - Developer
+trigger: ""
 description: >
-  This use case allows the Product Owner to keep the Product Backlog current,
-  transparent, and aligned with the Product Goal.
-preconditions:
-  - The actor is the Product Owner of the project.
-  - The project is active.
-postconditions:
-  - The Product Backlog reflects the confirmed changes.
-  - Changed items remain traceable in activity history.
-normal_flow:
-  - actor: User
-    action: Opens the Product Backlog.
-  - actor: System
-    action: Displays current items in Product Backlog order.
-  - actor: User
-    action: Creates an item or selects an existing item to review or update.
-  - actor: System
-    action: Requests the item's title, description, acceptance criteria, and type.
-  - actor: User
-    action: Provides or updates the item information and confirms the change.
-  - actor: System
-    action: Validates, saves, and displays the updated Product Backlog.
-alternative_flows:
-  - id: AF-01
-    condition: The Product Owner requests removal of an item not selected for an active Sprint.
-    steps:
-      - The system requests removal confirmation.
-      - The system removes the item after confirmation and records the action.
-  - id: AF-02
-    condition: Required item information is missing.
-    steps:
-      - The system rejects the change and identifies the missing information.
-exceptions:
-  - id: EX-01
-    description: The selected item is locked because it belongs to an active Sprint.
+  This catalog group organizes the related concrete use cases. Each child defines
+  its own actors, permissions, preconditions, flows, and outcomes; the group does
+  not impose shared execution behavior or grant access to any child operation.
+preconditions: []
+postconditions: []
+normal_flow: []
+alternative_flows: []
+exceptions: []
 priority: Must Have
-frequency_of_use: Frequent
-business_rules:
-  - BR-PRODUCT-OWNER-BACKLOG
-  - BR-PROJECT-ARCHIVED-READ-ONLY
-other_information: Attachments and external artifact links are outside Iteration 1.
-assumptions:
-  - Product Backlog Items use system-generated identifiers.
+frequency_of_use: N/A (catalog group)
+business_rules: []
+other_information: >
+  Documentation and numbering group only, not an automatically inferred UML
+  generalization or include relationship. No detailed specification or activity
+  diagram is generated for this group.
+assumptions: []

@@ -3,32 +3,35 @@ parent: UC-SPRINT-TASKS-MANAGE
 group: SPRINT_WORK
 order: 240
 name: Assign Sprint Task
-summary: Assign or reassign a Sprint Task to an active Developer in the project.
+summary: Assign, reassign, or clear the assignee of a task in the active Sprint.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Developer
 secondary_actors: []
 trigger: A Developer chooses to assign or reassign a Sprint Task.
-description: This use case records responsibility for a Sprint Task within the active Sprint.
+description: >
+  This use case allows a Developer to assign or reassign a task in the active Sprint to an
+  eligible active Developer in the same project. The current assignment may also be
+  cleared. Assignment changes are recorded in activity history.
 preconditions:
-  - The User holds Developer accountability in the project.
+  - The actor holds Developer accountability in the project.
   - The Sprint Task belongs to the active Sprint.
   - The selected assignee is an active Developer in the project.
 postconditions:
   - The Sprint Task has the confirmed assignee.
   - The assignment change is recorded in activity history.
 normal_flow:
-  - actor: User
+  - actor: Developer
     action: Opens the task assignment control.
   - actor: System
     action: Displays eligible Developers.
-  - actor: User
+  - actor: Developer
     action: Selects an assignee and confirms the assignment.
   - actor: System
     action: Saves the assignment and records the change.
 alternative_flows:
   - id: AF-01
-    condition: The User clears the current assignment.
+    condition: The Developer clears the current assignment.
     steps:
       - The system marks the Sprint Task as unassigned.
 exceptions:

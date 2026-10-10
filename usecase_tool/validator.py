@@ -28,6 +28,7 @@ REQUIRED_FIELDS = [
 ]
 
 ALLOWED_PRIORITIES = {"Must Have", "Should Have", "Could Have", "Won't Have"}
+GROUP_EXECUTION_FIELDS = {"trigger", "preconditions", "postconditions", "normal_flow"}
 
 
 def _non_empty(value: Any) -> bool:
@@ -137,7 +138,10 @@ def validate_project(project: ProjectData) -> list[str]:
         source = use_case.get("_source_file", "unknown file")
         use_case_key = str(use_case.get("key") or source)
 
+        grouping_only = use_case.get("grouping_only") is True
         for field in REQUIRED_FIELDS:
+            if grouping_only and field in GROUP_EXECUTION_FIELDS:
+                continue
             if not _non_empty(use_case.get(field)):
                 errors.append(f"{use_case_key}: missing required field '{field}' ({source}).")
 
@@ -170,6 +174,17 @@ def validate_project(project: ProjectData) -> list[str]:
 
         if "abstract" in use_case and not isinstance(use_case.get("abstract"), bool):
             errors.append(f"{use_case_key}: abstract must be true or false.")
+
+        if "grouping_only" in use_case and not isinstance(use_case["grouping_only"], bool):
+            errors.append(f"{use_case_key}: grouping_only must be true or false.")
+        if grouping_only:
+            if use_case.get("abstract") is not True:
+                errors.append(f"{use_case_key}: grouping_only requires abstract: true.")
+            for field in (*sorted(GROUP_EXECUTION_FIELDS), "alternative_flows", "exceptions"):
+                if _non_empty(use_case.get(field)):
+                    errors.append(
+                        f"{use_case_key}: catalog group must not define execution field '{field}'."
+                    )
 
         parent_key = use_case.get("parent")
         if parent_key:

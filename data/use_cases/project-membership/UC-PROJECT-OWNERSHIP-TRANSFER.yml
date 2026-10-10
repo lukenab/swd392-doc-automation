@@ -1,30 +1,33 @@
 key: UC-PROJECT-OWNERSHIP-TRANSFER
+parent: UC-PROJECTS-MANAGE
 group: PROJECT_MEMBERSHIP
-order: 700
+order: 150
 name: Transfer Project Ownership
 summary: Transfer project ownership to another active Project Member.
 created_by: Nguyễn An Bình
 date_created: 2026-09-25
-primary_actor: User
+primary_actor: Project Owner
 secondary_actors: []
 trigger: The Project Owner chooses an active member as the new owner.
 description: >
-  This use case transfers the unique ownership responsibility of a project
-  without interrupting project membership or Scrum work.
+  This use case allows the Project Owner to transfer ownership to another active Project
+  Member. The selected member becomes the sole Project Owner, while the previous owner
+  remains a Project Member. Existing Scrum accountabilities and project work are
+  preserved.
 preconditions:
   - The actor is the current Project Owner.
-  - The target User is an active Project Member.
+  - The target Staff member is an active Project Member.
   - The project is active.
 postconditions:
   - The target member becomes the sole Project Owner.
-  - The previous owner remains a Project Member unless that User later leaves.
+  - The previous owner remains a Project Member unless that Staff member later leaves.
   - The transfer is recorded in project and system audit history.
 normal_flow:
-  - actor: User
+  - actor: Project Owner
     action: Selects Transfer Project Ownership.
   - actor: System
     action: Displays eligible active Project Members.
-  - actor: User
+  - actor: Project Owner
     action: Selects the new owner and confirms the transfer.
   - actor: System
     action: Validates both memberships and the current ownership state.

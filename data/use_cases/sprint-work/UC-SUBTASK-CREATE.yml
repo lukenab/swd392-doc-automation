@@ -3,25 +3,28 @@ parent: UC-SUBTASKS-MANAGE
 group: SPRINT_WORK
 order: 520
 name: Create Subtask
-summary: Add a smaller trackable unit of work beneath a Sprint Task.
+summary: Create a subtask under a task in the active Sprint.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Developer
 secondary_actors: []
 trigger: A Developer decides that a Sprint Task requires a smaller unit of work.
-description: This use case allows a Developer to create a subtask directly below a parent Sprint Task.
+description: >
+  This use case allows a Developer to create a subtask under a task in the active Sprint,
+  with work details and an optional assignee. Parent-task progress is updated. A subtask
+  cannot contain another subtask.
 preconditions:
-  - The User holds Developer accountability in the project.
+  - The actor holds Developer accountability in the project.
   - The parent Sprint Task belongs to the active Sprint.
 postconditions:
   - A new subtask is associated with the parent Sprint Task.
   - Parent-task progress is recalculated.
 normal_flow:
-  - actor: User
+  - actor: Developer
     action: Opens a Sprint Task and chooses to add a subtask.
   - actor: System
     action: Requests the subtask's work details and optional assignee.
-  - actor: User
+  - actor: Developer
     action: Provides the information and confirms creation.
   - actor: System
     action: Validates, stores, and displays the new subtask.

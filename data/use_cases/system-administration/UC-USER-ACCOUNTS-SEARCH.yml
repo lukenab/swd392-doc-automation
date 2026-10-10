@@ -3,13 +3,16 @@ parent: UC-USER-ACCOUNTS-MANAGE
 group: SYSTEM_ADMINISTRATION
 order: 110
 name: Search and View User Accounts
-summary: Find an existing system-wide User account and review its administrative status.
+summary: Search for website accounts and view their administrative information.
 created_by: Trần Công Luận
 date_created: 2026-09-26
 primary_actor: System Administrator
 secondary_actors: []
 trigger: The System Administrator needs to inspect a User account.
-description: This use case allows an authorized administrator to search for accounts and review administrative information without accessing project content.
+description: >
+  This use case allows a System Administrator to search for website accounts and view
+  their status and administrative information. Account information is displayed without
+  changes. Project content is not accessible through this use case.
 preconditions:
   - The System Administrator is authenticated and authorized.
 postconditions:

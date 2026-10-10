@@ -47,7 +47,6 @@ from usecase_tool.loader import load_project  # noqa: E402
 ACTIVITY_DIR = ROOT / "diagrams" / "activity"
 MANIFEST = ACTIVITY_DIR / "manifest.yml"
 STYLE_INCLUDE = "!include ../../_shared/activity-style.puml"
-EXPECTED_CONCRETE = 55
 FONT = "Times New Roman"
 
 SVG_NS = "http://www.w3.org/2000/svg"
@@ -56,10 +55,9 @@ ET.register_namespace("", SVG_NS)
 ET.register_namespace("xlink", XLINK_NS)
 S = "{%s}" % SVG_NS
 
-# Partition names supported by repository data (actors.yml and the project-
-# scoped roles/accountabilities described for the User actor).
+# Current actors plus User for validating historical sources awaiting migration.
 ALLOWED_LANES = {
-    "Guest", "User", "Project Owner", "Product Owner", "Developer",
+    "Guest", "User", "Staff", "Project Member", "Project Owner", "Product Owner", "Developer",
     "System Administrator", "System", "Email Service", "Identity Provider",
 }
 STATUS_BLOCKED = (
@@ -344,6 +342,10 @@ def cmd_render(args) -> int:
     failures = 0
     rendered = 0
     for entry in entries:
+        if entry.get("catalog_sync_status") == "needs-source-review":
+            print(f"PENDING {entry['key']}: update source and traceability for the current catalog before rendering")
+            failures += 1
+            continue
         if entry["final_status"] in STATUS_BLOCKED:
             print(f"SKIP   {entry['key']}: {entry['final_status']}")
             continue
@@ -481,8 +483,6 @@ def cmd_validate(args) -> int:
     errors: list[str] = []
     warnings: list[str] = []
 
-    if len(concrete) != EXPECTED_CONCRETE:
-        errors.append(f"Expected {EXPECTED_CONCRETE} concrete use cases, repository has {len(concrete)}")
     keys = [e.get("key") for e in entries]
     for key, count in Counter(keys).items():
         if count > 1:
@@ -495,11 +495,21 @@ def cmd_validate(args) -> int:
         errors.append(f"Manifest entry is not a concrete use case: {key}")
 
     tracked_files: set[Path] = set()
+    for retired in manifest.get("retired_use_cases", []) or []:
+        if retired.get("key") in by_key:
+            errors.append(f"Retired manifest key is still active: {retired['key']}")
+        if retired.get("merged_into") not in by_key:
+            errors.append(f"Retired manifest entry has no active replacement: {retired.get('key')}")
+        for field in ("source", "svg"):
+            if retired.get(field):
+                tracked_files.add(ROOT / retired[field])
     for entry in entries:
         key = entry.get("key")
         if key not in by_key:
             continue
         uc = by_key[key]
+        if entry.get("catalog_sync_status") == "needs-source-review":
+            errors.append(f"{key}: source/SVG awaits review against the current catalog; metadata synchronization is not diagram acceptance")
         for field in MANIFEST_FIELDS:
             if field not in entry:
                 errors.append(f"{key}: manifest field '{field}' missing")

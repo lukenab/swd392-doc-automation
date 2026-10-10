@@ -2,7 +2,7 @@ business_rules:
   - key: BR-ACTIVE-USER-REQUIRED
     group: PROJECT_MEMBERSHIP
     order: 100
-    description: Only an active authenticated User can create or access a project.
+    description: Only an active authenticated Staff member can create or access a project.
 
   - key: BR-PROJECT-ONE-OWNER
     group: PROJECT_MEMBERSHIP
@@ -102,7 +102,10 @@ business_rules:
   - key: BR-WORK-ITEM-STATUS
     group: SPRINT_WORK
     order: 300
-    description: A Sprint Work Item status must correspond to an active Sprint Board status.
+    description: >
+      A task or selected Product Backlog Item uses an active Sprint Board status.
+      A subtask is incomplete or complete; changing its completion state updates
+      parent-task progress and does not automatically change the parent task's status.
 
   - key: BR-TASK-DEPENDENCY-ACYCLIC
     group: SPRINT_WORK
@@ -137,12 +140,12 @@ business_rules:
   - key: BR-NOTIFICATION-OWNER-ONLY
     group: COLLABORATION_NOTIFICATION
     order: 300
-    description: A User can review only notifications addressed to that User.
+    description: A Staff member can review only notifications addressed to that Staff member.
 
   - key: BR-NOTIFICATION-EMAIL-PREFERENCE
     group: COLLABORATION_NOTIFICATION
     order: 400
-    description: An email notification is sent only to the intended recipient's verified email address when that User has enabled email delivery.
+    description: An email notification is sent only to the intended recipient's verified email address when that Staff member has enabled email delivery.
 
   - key: BR-NOTIFICATION-DELIVERY-INDEPENDENT
     group: COLLABORATION_NOTIFICATION
@@ -227,9 +230,9 @@ business_rules:
   - key: BR-LOG-OUT-SESSION
     group: ACCOUNT_AUTHENTICATION
     order: 800
-    description: Logging out invalidates only the current session; other active sessions of the same User remain unaffected.
+    description: Logging out invalidates only the current session; other active sessions of the same Staff member remain unaffected.
 
   - key: BR-PROFILE-SELF-ACCESS
     group: ACCOUNT_AUTHENTICATION
     order: 900
-    description: An authenticated User may view or update only their own personal profile through profile management functions.
+    description: An authenticated Staff member may view or update only their own personal profile through profile management functions.

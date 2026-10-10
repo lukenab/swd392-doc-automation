@@ -3,29 +3,27 @@ group: ACCOUNT_AUTHENTICATION
 order: 500
 name: Manage Personal Profile
 abstract: true
-summary: Group the functions used by an authenticated User to review and maintain their personal profile.
+grouping_only: true
+summary: View and update personal profiles, and change supported account passwords.
 created_by: Trần Công Luận
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Staff
 secondary_actors: []
-trigger: The User opens personal profile management.
-description: This abstract use case groups profile viewing, profile updating, and password changing behavior.
-preconditions:
-  - The User is authenticated.
-postconditions:
-  - The selected concrete profile operation is completed or cancelled.
-normal_flow:
-  - actor: User
-    action: Selects a personal profile operation.
-  - actor: System
-    action: Opens the corresponding concrete use case.
+trigger: ""
+description: >
+  This catalog group organizes the related concrete use cases. Each child defines
+  its own actors, permissions, preconditions, flows, and outcomes; the group does
+  not impose shared execution behavior or grant access to any child operation.
+preconditions: []
+postconditions: []
+normal_flow: []
 alternative_flows: []
 exceptions: []
 priority: Must Have
-frequency_of_use: Occasional
-business_rules:
-  - BR-AUTH-ACTIVE-ACCOUNT
-  - BR-PROFILE-SELF-ACCESS
-other_information: This parent is used for grouping and does not generate a detailed specification table.
-assumptions:
-  - Profile management is available only in an authenticated session.
+frequency_of_use: N/A (catalog group)
+business_rules: []
+other_information: >
+  Documentation and numbering group only, not an automatically inferred UML
+  generalization or include relationship. No detailed specification or activity
+  diagram is generated for this group.
+assumptions: []

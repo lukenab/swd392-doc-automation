@@ -66,6 +66,7 @@ Kết quả được đặt trong `output/`:
 
 | File | Nội dung |
 |---|---|
+| `actors.md` | Bảng actor với ba cột #, Actor, Description để sao chép vào Word |
 | `use-case-list.md` | Bảng tổng hợp Use Case |
 | `use-case-descriptions.md` | Mô tả chi tiết để review trên GitHub |
 | `use-case-descriptions.docx` | Bảng Word để đưa vào báo cáo |
@@ -156,6 +157,7 @@ group: PROJECT_MEMBERSHIP
 order: 400
 name: Manage Project Members
 abstract: true
+grouping_only: true
 ```
 
 ```yaml
@@ -173,7 +175,17 @@ Quy tắc:
 - Mỗi child có specification và file YAML riêng.
 - Parent xuất hiện trong bảng tổng hợp nhưng không sinh bảng description chi tiết.
 - Child được sinh ID dạng `UC-09.1`, `UC-09.2`,... theo `order`.
-- Quan hệ parent-child là phân cấp/generalization, không phải `include`.
+- `grouping_only: true` biểu diễn nhóm tổng hợp trong tài liệu và cách đánh số,
+  **không tự động là UML generalization hoặc `include`**. Trên UCD, dùng package/domain
+  để tổ chức các mục tiêu liên quan; chỉ dùng generalization khi thực sự có hành vi
+  chung được chuyên biệt hóa, không chỉ vì dùng chung dữ liệu.
+- Nhóm tổng hợp không có trigger, preconditions, postconditions hoặc flow thực thi.
+  Actor liệt kê ở nhóm chỉ là phạm vi tham gia; quyền và điều kiện của mỗi UC con
+  được định nghĩa độc lập, không kế thừa từ nhóm.
+- UC01–04 Register Account, Log In, Log Out và Forgot Password giữ độc lập;
+  không tạo nhóm Manage Account Access.
+- Cây đã chốt và mapping mã cũ → mới nằm trong
+  `docs/use-case-grouping-migration-2026-10-09.md`.
 
 Các giá trị tham chiếu phải tồn tại trước:
 
@@ -181,12 +193,37 @@ Các giá trị tham chiếu phải tồn tại trước:
 - Business Rule trong `data/business_rules.yml`.
 - Domain trong `data/groups.yml`.
 
-Trong mô hình hiện tại, `User` là actor duy nhất đại diện cho người dùng đã đăng ký.
-`Project Member`, `Project Owner`, `Product Owner` và `Developer` là vai trò hoặc
-Scrum accountability theo từng dự án, vì vậy không khai báo các tên này trong
-`primary_actor`, `secondary_actors` hoặc `normal_flow[].actor`. Hãy dùng
-`User` cho các trường actor và ghi vai trò bắt buộc trong precondition,
-business rule hoặc nội dung bước.
+### Quy ước actor
+
+Danh sách actor gồm `Guest`, `Staff`, `Project Member`, `Project Owner`,
+`Product Owner`, `Developer`, `System Administrator`, `Identity Provider` và
+`Email Service`. Chưa bổ sung `Scrum Master` vì phạm vi gán accountability hiện
+tại chỉ có Product Owner và Developer.
+
+- `Guest`: đăng ký, đăng nhập và Forgot Password; không cần phiên đăng nhập.
+- `Staff`: tạo project, đăng xuất, quản lý hồ sơ cá nhân và xem notification của mình.
+- `Project Member`: các thao tác chung cần membership trong project, gồm xem thông tin,
+  board, task, subtask, activity, tiến độ; comment và rời project.
+- `Project Owner`: quản trị project, membership, gán accountability, chuyển ownership và archive.
+- `Product Owner`: Product Goal, duy trì Product Backlog và các thao tác vòng đời Sprint.
+- `Developer`: estimation, task, subtask, dependency, assignment/claim và trạng thái công việc.
+- `System Administrator`: quản trị tài khoản và xem audit log, không tự có quyền vào project.
+
+Với UC có nhiều vai trò tham gia, ghi actor khởi xướng trong `primary_actor`,
+actor hỗ trợ trong `secondary_actors`, và vai trò thực hiện từng bước trong
+`normal_flow[].actor`. Không dùng `User` để gộp các vai trò. Vẫn ghi các điều kiện
+về membership và quyền trong Preconditions/Business Rules; khai báo actor không
+tự cấp thêm quyền.
+
+Staff là vai trò chung; Project Member và các vai trò project mô tả cùng một người
+trong các ngữ cảnh khác nhau, không phải các loại tài khoản riêng biệt. Project
+Owner là access role, còn Product Owner/Developer là Scrum accountability. Đổi tên
+actor không đổi tên dữ liệu `User Account`, semantic key hay mã UC/BR. `System`
+trong flow vẫn là phía phần mềm xử lý, không phải actor ngoài website.
+
+Chạy `py cli.py build --format markdown` để cập nhật bảng `output/actors.md` và
+Markdown liên quan mà không sinh lại Word hoặc diagram. Bảng actor xuất ra lấy
+trực tiếp từ `data/actors.yml`; không sửa riêng output.
 
 ### 4. Kiểm tra và generate
 
@@ -256,6 +293,7 @@ Script sử dụng `data/` làm source of truth và tạo các file sau:
 
 ```text
 output/
+├── actors.md
 ├── use-case-list.md
 ├── use-case-descriptions.md
 ├── use-case-descriptions.docx

@@ -1,25 +1,45 @@
 actors:
   - key: guest
     name: Guest
-    description: A person who has not logged in and may register a new system-wide account.
+    description: An unauthenticated person who can register an account, log in, or request a password reset.
+    side: left
+
+  - key: staff
+    name: Staff
+    description: A person with a website account who, after authentication, can create projects, review their own notifications, and manage their own profile. Access to existing projects requires appropriate membership and permissions.
+    side: left
+
+  - key: project-member
+    name: Project Member
+    description: A Staff member with active membership in a project who can view accessible project information, comment on work items, and review activity and Sprint progress. Project Owner, Product Owner, and Developer are project-scoped roles held by project members.
+    side: left
+
+  - key: project-owner
+    name: Project Owner
+    description: A project member responsible for project information, membership, Scrum accountability assignments, ownership transfer, and project archiving. This is a project access role, not a Scrum accountability.
+    side: left
+
+  - key: product-owner
+    name: Product Owner
+    description: A project member responsible for the Product Goal, Product Backlog priorities, and the Sprint lifecycle operations permitted by the project's business rules.
+    side: left
+
+  - key: developer
+    name: Developer
+    description: A project member who estimates backlog items, contributes to Sprint planning, manages tasks and subtasks, assigns or claims tasks, and updates work status.
     side: left
 
   - key: system-administrator
     name: System Administrator
-    description: Manages system-wide user accounts, audit information, and operational statistics.
+    description: An authorized administrator who manages system-wide User accounts and reviews the system audit log. This role does not automatically grant access to project content.
     side: left
-
-  - key: user
-    name: User
-    description: A person with a registered system-wide account. Within each project, the User may participate as a Project Member or Project Owner and may hold Product Owner or Developer accountability; these project-scoped assignments determine authorized actions.
-    side: left
-
-  - key: email-service
-    name: Email Service
-    description: An external delivery service that sends email notifications requested by the system and returns delivery results.
-    side: right
 
   - key: identity-provider
     name: Identity Provider
-    description: An external OAuth identity service, such as Google, that authenticates a person and returns a verified identity.
+    description: An external authentication service that verifies identity and returns authentication results for Google Sign-In.
+    side: right
+
+  - key: email-service
+    name: Email Service
+    description: An external service that delivers account-verification, password-reset, and project-notification emails and returns delivery results.
     side: right

@@ -1,34 +1,37 @@
 key: UC-PROJECT-CREATE
+parent: UC-PROJECTS-MANAGE
 group: PROJECT_MEMBERSHIP
-order: 100
+order: 110
 name: Create Project
-summary: Create a Scrum project and assign the creator as its Project Owner.
+summary: Create a Scrum project and become its Project Owner.
 created_by: Nguyễn An Bình
 date_created: 2026-09-25
-primary_actor: User
+primary_actor: Staff
 secondary_actors: []
-trigger: The User chooses to create a new project.
+trigger: The Staff member chooses to create a new project.
 description: >
-  This use case allows an active User to create a Scrum project, provide its
-  initial information, and become the project's first Project Owner.
+  This use case allows a Staff member with an active account to create a Scrum project and
+  provide its initial information. The creator becomes the project's first Project Owner.
+  An empty Product Backlog and a default Sprint Board are prepared without creating a
+  Sprint.
 preconditions:
-  - The User is authenticated.
+  - The Staff member is authenticated.
   - The User account is active.
 postconditions:
   - A new active project is created.
   - The creator becomes the sole Project Owner.
   - An empty Product Backlog and default Sprint Board are initialized.
 normal_flow:
-  - actor: User
+  - actor: Staff
     action: Starts project creation.
   - actor: System
     action: Requests the project name, description, and planned dates.
-  - actor: User
+  - actor: Staff
     action: Provides the required project information and confirms creation.
   - actor: System
     action: Validates the submitted information.
   - actor: System
-    action: Creates the project and assigns ownership to the User.
+    action: Creates the project and assigns ownership to the Staff member.
   - actor: System
     action: Initializes the Product Backlog and default Sprint Board.
 alternative_flows:
@@ -36,7 +39,7 @@ alternative_flows:
     condition: Required project information is missing or invalid.
     steps:
       - The system identifies the invalid information.
-      - The User corrects the information and submits it again.
+      - The Staff member corrects the information and submits it again.
 exceptions:
   - id: EX-01
     description: The project cannot be created because project data cannot be persisted.

@@ -3,26 +3,29 @@ parent: UC-SPRINT-TASKS-MANAGE
 group: SPRINT_WORK
 order: 220
 name: Create Sprint Task
-summary: Create an executable task for a Product Backlog Item in the active Sprint.
+summary: Create a Sprint Task for a Product Backlog Item in the active Sprint.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Developer
 secondary_actors: []
 trigger: A Developer decides that a Sprint Backlog Item requires a new task.
-description: This use case allows a Developer to define a new Sprint Task and its initial work information.
+description: >
+  This use case allows a Developer to create a Sprint Task for a Product Backlog Item
+  selected for the active Sprint. The task contains its initial work details. An assignee
+  may be selected during creation or assigned later.
 preconditions:
-  - The User holds Developer accountability in the project.
+  - The actor holds Developer accountability in the project.
   - The project has an active Sprint.
   - The related Product Backlog Item belongs to the active Sprint.
 postconditions:
   - A new Sprint Task is associated with the selected Product Backlog Item.
   - The creation is recorded in work item activity.
 normal_flow:
-  - actor: User
+  - actor: Developer
     action: Chooses to create a task for a Sprint Backlog Item.
   - actor: System
     action: Requests the task title and initial work details.
-  - actor: User
+  - actor: Developer
     action: Provides the task information and confirms creation.
   - actor: System
     action: Validates and stores the Sprint Task.

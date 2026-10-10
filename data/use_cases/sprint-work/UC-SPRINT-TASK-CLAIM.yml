@@ -1,16 +1,18 @@
 key: UC-SPRINT-TASK-CLAIM
+parent: UC-SPRINT-TASKS-MANAGE
 group: SPRINT_WORK
-order: 300
+order: 280
 name: Claim Sprint Task
-summary: Assign an available Sprint task to oneself.
+summary: Claim an unassigned task in the active Sprint.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-25
-primary_actor: User
+primary_actor: Developer
 secondary_actors: []
 trigger: The Developer chooses an unassigned task on the active Sprint Board.
 description: >
-  This use case allows a Developer to take responsibility for an available
-  Sprint task without requiring assignment by another project role.
+  This use case allows a Developer to take responsibility for an unassigned task in the
+  active Sprint. The task is assigned to the Developer only if it is still available. The
+  assignment is recorded in activity history.
 preconditions:
   - The Developer is active in the project.
   - The task belongs to the active Sprint and is unassigned.
@@ -18,7 +20,7 @@ postconditions:
   - The task is assigned to the Developer.
   - The assignment is recorded in activity history.
 normal_flow:
-  - actor: User
+  - actor: Developer
     action: Opens an unassigned task and chooses to claim it.
   - actor: System
     action: Verifies that the task is active and still unassigned.

@@ -215,7 +215,25 @@ def _generate_markdown(project: ProjectData, use_cases: list[dict[str, Any]], ou
         )
     mapping_path.write_text("\n".join(mapping_lines) + "\n", encoding="utf-8")
     business_rule_path = _generate_business_rules_markdown(project, output_dir)
-    return [summary_path, details_path, business_rule_path, mapping_path]
+    actor_path = _generate_actors_markdown(project, output_dir)
+    return [summary_path, details_path, business_rule_path, mapping_path, actor_path]
+
+
+def _generate_actors_markdown(project: ProjectData, output_dir: Path) -> Path:
+    lines = [
+        "# II.5.1 Actors",
+        "",
+        "| # | Actor | Description |",
+        "|---|---|---|",
+    ]
+    for number, actor in enumerate(project.actors.values(), start=1):
+        lines.append(
+            f"| {number} | {_escape_markdown(actor['name'])} | "
+            f"{_escape_markdown(actor['description'])} |"
+        )
+    output_path = output_dir / "actors.md"
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return output_path
 
 
 def _generate_business_rules_markdown(project: ProjectData, output_dir: Path) -> Path:

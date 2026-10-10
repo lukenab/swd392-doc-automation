@@ -3,13 +3,16 @@ parent: UC-PRODUCT-GOAL-MANAGE
 group: PRODUCT_BACKLOG
 order: 130
 name: Update Product Goal
-summary: Revise the current Product Goal while preserving project traceability.
+summary: Update the wording of a project's current Product Goal.
 created_by: Nguyễn Quốc Khánh
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Product Owner
 secondary_actors: []
 trigger: The Product Owner decides that the current Product Goal must be revised.
-description: This use case allows the Product Owner to replace the wording of the current Product Goal.
+description: >
+  This use case allows the Product Owner to revise the wording of the current Product Goal
+  in an active project. The updated goal replaces the current wording, and the change is
+  recorded in project activity history.
 preconditions:
   - The actor holds Product Owner accountability in the project.
   - The project is active.
@@ -18,17 +21,17 @@ postconditions:
   - The revised Product Goal becomes the project's current Product Goal.
   - The change is recorded in project activity history.
 normal_flow:
-  - actor: User
+  - actor: Product Owner
     action: Opens the current Product Goal and chooses to edit it.
   - actor: System
     action: Displays the current goal text.
-  - actor: User
+  - actor: Product Owner
     action: Revises the Product Goal and confirms the change.
   - actor: System
     action: Validates and saves the revised Product Goal.
 alternative_flows:
   - id: AF-01
-    condition: The User cancels before saving.
+    condition: The Product Owner cancels before saving.
     steps:
       - The system keeps the current Product Goal unchanged.
 exceptions:

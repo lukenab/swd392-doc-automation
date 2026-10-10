@@ -1,16 +1,18 @@
 key: UC-PROJECT-UPDATE
+parent: UC-PROJECTS-MANAGE
 group: PROJECT_MEMBERSHIP
-order: 300
+order: 130
 name: Update Project Information
-summary: Maintain the name, description, and planned dates of an active project.
+summary: Update the name, description, and planned dates of an active project.
 created_by: Nguyễn An Bình
 date_created: 2026-09-25
-primary_actor: User
+primary_actor: Project Owner
 secondary_actors: []
 trigger: The Project Owner chooses to edit project information.
 description: >
-  This use case allows the Project Owner to update the general information of
-  an active project without changing its ownership or Scrum work.
+  This use case allows the Project Owner to update the name, description, and planned
+  dates of an active project. Valid changes are saved without changing project ownership
+  or Scrum work.
 preconditions:
   - The actor is authenticated.
   - The actor is the current Project Owner.
@@ -19,11 +21,11 @@ postconditions:
   - Valid project information is updated.
   - The change is recorded in project activity history.
 normal_flow:
-  - actor: User
+  - actor: Project Owner
     action: Requests to update project information.
   - actor: System
     action: Presents the current project information.
-  - actor: User
+  - actor: Project Owner
     action: Changes the permitted values and submits the update.
   - actor: System
     action: Validates and saves the updated information.

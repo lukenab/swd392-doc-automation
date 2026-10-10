@@ -3,20 +3,22 @@ parent: UC-SUBTASKS-MANAGE
 group: SPRINT_WORK
 order: 510
 name: View Subtasks
-summary: Review the subtasks and completion state of a Sprint Task.
+summary: View a Sprint Task's subtasks and completion states.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Project Member
 secondary_actors: []
 trigger: A Project Member opens the subtask list of a Sprint Task.
-description: This use case displays the subtasks of an accessible parent task without modifying them.
+description: >
+  This use case allows a Project Member to view the subtasks and completion states of an
+  accessible Sprint Task. The subtask list is displayed without changes.
 preconditions:
-  - The User is an active member of the project.
+  - The Project Member is an active member of the project.
   - The parent Sprint Task exists.
 postconditions:
   - Current subtasks and their statuses are displayed without modification.
 normal_flow:
-  - actor: User
+  - actor: Project Member
     action: Opens a Sprint Task's subtask section.
   - actor: System
     action: Retrieves and displays the existing subtasks.
@@ -32,4 +34,4 @@ business_rules:
   - BR-PROJECT-MEMBER-ACCESS
 other_information: Subtask modification requires Developer accountability.
 assumptions:
-  - The User can access the parent Sprint Task.
+  - The Project Member can access the parent Sprint Task.

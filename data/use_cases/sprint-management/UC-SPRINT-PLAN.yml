@@ -1,17 +1,19 @@
 key: UC-SPRINT-PLAN
+parent: UC-SPRINTS-MANAGE
 group: SPRINT_MANAGEMENT
-order: 100
+order: 110
 name: Plan Sprint
-summary: Prepare a Draft Sprint with a proposed Sprint Goal and selected Product Backlog Items.
+summary: Plan a Draft Sprint with a Sprint Goal, dates, and selected Product Backlog Items.
 created_by: Nguyễn Quốc Khánh
 date_created: 2026-09-25
-primary_actor: User
-secondary_actors: []
+primary_actor: Product Owner
+secondary_actors:
+  - Developer
 trigger: The Scrum Team is ready to prepare the next Sprint.
 description: >
-  This use case allows the Product Owner and Developers to prepare a Draft Sprint,
-  agree on a proposed Sprint Goal, select ready Product Backlog Items, and establish
-  an initial Sprint Backlog before activation.
+  This use case allows the Product Owner and Developers to prepare a Draft Sprint by
+  agreeing on a proposed Sprint Goal, dates, and ready Product Backlog Items. The selected
+  items form the initial Sprint Backlog. Planning does not start the Sprint.
 preconditions:
   - Both actors are active project members with the stated Scrum accountabilities.
   - The project has no other Draft Sprint.
@@ -20,16 +22,16 @@ postconditions:
   - A Draft Sprint exists with a proposed Sprint Goal, dates, and selected backlog items.
   - Selected items are associated with the Draft Sprint.
 normal_flow:
-  - actor: User
-    action: Acting as the Product Owner, starts Sprint planning and proposes the Sprint Goal and date range.
+  - actor: Product Owner
+    action: Starts Sprint planning and proposes the Sprint Goal and date range.
   - actor: System
     action: Displays ordered Product Backlog Items that are ready for selection.
-  - actor: User
-    action: Acting as the Product Owner, proposes backlog items that support the Sprint Goal.
-  - actor: User
-    action: Acting as a Developer, reviews capacity, estimates, and item readiness.
-  - actor: User
-    action: Acting as the Product Owner, confirms the Sprint Goal and selected items with the Developer.
+  - actor: Product Owner
+    action: Proposes backlog items that support the Sprint Goal.
+  - actor: Developer
+    action: Reviews capacity, estimates, and item readiness.
+  - actor: Product Owner
+    action: Confirms the Sprint Goal and selected items with the Developer.
   - actor: System
     action: Creates the Draft Sprint and its initial Sprint Backlog.
 alternative_flows:

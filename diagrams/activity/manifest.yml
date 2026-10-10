@@ -9,6 +9,7 @@ generation:
   source_of_truth: data/use_cases/**.yml and data/business_rules (concrete use cases only)
   render_failures: 0
   extra_files: 0
+catalog_revision: '2026-10-09'
 use_cases:
 - key: UC-ACCOUNT-REGISTER
   display_id: UC-01
@@ -56,56 +57,71 @@ use_cases:
   review_notes: 'Re-laid out on 2026-10-06: email/password and Google branches run side by side; single-final version is 2204 x 1439 px (about 3.0 pt guard text at A4 width). Peer review required for all AF/EX guards. Still below the 6 pt guard-text target when fitted to one A4 report page; use a larger page or split into method-specific views before insertion.'
 - key: UC-SIGN-OUT
   display_id: UC-03
+  rendered_display_id: UC-03
+  rendered_name: Log Out
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Log Out
   group: ACCOUNT_AUTHENTICATION
-  primary_actor: User
+  primary_actor: Staff
   secondary_actors: []
   assignee: Trần Công Luận
   source: diagrams/activity/account-authentication/source/UC-SIGN-OUT.puml
   svg: diagrams/activity/account-authentication/svg/UC-SIGN-OUT.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-PASSWORD-RESET
   display_id: UC-04
+  rendered_display_id: UC-04
+  rendered_name: Forgot Password
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Forgot Password
   group: ACCOUNT_AUTHENTICATION
-  primary_actor: User
+  primary_actor: Guest
   secondary_actors:
   - Email Service
   assignee: Trần Công Luận
   source: diagrams/activity/account-authentication/source/UC-PASSWORD-RESET.puml
   svg: diagrams/activity/account-authentication/svg/UC-PASSWORD-RESET.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
   visual_review_status: needs-manual-review
   final_status: needs-manual-review
   blocked_reason: null
-  audit_status: REQUEST CHANGES
+  audit_status: PENDING REVIEW
   review_notes: 'Review 2026-10-05: REQUEST CHANGES (layout only). Labels were shortened, but guard text is still
     about 4.7 pt when the diagram is fitted to a 16.5 x 20.5 cm text area (below the 6 pt threshold). Decide during
     peer review: give it a full page, accept it, or ask the BA to split the use case.'
 - key: UC-PROFILE-VIEW
   display_id: UC-05.1
+  rendered_display_id: UC-05.1
+  rendered_name: View Personal Profile
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: View Personal Profile
   group: ACCOUNT_AUTHENTICATION
-  primary_actor: User
+  primary_actor: Staff
   secondary_actors: []
   assignee: Trần Công Luận
   source: diagrams/activity/account-authentication/source/UC-PROFILE-VIEW.puml
   svg: diagrams/activity/account-authentication/svg/UC-PROFILE-VIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
     action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
@@ -114,152 +130,197 @@ use_cases:
     be displayed at the moment."'
 - key: UC-PROFILE-UPDATE
   display_id: UC-05.2
+  rendered_display_id: UC-05.2
+  rendered_name: Update Personal Profile
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Update Personal Profile
   group: ACCOUNT_AUTHENTICATION
-  primary_actor: User
+  primary_actor: Staff
   secondary_actors: []
   assignee: Trần Công Luận
   source: diagrams/activity/account-authentication/source/UC-PROFILE-UPDATE.puml
   svg: diagrams/activity/account-authentication/svg/UC-PROFILE-UPDATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-PASSWORD-CHANGE
   display_id: UC-05.3
+  rendered_display_id: UC-05.3
+  rendered_name: Change Password
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Change Password
   group: ACCOUNT_AUTHENTICATION
-  primary_actor: User
+  primary_actor: Staff
   secondary_actors: []
   assignee: Trần Công Luận
   source: diagrams/activity/account-authentication/source/UC-PASSWORD-CHANGE.puml
   svg: diagrams/activity/account-authentication/svg/UC-PASSWORD-CHANGE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-PROJECT-CREATE
-  display_id: UC-06
+  display_id: UC-06.1
+  rendered_display_id: UC-06
+  rendered_name: Create Project
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Create Project
   group: PROJECT_MEMBERSHIP
-  primary_actor: User
+  primary_actor: Staff
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/project-membership/source/UC-PROJECT-CREATE.puml
   svg: diagrams/activity/project-membership/svg/UC-PROJECT-CREATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: PENDING REVIEW
 - key: UC-PROJECT-DASHBOARD-VIEW
-  display_id: UC-07
-  name: View Project Dashboard
+  display_id: UC-06.2
+  rendered_display_id: UC-07
+  rendered_name: View Project Dashboard
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
+  name: View Project Overview
   group: PROJECT_MEMBERSHIP
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/project-membership/source/UC-PROJECT-DASHBOARD-VIEW.puml
   svg: diagrams/activity/project-membership/svg/UC-PROJECT-DASHBOARD-VIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: PENDING REVIEW
 - key: UC-PROJECT-UPDATE
-  display_id: UC-08
+  display_id: UC-06.3
+  rendered_display_id: UC-08
+  rendered_name: Update Project Information
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Update Project Information
   group: PROJECT_MEMBERSHIP
-  primary_actor: User
+  primary_actor: Project Owner
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/project-membership/source/UC-PROJECT-UPDATE.puml
   svg: diagrams/activity/project-membership/svg/UC-PROJECT-UPDATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: PENDING REVIEW
 - key: UC-PROJECT-MEMBERS-VIEW
-  display_id: UC-09.1
+  display_id: UC-07.1
+  rendered_display_id: UC-09.1
+  rendered_name: View Project Members
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: View Project Members
   group: PROJECT_MEMBERSHIP
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/project-membership/source/UC-PROJECT-MEMBERS-VIEW.puml
   svg: diagrams/activity/project-membership/svg/UC-PROJECT-MEMBERS-VIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: PENDING REVIEW
 - key: UC-PROJECT-MEMBER-ADD
-  display_id: UC-09.2
+  display_id: UC-07.2
+  rendered_display_id: UC-09.2
+  rendered_name: Add Project Member
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Add Project Member
   group: PROJECT_MEMBERSHIP
-  primary_actor: User
+  primary_actor: Project Owner
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/project-membership/source/UC-PROJECT-MEMBER-ADD.puml
   svg: diagrams/activity/project-membership/svg/UC-PROJECT-MEMBER-ADD.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: PENDING REVIEW
 - key: UC-PROJECT-MEMBER-REMOVE
-  display_id: UC-09.3
+  display_id: UC-07.3
+  rendered_display_id: UC-09.3
+  rendered_name: Remove Project Member
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Remove Project Member
   group: PROJECT_MEMBERSHIP
-  primary_actor: User
+  primary_actor: Project Owner
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/project-membership/source/UC-PROJECT-MEMBER-REMOVE.puml
   svg: diagrams/activity/project-membership/svg/UC-PROJECT-MEMBER-REMOVE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: PENDING REVIEW
   observations:
   - EX-01 (the Project Owner removes their own membership) contradicts a precondition; modelled as a defensive System
     check that rejects the request (the System enforces the precondition). Confirm with the BA that the check is
     intended.
 - key: UC-SCRUM-ACCOUNTABILITY-ASSIGN
-  display_id: UC-10
+  display_id: UC-08
+  rendered_display_id: UC-10
+  rendered_name: Assign Scrum Accountability
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Assign Scrum Accountability
   group: PROJECT_MEMBERSHIP
-  primary_actor: User
+  primary_actor: Project Owner
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/project-membership/source/UC-SCRUM-ACCOUNTABILITY-ASSIGN.puml
   svg: diagrams/activity/project-membership/svg/UC-SCRUM-ACCOUNTABILITY-ASSIGN.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: PENDING REVIEW
   observations:
   - AF-01 says the transfer happens 'after confirmation' but does not say what happens when the Project Owner does
     not confirm the replacement; only the confirmed path is modelled.
@@ -267,124 +328,159 @@ use_cases:
     replaces the previous one''): AF-01 requires a confirmation before the replacement. The diagram follows the
     Use Case; confirm which source applies.'
 - key: UC-PROJECT-ARCHIVE
-  display_id: UC-11
+  display_id: UC-06.4
+  rendered_display_id: UC-11
+  rendered_name: Archive Project
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Archive Project
   group: PROJECT_MEMBERSHIP
-  primary_actor: User
+  primary_actor: Project Owner
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/project-membership/source/UC-PROJECT-ARCHIVE.puml
   svg: diagrams/activity/project-membership/svg/UC-PROJECT-ARCHIVE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: PENDING REVIEW
   observations:
   - EX-01 (the project has an active Sprint) contradicts a precondition; modelled as a defensive System check that
     rejects the request (the System enforces the precondition). Confirm with the BA that the check is intended.
 - key: UC-PROJECT-OWNERSHIP-TRANSFER
-  display_id: UC-12
+  display_id: UC-06.5
+  rendered_display_id: UC-12
+  rendered_name: Transfer Project Ownership
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Transfer Project Ownership
   group: PROJECT_MEMBERSHIP
-  primary_actor: User
+  primary_actor: Project Owner
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/project-membership/source/UC-PROJECT-OWNERSHIP-TRANSFER.puml
   svg: diagrams/activity/project-membership/svg/UC-PROJECT-OWNERSHIP-TRANSFER.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: PENDING REVIEW
 - key: UC-PROJECT-LEAVE
-  display_id: UC-13
+  display_id: UC-07.4
+  rendered_display_id: UC-13
+  rendered_name: Leave Project
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Leave Project
   group: PROJECT_MEMBERSHIP
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/project-membership/source/UC-PROJECT-LEAVE.puml
   svg: diagrams/activity/project-membership/svg/UC-PROJECT-LEAVE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: APPROVED
+  audit_status: PENDING REVIEW
   observations:
   - EX-01 (the current Project Owner attempts to leave) contradicts a precondition; modelled as a defensive System
     check that rejects the request (the System enforces the precondition). Confirm with the BA that the check is
     intended.
 - key: UC-PRODUCT-GOAL-VIEW
-  display_id: UC-14.1
+  display_id: UC-09.1
+  rendered_display_id: UC-14.1
+  rendered_name: View Product Goal
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: View Product Goal
   group: PRODUCT_BACKLOG
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors: []
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/product-backlog/source/UC-PRODUCT-GOAL-VIEW.puml
   svg: diagrams/activity/product-backlog/svg/UC-PRODUCT-GOAL-VIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-PRODUCT-GOAL-SET
-  display_id: UC-14.2
+  display_id: UC-09.2
+  rendered_display_id: UC-14.2
+  rendered_name: Set Product Goal
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Set Product Goal
   group: PRODUCT_BACKLOG
-  primary_actor: User
+  primary_actor: Product Owner
   secondary_actors: []
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/product-backlog/source/UC-PRODUCT-GOAL-SET.puml
   svg: diagrams/activity/product-backlog/svg/UC-PRODUCT-GOAL-SET.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-PRODUCT-GOAL-UPDATE
-  display_id: UC-14.3
+  display_id: UC-09.3
+  rendered_display_id: UC-14.3
+  rendered_name: Update Product Goal
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Update Product Goal
   group: PRODUCT_BACKLOG
-  primary_actor: User
+  primary_actor: Product Owner
   secondary_actors: []
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/product-backlog/source/UC-PRODUCT-GOAL-UPDATE.puml
   svg: diagrams/activity/product-backlog/svg/UC-PRODUCT-GOAL-UPDATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-BACKLOG-ITEM-VIEW
-  display_id: UC-15.1
+  display_id: UC-10.1
+  rendered_display_id: UC-15.1
+  rendered_name: View Product Backlog Item
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: View Product Backlog Item
   group: PRODUCT_BACKLOG
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors: []
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/product-backlog/source/UC-BACKLOG-ITEM-VIEW.puml
   svg: diagrams/activity/product-backlog/svg/UC-BACKLOG-ITEM-VIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
     action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
@@ -392,69 +488,89 @@ use_cases:
     spec sentence: "EX-01: The selected item is no longer available; the system informs the User that the item is
     no longer available."'
 - key: UC-BACKLOG-ITEM-CREATE
-  display_id: UC-15.2
+  display_id: UC-10.2
+  rendered_display_id: UC-15.2
+  rendered_name: Create Product Backlog Item
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Create Product Backlog Item
   group: PRODUCT_BACKLOG
-  primary_actor: User
+  primary_actor: Product Owner
   secondary_actors: []
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/product-backlog/source/UC-BACKLOG-ITEM-CREATE.puml
   svg: diagrams/activity/product-backlog/svg/UC-BACKLOG-ITEM-CREATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-BACKLOG-ITEM-UPDATE
-  display_id: UC-15.3
+  display_id: UC-10.3
+  rendered_display_id: UC-15.3
+  rendered_name: Update Product Backlog Item
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Update Product Backlog Item
   group: PRODUCT_BACKLOG
-  primary_actor: User
+  primary_actor: Product Owner
   secondary_actors: []
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/product-backlog/source/UC-BACKLOG-ITEM-UPDATE.puml
   svg: diagrams/activity/product-backlog/svg/UC-BACKLOG-ITEM-UPDATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-BACKLOG-ITEM-REMOVE
-  display_id: UC-15.4
+  display_id: UC-10.4
+  rendered_display_id: UC-15.4
+  rendered_name: Remove Product Backlog Item
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Remove Product Backlog Item
   group: PRODUCT_BACKLOG
-  primary_actor: User
+  primary_actor: Product Owner
   secondary_actors: []
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/product-backlog/source/UC-BACKLOG-ITEM-REMOVE.puml
   svg: diagrams/activity/product-backlog/svg/UC-BACKLOG-ITEM-REMOVE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-BACKLOG-ORDER
-  display_id: UC-16
+  display_id: UC-10.5
+  rendered_display_id: UC-16
+  rendered_name: Order Product Backlog
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Order Product Backlog
   group: PRODUCT_BACKLOG
-  primary_actor: User
+  primary_actor: Product Owner
   secondary_actors: []
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/product-backlog/source/UC-BACKLOG-ORDER.puml
   svg: diagrams/activity/product-backlog/svg/UC-BACKLOG-ORDER.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
     action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
@@ -462,117 +578,157 @@ use_cases:
     Proposed spec sentence: "EX-01: The system cannot save a complete and unique order for all backlog items; the
     previous order is kept and the system informs the Product Owner that the new order could not be saved."'
 - key: UC-BACKLOG-ITEM-REFINE
-  display_id: UC-17
+  display_id: UC-10.6
+  rendered_display_id: UC-17
+  rendered_name: Refine Backlog Item
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Refine Backlog Item
   group: PRODUCT_BACKLOG
-  primary_actor: User
-  secondary_actors: []
+  primary_actor: Product Owner
+  secondary_actors:
+  - Developer
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/product-backlog/source/UC-BACKLOG-ITEM-REFINE.puml
   svg: diagrams/activity/product-backlog/svg/UC-BACKLOG-ITEM-REFINE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-BACKLOG-ITEM-ESTIMATE
-  display_id: UC-18
+  display_id: UC-11
+  rendered_display_id: UC-18
+  rendered_name: Estimate Backlog Item
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Estimate Backlog Item
   group: PRODUCT_BACKLOG
-  primary_actor: User
-  secondary_actors: []
+  primary_actor: Developer
+  secondary_actors:
+  - Product Owner
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/product-backlog/source/UC-BACKLOG-ITEM-ESTIMATE.puml
   svg: diagrams/activity/product-backlog/svg/UC-BACKLOG-ITEM-ESTIMATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SPRINT-PLAN
-  display_id: UC-19
+  display_id: UC-12.1
+  rendered_display_id: UC-19
+  rendered_name: Plan Sprint
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Plan Sprint
   group: SPRINT_MANAGEMENT
-  primary_actor: User
-  secondary_actors: []
+  primary_actor: Product Owner
+  secondary_actors:
+  - Developer
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/sprint-management/source/UC-SPRINT-PLAN.puml
   svg: diagrams/activity/sprint-management/svg/UC-SPRINT-PLAN.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SPRINT-START
-  display_id: UC-20
+  display_id: UC-12.2
+  rendered_display_id: UC-20
+  rendered_name: Start Sprint
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Start Sprint
   group: SPRINT_MANAGEMENT
-  primary_actor: User
-  secondary_actors: []
+  primary_actor: Product Owner
+  secondary_actors:
+  - Developer
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/sprint-management/source/UC-SPRINT-START.puml
   svg: diagrams/activity/sprint-management/svg/UC-SPRINT-START.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SPRINT-COMPLETE
-  display_id: UC-21
+  display_id: UC-12.3
+  rendered_display_id: UC-21
+  rendered_name: Complete Sprint
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Complete Sprint
   group: SPRINT_MANAGEMENT
-  primary_actor: User
-  secondary_actors: []
+  primary_actor: Product Owner
+  secondary_actors:
+  - Developer
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/sprint-management/source/UC-SPRINT-COMPLETE.puml
   svg: diagrams/activity/sprint-management/svg/UC-SPRINT-COMPLETE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SPRINT-CANCEL
-  display_id: UC-22
+  display_id: UC-12.4
+  rendered_display_id: UC-22
+  rendered_name: Cancel Sprint
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Cancel Sprint
   group: SPRINT_MANAGEMENT
-  primary_actor: User
+  primary_actor: Product Owner
   secondary_actors: []
   assignee: Nguyễn Quốc Khánh
   source: diagrams/activity/sprint-management/source/UC-SPRINT-CANCEL.puml
   svg: diagrams/activity/sprint-management/svg/UC-SPRINT-CANCEL.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SPRINT-BOARD-REVIEW
-  display_id: UC-23
+  display_id: UC-13
+  rendered_display_id: UC-23
+  rendered_name: Review Sprint Board
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Review Sprint Board
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SPRINT-BOARD-REVIEW.puml
   svg: diagrams/activity/sprint-work/svg/UC-SPRINT-BOARD-REVIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
     action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
@@ -580,21 +736,26 @@ use_cases:
     sentence: "EX-01: The board cannot be loaded because Sprint data is temporarily unavailable; the system informs
     the User that the Sprint Board is temporarily unavailable."'
 - key: UC-SPRINT-TASK-VIEW
-  display_id: UC-24.1
+  display_id: UC-14.1
+  rendered_display_id: UC-24.1
+  rendered_name: View Sprint Task
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: View Sprint Task
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SPRINT-TASK-VIEW.puml
   svg: diagrams/activity/sprint-work/svg/UC-SPRINT-TASK-VIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
     action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01 (read as data that cannot
@@ -603,253 +764,304 @@ use_cases:
     that its data temporarily cannot be retrieved? Proposed spec sentence: "EX-01: The selected Sprint Task has
     been removed; the system informs the User that the task is no longer available."'
 - key: UC-SPRINT-TASK-CREATE
-  display_id: UC-24.2
+  display_id: UC-14.2
+  rendered_display_id: UC-24.2
+  rendered_name: Create Sprint Task
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Create Sprint Task
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SPRINT-TASK-CREATE.puml
   svg: diagrams/activity/sprint-work/svg/UC-SPRINT-TASK-CREATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SPRINT-TASK-UPDATE
-  display_id: UC-24.3
+  display_id: UC-14.3
+  rendered_display_id: UC-24.3
+  rendered_name: Update Sprint Task
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Update Sprint Task
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SPRINT-TASK-UPDATE.puml
   svg: diagrams/activity/sprint-work/svg/UC-SPRINT-TASK-UPDATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SPRINT-TASK-ASSIGN
-  display_id: UC-24.4
+  display_id: UC-14.4
+  rendered_display_id: UC-24.4
+  rendered_name: Assign Sprint Task
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Assign Sprint Task
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SPRINT-TASK-ASSIGN.puml
   svg: diagrams/activity/sprint-work/svg/UC-SPRINT-TASK-ASSIGN.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SPRINT-TASK-DELETE
-  display_id: UC-24.5
+  display_id: UC-14.5
+  rendered_display_id: UC-24.5
+  rendered_name: Delete Sprint Task
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Delete Sprint Task
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SPRINT-TASK-DELETE.puml
   svg: diagrams/activity/sprint-work/svg/UC-SPRINT-TASK-DELETE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-TASK-DEPENDENCY-ADD
-  display_id: UC-24.6
+  display_id: UC-14.6
+  rendered_display_id: UC-24.6
+  rendered_name: Add Task Dependency
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Add Task Dependency
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-TASK-DEPENDENCY-ADD.puml
   svg: diagrams/activity/sprint-work/svg/UC-TASK-DEPENDENCY-ADD.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-TASK-DEPENDENCY-REMOVE
-  display_id: UC-24.7
+  display_id: UC-14.7
+  rendered_display_id: UC-24.7
+  rendered_name: Remove Task Dependency
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Remove Task Dependency
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-TASK-DEPENDENCY-REMOVE.puml
   svg: diagrams/activity/sprint-work/svg/UC-TASK-DEPENDENCY-REMOVE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SPRINT-TASK-CLAIM
-  display_id: UC-25
+  display_id: UC-14.8
+  rendered_display_id: UC-25
+  rendered_name: Claim Sprint Task
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Claim Sprint Task
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SPRINT-TASK-CLAIM.puml
   svg: diagrams/activity/sprint-work/svg/UC-SPRINT-TASK-CLAIM.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'NEEDS CLARIFICATION (NF2): What happens if NF2 finds the task is no longer active (for example, removed from
     the Sprint between selection and claim)? Proposed spec sentence: "EX-02: The task is no longer active in the
     Sprint; the system rejects the claim."'
 - key: UC-WORK-ITEM-STATUS-UPDATE
-  display_id: UC-26
+  display_id: UC-15
+  rendered_display_id: UC-26
+  rendered_name: Update Work Item Status
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Update Work Item Status
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-WORK-ITEM-STATUS-UPDATE.puml
   svg: diagrams/activity/sprint-work/svg/UC-WORK-ITEM-STATUS-UPDATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SUBTASKS-VIEW
-  display_id: UC-27.1
+  display_id: UC-16.1
+  rendered_display_id: UC-27.1
+  rendered_name: View Subtasks
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: View Subtasks
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SUBTASKS-VIEW.puml
   svg: diagrams/activity/sprint-work/svg/UC-SUBTASKS-VIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SUBTASK-CREATE
-  display_id: UC-27.2
+  display_id: UC-16.2
+  rendered_display_id: UC-27.2
+  rendered_name: Create Subtask
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Create Subtask
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SUBTASK-CREATE.puml
   svg: diagrams/activity/sprint-work/svg/UC-SUBTASK-CREATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SUBTASK-UPDATE
-  display_id: UC-27.3
+  display_id: UC-16.3
+  rendered_display_id: UC-27.3
+  rendered_name: Update Subtask
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Update Subtask
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SUBTASK-UPDATE.puml
   svg: diagrams/activity/sprint-work/svg/UC-SUBTASK-UPDATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
-- key: UC-SUBTASK-COMPLETE
-  display_id: UC-27.4
-  name: Complete Subtask
-  group: SPRINT_WORK
-  primary_actor: User
-  secondary_actors: []
-  assignee: Nguyễn Tấn Trung
-  source: diagrams/activity/sprint-work/source/UC-SUBTASK-COMPLETE.puml
-  svg: diagrams/activity/sprint-work/svg/UC-SUBTASK-COMPLETE.svg
-  generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
-  blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
-  observations:
-  - Completion (NF2-NF4) and reopening (AF-01) share one validation and one recording step; the requested status
-    is the Developer's decision. Confirm during peer review.
+  audit_status: PENDING REVIEW
 - key: UC-SUBTASK-DELETE
-  display_id: UC-27.5
+  display_id: UC-16.4
+  rendered_display_id: UC-27.5
+  rendered_name: Delete Subtask
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Delete Subtask
   group: SPRINT_WORK
-  primary_actor: User
+  primary_actor: Developer
   secondary_actors: []
   assignee: Nguyễn Tấn Trung
   source: diagrams/activity/sprint-work/source/UC-SUBTASK-DELETE.puml
   svg: diagrams/activity/sprint-work/svg/UC-SUBTASK-DELETE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-WORK-ITEM-COMMENT
-  display_id: UC-28
+  display_id: UC-17
+  rendered_display_id: UC-28
+  rendered_name: Comment on Work Item
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Comment on Work Item
   group: COLLABORATION_NOTIFICATION
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors:
   - Email Service
   assignee: Nguyễn An Bình
   source: diagrams/activity/collaboration-notification/source/UC-WORK-ITEM-COMMENT.puml
   svg: diagrams/activity/collaboration-notification/svg/UC-WORK-ITEM-COMMENT.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-WORK-ITEM-ACTIVITY-REVIEW
-  display_id: UC-29
+  display_id: UC-18
+  rendered_display_id: UC-29
+  rendered_name: Review Work Item Activity
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Review Work Item Activity
   group: COLLABORATION_NOTIFICATION
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/collaboration-notification/source/UC-WORK-ITEM-ACTIVITY-REVIEW.puml
   svg: diagrams/activity/collaboration-notification/svg/UC-WORK-ITEM-ACTIVITY-REVIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
     action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
@@ -857,21 +1069,26 @@ use_cases:
     "EX-01: Activity data cannot be retrieved; the system informs the User that the activity history is temporarily
     unavailable."'
 - key: UC-NOTIFICATIONS-REVIEW
-  display_id: UC-30
+  display_id: UC-19
+  rendered_display_id: UC-30
+  rendered_name: Review Notifications
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Review Notifications
   group: COLLABORATION_NOTIFICATION
-  primary_actor: User
+  primary_actor: Staff
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/collaboration-notification/source/UC-NOTIFICATIONS-REVIEW.puml
   svg: diagrams/activity/collaboration-notification/svg/UC-NOTIFICATIONS-REVIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
     action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-02 (the previous preference
@@ -880,21 +1097,26 @@ use_cases:
     spec sentence: "EX-02: The email delivery preference cannot be saved; the previous preference remains unchanged
     and the system informs the User that the change was not saved."'
 - key: UC-SPRINT-PROGRESS-MONITOR
-  display_id: UC-31
+  display_id: UC-20
+  rendered_display_id: UC-31
+  rendered_name: Monitor Sprint Progress
+  rendered_primary_actor: User
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Monitor Sprint Progress
   group: SCRUM_REPORTING
-  primary_actor: User
+  primary_actor: Project Member
   secondary_actors: []
   assignee: Nguyễn An Bình
   source: diagrams/activity/scrum-reporting/source/UC-SPRINT-PROGRESS-MONITOR.puml
   svg: diagrams/activity/scrum-reporting/svg/UC-SPRINT-PROGRESS-MONITOR.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
     action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
@@ -902,7 +1124,12 @@ use_cases:
     spec sentence: "EX-01: No active Sprint exists for the selected project; the system informs the User that there
     is no active Sprint to monitor."'
 - key: UC-USER-ACCOUNTS-SEARCH
-  display_id: UC-32.1
+  display_id: UC-21.1
+  rendered_display_id: UC-32.1
+  rendered_name: Search and View User Accounts
+  rendered_primary_actor: System Administrator
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Search and View User Accounts
   group: SYSTEM_ADMINISTRATION
   primary_actor: System Administrator
@@ -911,12 +1138,12 @@ use_cases:
   source: diagrams/activity/system-administration/source/UC-USER-ACCOUNTS-SEARCH.puml
   svg: diagrams/activity/system-administration/svg/UC-USER-ACCOUNTS-SEARCH.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
     action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
@@ -924,7 +1151,12 @@ use_cases:
     Proposed spec sentence: "EX-01: Account administration data is temporarily unavailable; the system informs the
     System Administrator that accounts cannot be searched at the moment."'
 - key: UC-USER-ACCOUNT-SUSPEND
-  display_id: UC-32.2
+  display_id: UC-21.2
+  rendered_display_id: UC-32.2
+  rendered_name: Suspend User Account
+  rendered_primary_actor: System Administrator
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Suspend User Account
   group: SYSTEM_ADMINISTRATION
   primary_actor: System Administrator
@@ -933,14 +1165,19 @@ use_cases:
   source: diagrams/activity/system-administration/source/UC-USER-ACCOUNT-SUSPEND.puml
   svg: diagrams/activity/system-administration/svg/UC-USER-ACCOUNT-SUSPEND.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-USER-ACCOUNT-REACTIVATE
-  display_id: UC-32.3
+  display_id: UC-21.3
+  rendered_display_id: UC-32.3
+  rendered_name: Reactivate User Account
+  rendered_primary_actor: System Administrator
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Reactivate User Account
   group: SYSTEM_ADMINISTRATION
   primary_actor: System Administrator
@@ -949,14 +1186,19 @@ use_cases:
   source: diagrams/activity/system-administration/source/UC-USER-ACCOUNT-REACTIVATE.puml
   svg: diagrams/activity/system-administration/svg/UC-USER-ACCOUNT-REACTIVATE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-USER-ACCOUNT-DELETE
-  display_id: UC-32.4
+  display_id: UC-21.4
+  rendered_display_id: UC-32.4
+  rendered_name: Delete User Account
+  rendered_primary_actor: System Administrator
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Delete User Account
   group: SYSTEM_ADMINISTRATION
   primary_actor: System Administrator
@@ -965,14 +1207,19 @@ use_cases:
   source: diagrams/activity/system-administration/source/UC-USER-ACCOUNT-DELETE.puml
   svg: diagrams/activity/system-administration/svg/UC-USER-ACCOUNT-DELETE.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
 - key: UC-SYSTEM-AUDIT-LOG-REVIEW
-  display_id: UC-33
+  display_id: UC-22
+  rendered_display_id: UC-33
+  rendered_name: Review System Audit Log
+  rendered_primary_actor: System Administrator
+  catalog_sync_status: needs-source-review
+  catalog_sync_note: 'Catalog updated 2026-10-09; source and SVG remain from the previous revision. Review actors, IDs and traceability before rendering or acceptance.'
   name: Review System Audit Log
   group: SYSTEM_ADMINISTRATION
   primary_actor: System Administrator
@@ -981,18 +1228,42 @@ use_cases:
   source: diagrams/activity/system-administration/source/UC-SYSTEM-AUDIT-LOG-REVIEW.puml
   svg: diagrams/activity/system-administration/svg/UC-SYSTEM-AUDIT-LOG-REVIEW.svg
   generation_status: generated
-  traceability_status: pass
-  uml_review_status: pass
-  visual_review_status: pass
-  final_status: ready-for-peer-review
+  traceability_status: needs-manual-review
+  uml_review_status: needs-manual-review
+  visual_review_status: needs-manual-review
+  final_status: needs-manual-review
   blocked_reason: null
-  audit_status: READY FOR PEER REVIEW
+  audit_status: PENDING REVIEW
   observations:
   - 'Review 2026-10-05: no System response is described for this exception, so its guard ends the flow without an
     action (leader decision; deviates from guideline sections 5 and 7.3). Applies to EX-01.'
   - 'NEEDS CLARIFICATION (EX-01): Is the System Administrator informed that the audit store is unavailable? Proposed
     spec sentence: "EX-01: The audit store is temporarily unavailable; the system informs the System Administrator
     that audit events cannot be displayed at the moment."'
+retired_use_cases:
+- key: UC-SUBTASK-COMPLETE
+  display_id: UC-27.4
+  retired_date: '2026-10-09'
+  merged_into: UC-WORK-ITEM-STATUS-UPDATE
+  replacement_display_id: UC-15
+  retirement_reason: 'Complete/reopen subtask is now part of Update Work Item Status. Existing diagram files are retained for historical reference only.'
+  name: Complete Subtask
+  group: SPRINT_WORK
+  primary_actor: User
+  secondary_actors: []
+  assignee: Nguyễn Tấn Trung
+  source: diagrams/activity/sprint-work/source/UC-SUBTASK-COMPLETE.puml
+  svg: diagrams/activity/sprint-work/svg/UC-SUBTASK-COMPLETE.svg
+  generation_status: generated
+  traceability_status: retired
+  uml_review_status: pass
+  visual_review_status: pass
+  final_status: retired
+  blocked_reason: null
+  audit_status: retired
+  observations:
+  - Completion (NF2-NF4) and reopening (AF-01) share one validation and one recording step; the requested status
+    is the Developer's decision. Confirm during peer review.
 review_sections:
 - title: Modelling conventions applied
   body: "- Authentication is a precondition only; Log In appears only in UC-SIGN-IN.\n- Partitions name the responsibility,\

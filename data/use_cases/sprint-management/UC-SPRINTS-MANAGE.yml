@@ -1,15 +1,15 @@
-key: UC-PRODUCT-GOAL-MANAGE
-group: PRODUCT_BACKLOG
+key: UC-SPRINTS-MANAGE
+group: SPRINT_MANAGEMENT
 order: 100
-name: Manage Product Goal
+name: Manage Sprints
 abstract: true
 grouping_only: true
-summary: View, set, and update the project's current Product Goal.
+summary: Plan, start, complete, and cancel Sprints according to their lifecycle rules.
 created_by: Nguyễn Quốc Khánh
-date_created: 2026-09-25
+date_created: 2026-10-09
 primary_actor: Product Owner
 secondary_actors:
-  - Project Member
+  - Developer
 trigger: ""
 description: >
   This catalog group organizes the related concrete use cases. Each child defines

@@ -2,21 +2,22 @@ key: UC-SPRINT-BOARD-REVIEW
 group: SPRINT_WORK
 order: 100
 name: Review Sprint Board
-summary: View active Sprint work grouped by workflow status.
+summary: View active Sprint work by status, assignment, priority, and estimate.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-25
-primary_actor: User
+primary_actor: Project Member
 secondary_actors: []
 trigger: The Project Member opens the active Sprint Board.
 description: >
-  This use case presents the active Sprint's work items in workflow columns so
-  project members can understand current progress and ownership.
+  This use case allows a Project Member to view the active Sprint's work items grouped by
+  status on the Sprint Board. The board shows each item's priority, assignee, estimate,
+  and status. Viewing the board does not change work data.
 preconditions:
   - The actor is an active member of the project.
 postconditions:
   - The actor sees the current Sprint Board without changing project data.
 normal_flow:
-  - actor: User
+  - actor: Project Member
     action: Opens the Sprint Board.
   - actor: System
     action: Loads the active Sprint and its work items.
