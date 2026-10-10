@@ -3,13 +3,16 @@ parent: UC-USER-ACCOUNTS-MANAGE
 group: SYSTEM_ADMINISTRATION
 order: 140
 name: Delete User Account
-summary: Remove an eligible User account while preserving required audit history.
+summary: Delete an eligible account while retaining audit records and past work attribution.
 created_by: Trần Công Luận
 date_created: 2026-09-26
 primary_actor: System Administrator
 secondary_actors: []
 trigger: The System Administrator determines that an eligible User account must be deleted.
-description: This use case allows an authorized administrator to delete a User account after ownership and administrator safeguards are satisfied.
+description: >
+  This use case allows a System Administrator to delete an eligible website account after
+  project ownership and administrator protection checks. The deleted account can no longer
+  log in. Required audit records and attribution of past work are retained.
 preconditions:
   - The System Administrator is authenticated and authorized.
   - The target User account exists.

@@ -2,28 +2,30 @@ key: UC-SCRUM-ACCOUNTABILITY-ASSIGN
 group: PROJECT_MEMBERSHIP
 order: 500
 name: Assign Scrum Accountability
-summary: Assign Product Owner or Developer accountability within a project.
+summary: Assign or change Product Owner and Developer accountabilities for project members.
 created_by: Nguyễn An Bình
 date_created: 2026-09-25
-primary_actor: User
+primary_actor: Project Owner
 secondary_actors: []
 trigger: The Project Owner chooses to assign a Scrum accountability to a project member.
 description: >
-  This use case allows the Project Owner to maintain project-scoped Scrum
-  accountabilities independently from the member's responsibilities in other projects.
+  This use case allows the Project Owner to assign or change Product Owner and Developer
+  accountabilities for active Project Members. Changes apply only to the selected project
+  and follow its accountability rules. Project ownership is changed through Transfer
+  Project Ownership.
 preconditions:
   - The actor is the current Project Owner.
-  - The target User is an active member of the project.
+  - The target Staff member is an active member of the project.
   - The project is active.
 postconditions:
   - The selected Scrum accountability is assigned within the project.
   - The accountability change is recorded in activity history.
 normal_flow:
-  - actor: User
+  - actor: Project Owner
     action: Selects an active project member.
   - actor: System
     action: Displays the member's current Scrum accountability.
-  - actor: User
+  - actor: Project Owner
     action: Selects Product Owner or Developer.
   - actor: System
     action: Validates the assignment against project constraints.

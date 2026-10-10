@@ -2,16 +2,18 @@ key: UC-WORK-ITEM-COMMENT
 group: COLLABORATION_NOTIFICATION
 order: 100
 name: Comment on Work Item
-summary: Add a discussion comment to a Product Backlog Item, task, or subtask.
+summary: Add a comment to a Product Backlog Item, task, or subtask.
 created_by: Nguyễn An Bình
 date_created: 2026-09-25
-primary_actor: User
+primary_actor: Project Member
 secondary_actors:
   - Email Service
 trigger: The Project Member needs to communicate about a work item.
 description: >
-  This use case allows project members to record contextual discussion on a
-  work item and notify mentioned or relevant members.
+  This use case allows a Project Member to add a comment to an accessible Product Backlog
+  Item, task, or subtask. The comment is saved with the work item, and relevant members
+  receive in-app notifications and eligible email notifications. An email delivery failure
+  does not remove the saved comment or in-app notification.
 preconditions:
   - The actor is an active member of the project.
   - The work item exists and is accessible to the actor.
@@ -19,11 +21,11 @@ postconditions:
   - The comment is attached to the work item.
   - Relevant in-app notifications are created and eligible email deliveries are requested.
 normal_flow:
-  - actor: User
+  - actor: Project Member
     action: Opens a work item and enters a comment.
   - actor: System
     action: Validates the comment and referenced members.
-  - actor: User
+  - actor: Project Member
     action: Submits the comment.
   - actor: System
     action: Saves the comment and records it in activity history.

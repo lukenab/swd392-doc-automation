@@ -3,26 +3,30 @@ parent: UC-PROJECT-MEMBERS-MANAGE
 group: PROJECT_MEMBERSHIP
 order: 430
 name: Remove Project Member
-summary: Remove a non-owner member from an active project after resolving assigned work.
+summary: Remove a non-owner Project Member after resolving assigned work.
 created_by: Nguyễn An Bình
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Project Owner
 secondary_actors: []
 trigger: The Project Owner chooses to remove a member from the project.
-description: This use case allows the Project Owner to revoke a member's access without violating ownership or active-work constraints.
+description: >
+  This use case allows the Project Owner to remove a Project Member after any unfinished
+  work has been reassigned or cleared. The member's project access and Scrum
+  accountability are removed. The current Project Owner cannot be removed through this
+  operation.
 preconditions:
   - The actor is the current Project Owner.
   - The project is active.
-  - The target User is an active Project Member.
+  - The target Staff member is an active Project Member.
 postconditions:
-  - The target User no longer has access through project membership.
+  - The target Staff member no longer has access through project membership.
   - The removal is recorded in project activity history.
 normal_flow:
-  - actor: User
+  - actor: Project Owner
     action: Selects a project member and requests removal.
   - actor: System
     action: Displays the member's active assignments and asks for confirmation.
-  - actor: User
+  - actor: Project Owner
     action: Confirms removal after active work has been reassigned or cleared.
   - actor: System
     action: Removes Scrum accountabilities and project membership.
@@ -43,4 +47,4 @@ business_rules:
   - BR-PROJECT-OWNER-ADMINISTRATION
 other_information: A Project Owner must transfer ownership before leaving or being removed.
 assumptions:
-  - Removing membership does not delete historical activity created by the User.
+  - Removing membership does not delete historical activity created by the Staff member.

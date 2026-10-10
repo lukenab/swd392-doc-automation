@@ -2,7 +2,7 @@ key: UC-ACCOUNT-REGISTER
 group: ACCOUNT_AUTHENTICATION
 order: 100
 name: Register Account
-summary: Create a system-wide User account using email and password after email verification.
+summary: Create a website account using email and password, with email verification required for activation.
 created_by: Trần Công Luận
 date_created: 2026-09-26
 primary_actor: Guest
@@ -10,14 +10,15 @@ secondary_actors:
   - Email Service
 trigger: The Guest chooses to create a system-wide account.
 description: >
-  This use case allows a Guest to register with an email address and password,
-  verify control of the email address, and become a system-wide User.
+  This use case allows a Guest to register a website account using an email address and
+  password. The account is activated after successful email verification. Registration
+  does not automatically grant project membership.
 preconditions:
   - The Guest is not authenticated.
   - The Guest can access the submitted email account.
 postconditions:
   - One active User account is linked to the verified email address.
-  - The new User is not automatically a member of any project.
+  - The new Staff member is not automatically a member of any project.
 normal_flow:
   - actor: Guest
     action: Opens account registration and chooses email and password.

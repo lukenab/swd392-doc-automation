@@ -1,15 +1,16 @@
-key: UC-PRODUCT-GOAL-MANAGE
-group: PRODUCT_BACKLOG
+key: UC-PROJECTS-MANAGE
+group: PROJECT_MEMBERSHIP
 order: 100
-name: Manage Product Goal
+name: Manage Projects
 abstract: true
 grouping_only: true
-summary: View, set, and update the project's current Product Goal.
-created_by: Nguyễn Quốc Khánh
-date_created: 2026-09-25
-primary_actor: Product Owner
+summary: Create projects, view project overviews, update project information, archive projects, and transfer ownership.
+created_by: Nguyễn An Bình
+date_created: 2026-10-09
+primary_actor: Staff
 secondary_actors:
   - Project Member
+  - Project Owner
 trigger: ""
 description: >
   This catalog group organizes the related concrete use cases. Each child defines

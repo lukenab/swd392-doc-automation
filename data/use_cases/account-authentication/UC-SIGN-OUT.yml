@@ -2,23 +2,24 @@ key: UC-SIGN-OUT
 group: ACCOUNT_AUTHENTICATION
 order: 300
 name: Log Out
-summary: End the current authenticated session without affecting other sessions.
+summary: Log out of the current session without affecting sessions on other clients.
 created_by: Trần Công Luận
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Staff
 secondary_actors: []
-trigger: The authenticated User chooses to log out.
+trigger: The authenticated Staff member chooses to log out.
 description: >
-  This use case ends the User's current authenticated session and removes the
-  corresponding authentication credentials from the current client.
+  This use case allows a Staff member to log out of the current client. The current
+  session is ended and its local authentication information is removed. Sessions on other
+  clients and project data remain unchanged.
 preconditions:
-  - The User has an authenticated session in the current client.
+  - The Staff member has an authenticated session in the current client.
 postconditions:
   - The current session is invalidated.
   - Local authentication credentials for the current session are removed.
   - Other active sessions and project data remain unchanged.
 normal_flow:
-  - actor: User
+  - actor: Staff
     action: Requests to log out.
   - actor: System
     action: Invalidates the current session and its refresh credential.
@@ -37,6 +38,6 @@ priority: Must Have
 frequency_of_use: Frequent
 business_rules:
   - BR-LOG-OUT-SESSION
-other_information: Logging out from one client does not log the User out from other clients.
+other_information: Logging out from one client does not log the Staff member out from other clients.
 assumptions:
   - The client can remove its locally stored authentication credentials.

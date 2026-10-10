@@ -3,31 +3,34 @@ parent: UC-SPRINT-TASKS-MANAGE
 group: SPRINT_WORK
 order: 230
 name: Update Sprint Task
-summary: Revise the editable work details of an existing Sprint Task.
+summary: Update a Sprint Task's details, priority, dates, and estimate.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Developer
 secondary_actors: []
 trigger: A Developer chooses to edit a Sprint Task.
-description: This use case allows a Developer to update task details, priority, dates, and estimate.
+description: >
+  This use case allows a Developer to update the details, priority, dates, and estimate of
+  a task in the active Sprint. Valid changes are saved and recorded in activity history.
+  Status changes are handled by Update Work Item Status.
 preconditions:
-  - The User holds Developer accountability in the project.
+  - The actor holds Developer accountability in the project.
   - The Sprint Task belongs to the active Sprint.
 postconditions:
   - Valid task changes are stored.
   - The update is recorded in work item activity.
 normal_flow:
-  - actor: User
+  - actor: Developer
     action: Opens a Sprint Task for editing.
   - actor: System
     action: Displays the editable task information.
-  - actor: User
+  - actor: Developer
     action: Updates the desired values and submits the task.
   - actor: System
     action: Validates and saves the changes.
 alternative_flows:
   - id: AF-01
-    condition: The User cancels before saving.
+    condition: The Developer cancels before saving.
     steps:
       - The system discards unsaved task changes.
 exceptions:

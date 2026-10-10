@@ -3,46 +3,28 @@ group: SPRINT_WORK
 order: 500
 name: Manage Subtasks
 abstract: true
-summary: Break a Sprint task into smaller trackable units and maintain them.
+grouping_only: true
+summary: View, create, update, and delete subtasks. Completion changes are handled by Update Work Item Status.
 created_by: Nguyễn Tấn Trung
 date_created: 2026-09-25
-primary_actor: User
-secondary_actors: []
-trigger: The Developer decides that a Sprint task needs smaller units of work.
+primary_actor: Developer
+secondary_actors:
+  - Project Member
+trigger: ""
 description: >
-  This use case allows Developers to create, update, assign, complete, and
-  remove subtasks while preserving their relationship to the parent task.
-preconditions:
-  - The Developer is active in the project.
-  - The parent task belongs to the active Sprint.
-postconditions:
-  - The parent task contains the confirmed subtask structure.
-  - Subtask completion contributes to the parent task's progress display.
-normal_flow:
-  - actor: User
-    action: Opens a Sprint task and chooses to manage its subtasks.
-  - actor: System
-    action: Displays the existing subtasks.
-  - actor: User
-    action: Creates or updates a subtask with its assignee and work details.
-  - actor: System
-    action: Validates and saves the subtask.
-  - actor: System
-    action: Recalculates and displays parent-task progress.
-alternative_flows:
-  - id: AF-01
-    condition: The Developer removes an incomplete subtask.
-    steps:
-      - The system requests confirmation.
-      - The system removes the subtask and recalculates progress.
-exceptions:
-  - id: EX-01
-    description: The parent task is no longer part of the active Sprint.
-priority: Should Have
-frequency_of_use: Frequent
-business_rules:
-  - BR-SPRINT-TASK-ACTIVE-SPRINT
-  - BR-SPRINT-TASK-DEVELOPER
-other_information: Subtasks cannot contain another level of subtasks in Iteration 1.
-assumptions:
-  - Parent task completion policy is configured consistently for the project.
+  This catalog group organizes the related concrete use cases. Each child defines
+  its own actors, permissions, preconditions, flows, and outcomes; the group does
+  not impose shared execution behavior or grant access to any child operation.
+preconditions: []
+postconditions: []
+normal_flow: []
+alternative_flows: []
+exceptions: []
+priority: Must Have
+frequency_of_use: N/A (catalog group)
+business_rules: []
+other_information: >
+  Documentation and numbering group only, not an automatically inferred UML
+  generalization or include relationship. No detailed specification or activity
+  diagram is generated for this group.
+assumptions: []

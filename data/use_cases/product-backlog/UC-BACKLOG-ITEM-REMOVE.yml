@@ -3,13 +3,16 @@ parent: UC-BACKLOG-ITEMS-MANAGE
 group: PRODUCT_BACKLOG
 order: 240
 name: Remove Product Backlog Item
-summary: Remove an eligible item from the Product Backlog after confirmation.
+summary: Remove a Product Backlog Item that is not part of an active Sprint.
 created_by: Nguyễn Quốc Khánh
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Product Owner
 secondary_actors: []
 trigger: The Product Owner requests removal of a Product Backlog Item.
-description: This use case allows the Product Owner to remove an item that is not part of an active Sprint.
+description: >
+  This use case allows the Product Owner to remove a Product Backlog Item that is not part
+  of an active Sprint. Removal requires confirmation and is recorded in activity history.
+  Historical activity remains available.
 preconditions:
   - The actor holds Product Owner accountability in the project.
   - The project is active.
@@ -18,17 +21,17 @@ postconditions:
   - The item is removed from the active Product Backlog.
   - The removal is recorded in activity history.
 normal_flow:
-  - actor: User
+  - actor: Product Owner
     action: Selects a Product Backlog Item and requests removal.
   - actor: System
     action: Displays the impact and requests confirmation.
-  - actor: User
+  - actor: Product Owner
     action: Confirms removal.
   - actor: System
     action: Removes the item and records the action.
 alternative_flows:
   - id: AF-01
-    condition: The User cancels removal.
+    condition: The Product Owner cancels removal.
     steps:
       - The system leaves the Product Backlog Item unchanged.
 exceptions:

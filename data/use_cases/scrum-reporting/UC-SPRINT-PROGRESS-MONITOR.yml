@@ -2,21 +2,22 @@ key: UC-SPRINT-PROGRESS-MONITOR
 group: SCRUM_REPORTING
 order: 100
 name: Monitor Sprint Progress
-summary: Review current Sprint completion, remaining work, and workload indicators.
+summary: View active Sprint progress, remaining work, overdue items, and member workload.
 created_by: Nguyễn An Bình
 date_created: 2026-09-25
-primary_actor: User
+primary_actor: Project Member
 secondary_actors: []
 trigger: The Project Member opens Sprint progress reporting.
 description: >
-  This use case summarizes active Sprint progress using current work item status,
-  completion, remaining estimates, overdue work, and member workload.
+  This use case allows a Project Member to monitor active Sprint progress through current
+  work statuses, completion, remaining estimates, overdue items, and member workload. The
+  information is displayed without changes to Sprint data.
 preconditions:
   - The actor is an active member of the project.
 postconditions:
   - The actor sees a current progress snapshot without changing Sprint data.
 normal_flow:
-  - actor: User
+  - actor: Project Member
     action: Opens the active Sprint progress view.
   - actor: System
     action: Aggregates current work item status and estimate data.

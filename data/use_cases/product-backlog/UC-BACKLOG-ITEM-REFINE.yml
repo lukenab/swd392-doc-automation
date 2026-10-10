@@ -1,16 +1,20 @@
 key: UC-BACKLOG-ITEM-REFINE
+parent: UC-BACKLOG-ITEMS-MANAGE
 group: PRODUCT_BACKLOG
-order: 400
+order: 260
 name: Refine Backlog Item
-summary: Clarify and decompose a Product Backlog Item so it can be understood and selected for a Sprint.
+summary: Clarify a Product Backlog Item's scope and acceptance criteria with Developer input.
 created_by: Nguyễn Quốc Khánh
 date_created: 2026-09-25
-primary_actor: User
-secondary_actors: []
+primary_actor: Product Owner
+secondary_actors:
+  - Developer
 trigger: The Product Owner and Developer select a Product Backlog Item for refinement.
 description: >
-  This collaborative use case improves the detail, scope, acceptance criteria,
-  and size understanding of a Product Backlog Item.
+  This use case allows the Product Owner and Developers to clarify a Product Backlog
+  Item's details, scope, acceptance criteria, and size. An item may be split into smaller
+  items when allowed, with links to the original item retained. The Product Owner confirms
+  the resulting backlog changes.
 preconditions:
   - Both actors are active members of the project with the stated accountabilities.
   - The item exists in the Product Backlog.
@@ -19,16 +23,16 @@ postconditions:
   - The item contains the clarified information agreed during refinement.
   - The item can be evaluated for Sprint selection readiness.
 normal_flow:
-  - actor: User
-    action: Acting as the Product Owner, selects an item that requires refinement.
+  - actor: Product Owner
+    action: Selects an item that requires refinement.
   - actor: System
     action: Displays the item's current details and estimate.
-  - actor: User
-    action: Acting as the Product Owner, clarifies the expected outcome and acceptance criteria.
-  - actor: User
-    action: Acting as a Developer, adds implementation-relevant clarification and proposes decomposition when needed.
-  - actor: User
-    action: Acting as the Product Owner, confirms the refined scope and description.
+  - actor: Product Owner
+    action: Clarifies the expected outcome and acceptance criteria.
+  - actor: Developer
+    action: Adds implementation-relevant clarification and proposes decomposition when needed.
+  - actor: Product Owner
+    action: Confirms the refined scope and description.
   - actor: System
     action: Saves the refined item and records the participants.
 alternative_flows:

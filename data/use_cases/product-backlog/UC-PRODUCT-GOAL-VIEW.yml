@@ -3,19 +3,22 @@ parent: UC-PRODUCT-GOAL-MANAGE
 group: PRODUCT_BACKLOG
 order: 110
 name: View Product Goal
-summary: Review the current Product Goal of an accessible Scrum project.
+summary: View a project's current Product Goal.
 created_by: Nguyễn Quốc Khánh
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Project Member
 secondary_actors: []
 trigger: A Project Member opens the Product Backlog or Product Goal view.
-description: This use case displays the current Product Goal without modifying it.
+description: >
+  This use case allows a Project Member to view the project's current Product Goal. The
+  goal is displayed without changes. If no goal has been defined, the website indicates
+  that it is not yet available.
 preconditions:
-  - The User is an active member of the project.
+  - The Project Member is an active member of the project.
 postconditions:
   - The current Product Goal is displayed without modification.
 normal_flow:
-  - actor: User
+  - actor: Project Member
     action: Opens the Product Goal view.
   - actor: System
     action: Retrieves and displays the current Product Goal.
@@ -31,4 +34,4 @@ business_rules:
   - BR-PROJECT-MEMBER-ACCESS
 other_information: Only Product Owner actions can change the displayed goal.
 assumptions:
-  - The User can access the project's Product Backlog.
+  - The Project Member can access the project's Product Backlog.

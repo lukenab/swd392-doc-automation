@@ -2,15 +2,16 @@ key: UC-SYSTEM-AUDIT-LOG-REVIEW
 group: SYSTEM_ADMINISTRATION
 order: 200
 name: Review System Audit Log
-summary: Search and review security-relevant and administrative system events.
+summary: Filter and review recorded security and administrative events.
 created_by: Trần Công Luận
 date_created: 2026-09-25
 primary_actor: System Administrator
 secondary_actors: []
 trigger: The System Administrator needs to investigate or verify system activity.
 description: >
-  This use case enables authorized administrators to filter and review immutable
-  system-level audit events without editing their recorded content.
+  This use case allows a System Administrator to filter and review recorded security and
+  administrative events by time, actor, event type, or target. Audit records are displayed
+  without changes and cannot be edited through this use case.
 preconditions:
   - The System Administrator is authenticated and authorized.
 postconditions:

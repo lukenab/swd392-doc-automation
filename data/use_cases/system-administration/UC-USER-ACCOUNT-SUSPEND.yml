@@ -3,13 +3,16 @@ parent: UC-USER-ACCOUNTS-MANAGE
 group: SYSTEM_ADMINISTRATION
 order: 120
 name: Suspend User Account
-summary: Prevent an eligible User account from establishing new authenticated sessions.
+summary: Suspend an eligible active account and record the reason.
 created_by: Trần Công Luận
 date_created: 2026-09-26
 primary_actor: System Administrator
 secondary_actors: []
 trigger: The System Administrator determines that a User account must be suspended.
-description: This use case allows an authorized administrator to suspend an eligible account and record the reason.
+description: >
+  This use case allows a System Administrator to suspend an eligible active website
+  account and record the reason. A suspended account cannot log in. The suspension is
+  recorded in the system audit log.
 preconditions:
   - The System Administrator is authenticated and authorized.
   - The target User account is active.

@@ -3,23 +3,26 @@ parent: UC-PROFILE-MANAGE
 group: ACCOUNT_AUTHENTICATION
 order: 520
 name: Update Personal Profile
-summary: Update editable personal profile information for the signed-in User.
+summary: Update the signed-in Staff member's editable profile information.
 created_by: Trần Công Luận
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Staff
 secondary_actors: []
-trigger: The User chooses to edit their personal profile.
-description: This use case allows an authenticated User to update their own editable profile information.
+trigger: The Staff member chooses to edit their personal profile.
+description: >
+  This use case allows a Staff member to update their own editable profile information.
+  Valid changes are saved and displayed in the profile. Password changes are handled
+  separately.
 preconditions:
-  - The User is authenticated with an active account.
+  - The Staff member is authenticated with an active account.
 postconditions:
-  - Valid profile changes are stored for the authenticated User.
+  - Valid profile changes are stored for the authenticated Staff member.
 normal_flow:
-  - actor: User
+  - actor: Staff
     action: Opens profile editing.
   - actor: System
     action: Displays the current editable profile values.
-  - actor: User
+  - actor: Staff
     action: Changes the desired values and submits the profile.
   - actor: System
     action: Validates and saves the profile changes.
@@ -27,7 +30,7 @@ normal_flow:
     action: Displays the updated profile.
 alternative_flows:
   - id: AF-01
-    condition: The User cancels before saving.
+    condition: The Staff member cancels before saving.
     steps:
       - The system discards the unsaved changes.
 exceptions:

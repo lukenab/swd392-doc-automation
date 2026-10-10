@@ -2,54 +2,69 @@ major_features:
   - key: FE-01
     order: 100
     name: Project Management
-    description: Create, view, update, and archive projects, and transfer project ownership between members.
+    description: Create projects, view project overviews, update project information, transfer project ownership, and archive projects.
 
   - key: FE-02
     order: 200
-    name: Member and Role Administration
-    description: Add or remove project members, and assign each member's project access role and Scrum accountability independently per project.
+    name: Project Membership Management
+    description: View project members, add or remove members, and allow members to leave projects subject to membership and ownership rules.
 
   - key: FE-03
     order: 300
-    name: Product Backlog Management
-    description: Define the Product Goal, and create, refine, and order Product Backlog Items.
+    name: Project Role Management
+    description: Allow the Project Owner to assign or change Product Owner and Developer accountabilities for eligible project members. Project ownership changes are handled through ownership transfer.
 
   - key: FE-04
     order: 400
-    name: Backlog Estimation
-    description: Estimate the size of Product Backlog Items collaboratively between the Product Owner and Developers.
+    name: Product Backlog Management
+    description: View, define, and update the Product Goal. Create, view, update, remove, refine, and order Product Backlog Items to reflect product priorities.
 
   - key: FE-05
     order: 500
-    name: Sprint Lifecycle Management
-    description: Prepare a Draft Sprint, start and complete an active Sprint, and cancel an active Sprint when its Sprint Goal becomes obsolete.
+    name: Backlog Estimation
+    description: Allow Developers to record and revise Product Backlog Item estimates to support Sprint planning.
 
   - key: FE-06
     order: 600
-    name: Sprint Board and Task Tracking
-    description: Track Sprint Work Items on a Sprint Board, and create, claim, and update their execution status.
+    name: Sprint Lifecycle Management
+    description: Plan Sprints, define Sprint Goals, select Product Backlog Items, and start, complete, or cancel Sprints. Handle unfinished Product Backlog Items according to Sprint completion and cancellation rules.
 
   - key: FE-07
     order: 700
-    name: Subtasks and Task Dependencies
-    description: Break Sprint tasks into subtasks and manage dependency relationships between tasks.
+    name: Task Management
+    description: Create, view, update, and remove Sprint tasks and subtasks. Assign tasks to eligible Developers or allow Developers to claim unassigned tasks. Manage task dependencies, view the Sprint Board, and update task statuses and subtask completion states.
 
   - key: FE-08
     order: 800
-    name: Collaboration & Notifications
-    description: Comment on backlog items and tasks, review activity history, and receive in-app and email notifications about relevant events.
+    name: Work Item Collaboration
+    description: Add comments to Product Backlog Items, tasks, and subtasks, and review work-item activity history to understand changes and support team coordination.
 
   - key: FE-09
     order: 900
-    name: Sprint Progress Monitoring
-    description: Monitor the progress of the currently active Sprint.
+    name: Notifications
+    description: Receive and review relevant in-app notifications and receive email notifications about project and work-item events.
 
   - key: FE-10
     order: 1000
-    name: Account and Audit Trail Management
-    description: Search, review, suspend, reactivate, and delete existing user accounts, and review a security-focused system audit log for account and ownership events.
+    name: Sprint Progress Monitoring
+    description: View active Sprint progress and work-item statuses to identify completed and remaining work.
 
   - key: FE-11
     order: 1100
     name: Account Registration and Authentication
-    description: Register a system-wide account, log in using email and password or Google, log out, use Forgot Password for a forgotten locally managed password, and maintain the logged-in User's personal profile.
+    description: Register accounts using email and password, verify email addresses, log in using email/password or Google, log out, and reset forgotten passwords.
+
+  - key: FE-12
+    order: 1200
+    name: Personal Profile Management
+    description: View and update personal profile information, and change passwords for accounts that support email/password authentication.
+
+  - key: FE-13
+    order: 1300
+    name: Account Administration
+    description: Allow System Administrators to search, review, suspend, reactivate, and delete accounts according to account-management rules.
+
+  - key: FE-14
+    order: 1400
+    name: System Audit Log
+    description: Allow System Administrators to review recorded security and administrative events, including account operations and project ownership transfers.

@@ -3,24 +3,27 @@ parent: UC-PROFILE-MANAGE
 group: ACCOUNT_AUTHENTICATION
 order: 510
 name: View Personal Profile
-summary: Display the signed-in User's personal account and profile information.
+summary: View the signed-in Staff member's profile and account information.
 created_by: Trần Công Luận
 date_created: 2026-09-26
-primary_actor: User
+primary_actor: Staff
 secondary_actors: []
-trigger: The User opens their personal profile.
-description: This use case allows an authenticated User to review their own profile and account information.
+trigger: The Staff member opens their personal profile.
+description: >
+  This use case allows a Staff member to view their own profile and account information.
+  The information is displayed without changes, and sensitive authentication information
+  is not shown.
 preconditions:
-  - The User is authenticated with an active account.
+  - The Staff member is authenticated with an active account.
 postconditions:
-  - The User's current profile information is displayed without modification.
+  - The Staff member's current profile information is displayed without modification.
 normal_flow:
-  - actor: User
+  - actor: Staff
     action: Opens the personal profile page.
   - actor: System
-    action: Retrieves the profile belonging to the authenticated User.
+    action: Retrieves the profile belonging to the authenticated Staff member.
   - actor: System
-    action: Displays the User's profile and non-sensitive account information.
+    action: Displays the Staff member's profile and non-sensitive account information.
 alternative_flows: []
 exceptions:
   - id: EX-01
